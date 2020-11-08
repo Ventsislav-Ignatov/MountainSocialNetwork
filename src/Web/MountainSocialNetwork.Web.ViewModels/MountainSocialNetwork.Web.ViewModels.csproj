@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\Services\MountainSocialNetwork.Services.Mapping\MountainSocialNetwork.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SocialTimeLine\" />
+  </ItemGroup>
+
 </Project>

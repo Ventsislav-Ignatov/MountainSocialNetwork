@@ -36,6 +36,7 @@
         public DbSet<ContactFormEntry> ContactFormEntries { get; set; }
 
         public DbSet<ArticlePicture> ArticlePictures { get; set; }
+        public DbSet<TimeLinePost> TimeLinePosts { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
