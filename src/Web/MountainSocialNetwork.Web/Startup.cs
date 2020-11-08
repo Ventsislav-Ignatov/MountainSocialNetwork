@@ -19,6 +19,7 @@
     using MountainSocialNetwork.Data.Seeding;
     using MountainSocialNetwork.Services.Data;
     using MountainSocialNetwork.Services.Data.Search;
+    using MountainSocialNetwork.Services.Data.TimeLine;
     using MountainSocialNetwork.Services.Mapping;
     using MountainSocialNetwork.Services.Messaging;
     using MountainSocialNetwork.Web.ViewModels;
@@ -63,7 +64,7 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-
+            services.AddTransient<ITimeLineService, TimeLineService>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IArticlePostsService, ArticlePostsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
