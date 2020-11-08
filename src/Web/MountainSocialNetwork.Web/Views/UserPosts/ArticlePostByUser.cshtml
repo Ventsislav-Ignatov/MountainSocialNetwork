@@ -1,0 +1,25 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.UsersPosts.UsersPostsByIdViewModel
+
+
+<!-- Blog Post -->
+@foreach (var post in Model.Posts)
+{
+
+    <div class="card mb-4">
+        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">@post.Title</h2>
+            <p class="card-text">@Html.Raw(post.ShortContent)</p>
+            @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
+            <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
+            <a class="btn btn-primary" asp-controller="UserPosts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+            @*//asp-controller="BlogPosts" asp-action="ById" asp-route="@post.Id"*@
+        </div>
+        <div class="card-footer text-muted">
+            <a class="fas fa-calendar-alt"> Posted on <time datetime="@post.CreatedOn.ToString("O")"></time> by  </a>
+            <a class="fas fa-user"> @post.UserUserName  </a>
+            <a class="fas fa-comment-dots"> @post.CommentsCount</a>
+        </div>
+    </div>
+
+}

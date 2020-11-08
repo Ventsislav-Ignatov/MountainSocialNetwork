@@ -1,0 +1,136 @@
+﻿@using MountainSocialNetwork.Common
+
+@model MountainSocialNetwork.Web.ViewModels.BlogHomePage.HomeViewModel
+@{
+    this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName} BlogHomePage!";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+
+<ul class="navbar-nav">
+    <li class="nav-item">
+
+        <a class="btn btn-primary" asp-controller="Articles" asp-action="Create">Create new post!</a>
+        <a class="btn btn-primary" asp-controller="UserPosts" asp-action="ArticlePostByUser">Get your published posts!</a>
+        <a class="btn btn-primary" asp-controller="Contacts" asp-action="Contact">Contact!</a>
+
+        <a class="btn btn-primary" asp-controller="UserPosts" asp-action="GetAllFavouritePost">Get Your Favourite Posts</a>
+
+
+    </li>
+
+</ul>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <!-- Blog Post -->
+
+            @foreach (var post in Model.Posts)
+            {
+                <h1 class="my-4">
+                    Page Heading
+                    <small>Secondary Text</small>
+                </h1>
+                <div class="card mb-4">
+                    <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                    <div class="card-body">
+                        <h2 class="card-title">@post.Title</h2>
+                        <p class="card-text">@Html.Raw(post.ShortContent)</p>
+                        @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
+                        <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
+
+                        <a class="btn btn-primary" asp-controller="ArticlesHomePage" asp-action="CreateFavouriteArticle" asp-route-PostId="@post.Id">Add post to favorites!</a>
+
+                    </div>
+                    <div class="card-footer text-muted">
+                        <a class="fas fa-calendar-alt"> Posted on <time datetime="@post.CreatedOn.ToString("O")"></time> by  </a>
+                        <a class="fas fa-user"> @post.UserUserName  </a>
+                        <a class="fas fa-comment-dots"> @post.CommentsCount</a>
+                    </div>
+                </div>
+
+            }
+
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Search Widget -->
+            <form method="get" asp-action="SearchBar" asp-controller="Search">
+                <div class="card my-4">
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <div>
+                                <label asp-for="SearchInputModel.Title"></label>
+                                <input asp-for="SearchInputModel.Title" type="text" name="Title" class="form-control">
+                                <span asp-validation-for="SearchInputModel.Title" class="text-danger"></span>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Go!</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="list-group-horizontal-md">
+
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <li class="active">
+                                        @*@Html.ActionLink(category.Title, "CategoriesByName", "BlogHomePage", new { name = category.Title }, new { @class = "stretched-link" }) (@category.BlogPostsCount)*@
+                                        <a asp-controller="ArticlesHomePage" asp-action="CategoriesByName" asp-route-name="@category.Title">
+                                            @category.Title @category.ArticlePostsCount
+
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Last Published Articles</h5>
+                <div class="card-body">
+                   @foreach (var last in Model.LastThreeArticles)
+                   {
+                    <a asp-controller="Articles" asp-action="ById" asp-route-id="@last.Id">
+                        @last.Title by @last.UserUserName
+                    </a>
+                   }
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->

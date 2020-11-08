@@ -1,0 +1,35 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.BlogHomePage.HomeViewModel
+
+
+@foreach (var search in Model.SearchViewModel)
+{
+
+    <h2>Searched Results: @Model.SearchViewModel.Count()</h2>
+
+    <h1 class="my-4">
+        Page Heading
+        <small>Secondary Text</small>
+    </h1>
+    <div class="card mb-4">
+        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">@search.Title</h2>
+            <p class="card-text">@Html.Raw(search.ShortContent)</p>
+            @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
+            <a>@Html.ActionLink("Read More", "ById", "BlogPosts", new { Id = search.Id }, new { @class = "btn btn-primary" })</a>
+
+            <a class="btn btn-primary" asp-controller="ArticlesHomePage" asp-action="CreateFavouritePost" asp-route-PostId="@search.Id">Add post to favorites!</a>
+
+        </div>
+        <div class="card-footer text-muted">
+            <a class="fas fa-calendar-alt"> Posted on <time datetime="@search.CreatedOn.ToString("O")"></time> by  </a>
+            <a class="fas fa-user"> @search.UserUserName  </a>
+            <a class="fas fa-comment-dots"> @search.CommentsCount</a>
+        </div>
+    </div>
+
+}
+
+
+
+
