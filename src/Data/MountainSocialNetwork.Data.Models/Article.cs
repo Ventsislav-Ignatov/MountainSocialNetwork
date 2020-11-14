@@ -32,7 +32,5 @@
         public virtual ICollection<UserFavouriteArticle> UserFavouriteArticles { get; set; }
 
         public virtual ICollection<ArticlePicture> ArticlePictures { get; set; }
-
-
     }
 }

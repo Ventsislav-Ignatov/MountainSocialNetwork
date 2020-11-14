@@ -49,4 +49,10 @@
     <ProjectReference Include="..\MountainSocialNetwork.Web.Infrastructure\MountainSocialNetwork.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\MountainSocialNetwork.Web.ViewModels\MountainSocialNetwork.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\img\home-bg.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

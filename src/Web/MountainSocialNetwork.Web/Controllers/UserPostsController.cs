@@ -52,7 +52,7 @@
 
             if (!await this.blogPostsByUser.Exists(id, user.Id))
             {
-                return this.NotFound();
+                return this.RedirectToAction("NotOwner", "NewsFeed");
             }
 
             var editViewModel = await this.postsService.GetById<EditPostInputModel>(id);
@@ -68,7 +68,7 @@
 
             if (!await this.blogPostsByUser.Exists(editPostInputModel.Id, user.Id))
             {
-                return this.NotFound();
+                return this.RedirectToAction("NotOwner", "NewsFeed");
             }
 
             if (!this.ModelState.IsValid)
@@ -90,7 +90,7 @@
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllFavouritePost()
+        public async Task<IActionResult> GetAllFavouriteArticles()
         {
             var viewModel = new UsersPostsByIdViewModel();
 

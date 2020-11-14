@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MountainSocialNetwork.Data.Models\MountainSocialNetwork.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\MountainSocialNetwork.Services.Mapping\MountainSocialNetwork.Services.Mapping.csproj" />
+    <ProjectReference Include="..\MountainSocialNetwork.Web.Infrastructure\MountainSocialNetwork.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

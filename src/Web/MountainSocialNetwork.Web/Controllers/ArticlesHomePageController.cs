@@ -42,11 +42,9 @@
 
             var arctiles = await this.articles.LastThreePosts<LastThreeArticlesViewModel>();
 
-
             viewModel.Categories = categories;
             viewModel.Posts = blogPosts;
             viewModel.LastThreeArticles = arctiles;
-
 
             return this.View(viewModel);
         }
@@ -59,7 +57,8 @@
             return this.View(categoriesByName);
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateFavouriteArticle(FavouritePostInputModel model)
         {
             if (!this.ModelState.IsValid)
@@ -75,8 +74,13 @@
             {
                 await this.favouritePostService.AddFavouritePost(model.PostId, user.Id);
             }
+            else
+            {
+                this.ModelState.AddModelError(model.PostId.ToString(), "Already added!");
+                
+            }
 
-            return this.RedirectToAction(nameof(this.HomePage));
+            return this.RedirectToAction("GetAllFavouritePost", "UserPosts");
         }
     }
 }

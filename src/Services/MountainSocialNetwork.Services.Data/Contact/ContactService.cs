@@ -29,7 +29,6 @@
 
             await this.contactsRepository.AddAsync(contactEntry);
             await this.contactsRepository.SaveChangesAsync();
-
         }
     }
 }

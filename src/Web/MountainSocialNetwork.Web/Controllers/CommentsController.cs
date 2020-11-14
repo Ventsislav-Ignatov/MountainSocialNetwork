@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,6 @@
         [HttpPost]
         public async Task<IActionResult> CreateComment(CreateCommentInputModel model)
         {
-
             var userId = this.userManager.GetUserId(this.User);
 
             var hasRightToPost = await this.commentsService.LastPublishedPost(userId);

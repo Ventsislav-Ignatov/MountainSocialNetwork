@@ -64,7 +64,7 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<ITimeLineService, TimeLineService>();
+            services.AddTransient<INewsFeedService, NewsFeedService>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IArticlePostsService, ArticlePostsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
@@ -134,7 +134,7 @@
                 endpoints =>
                     {
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("default", "{controller=NewsFeed}/{action=NewsFeedContent}/{id?}");
                         //endpoints.MapControllerRoute("CategoryName", "BlogHomePage/{name:minlength(2)}", new { controller = "BlogHomePage", action = "CategoriesByName" });
                         endpoints.MapRazorPages();
                     });

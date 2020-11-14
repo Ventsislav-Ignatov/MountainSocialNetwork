@@ -7,8 +7,7 @@
 
     public class FavouritePostInputModel
     {
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Already added!")]
+        [Required]
         public int PostId { get; set; }
     }
 }

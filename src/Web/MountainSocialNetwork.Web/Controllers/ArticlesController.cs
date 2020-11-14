@@ -81,5 +81,10 @@
 
             return this.View(postViewModel);
         }
+
+        public IActionResult ArticleHomeTest()
+        {
+            return this.View();
+        }
     }
 }

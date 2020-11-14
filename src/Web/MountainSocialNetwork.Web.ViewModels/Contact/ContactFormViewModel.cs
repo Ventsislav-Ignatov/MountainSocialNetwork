@@ -22,6 +22,5 @@
         [StringLength(10000, ErrorMessage = "Съобщението трябва да е поне {2} символа.", MinimumLength = 20)]
         [Display(Name = "Съдържание на съобщението")]
         public string Content { get; set; }
-
     }
 }

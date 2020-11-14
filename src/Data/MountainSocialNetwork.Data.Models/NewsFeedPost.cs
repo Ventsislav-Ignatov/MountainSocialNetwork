@@ -6,7 +6,7 @@
 
     using MountainSocialNetwork.Data.Common.Models;
 
-    public class TimeLinePost : BaseDeletableModel<int>
+    public class NewsFeedPost : BaseDeletableModel<int>
     {
         public string Content { get; set; }
 

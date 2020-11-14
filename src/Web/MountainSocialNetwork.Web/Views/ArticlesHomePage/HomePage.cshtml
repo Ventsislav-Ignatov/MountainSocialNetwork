@@ -15,7 +15,7 @@
         <a class="btn btn-primary" asp-controller="UserPosts" asp-action="ArticlePostByUser">Get your published posts!</a>
         <a class="btn btn-primary" asp-controller="Contacts" asp-action="Contact">Contact!</a>
 
-        <a class="btn btn-primary" asp-controller="UserPosts" asp-action="GetAllFavouritePost">Get Your Favourite Posts</a>
+        <a class="btn btn-primary" asp-controller="UserPosts" asp-action="GetAllFavouriteArticles">Get Your Favourite Posts</a>
 
 
     </li>
@@ -46,7 +46,10 @@
                         @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
                         <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
 
-                        <a class="btn btn-primary" asp-controller="ArticlesHomePage" asp-action="CreateFavouriteArticle" asp-route-PostId="@post.Id">Add post to favorites!</a>
+                        <form asp-controller="ArticlesHomePage" asp-action="CreateFavouriteArticle" asp-route-PostId="@post.Id" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <button class="btn btn-primary" type="submit">Add post to favorites!</button>
+                        </form>
 
                     </div>
                     <div class="card-footer text-muted">

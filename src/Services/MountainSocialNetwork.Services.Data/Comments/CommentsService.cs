@@ -34,7 +34,6 @@
             await this.commentsRepository.SaveChangesAsync();
         }
 
-
         public bool IsInPostId(int commentId, int articleId)
         {
             var commentPostId = this.commentsRepository.All().Where(x => x.Id == commentId)

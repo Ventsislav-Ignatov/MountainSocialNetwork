@@ -35,7 +35,6 @@
         {
             var post = await this.repository.All().Where(a => a.ArticleId == articleId && a.UserId == userId).FirstOrDefaultAsync();
 
-
             if (post != null)
             {
                 return true;

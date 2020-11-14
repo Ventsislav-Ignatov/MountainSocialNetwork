@@ -17,7 +17,7 @@ namespace MountainSocialNetwork.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Articles = new HashSet<Article>();
             this.UserFavouriteArticles = new HashSet<UserFavouriteArticle>();
-            this.TimeLinePosts = new HashSet<TimeLinePost>();
+            this.TimeLinePosts = new HashSet<NewsFeedPost>();
         }
 
         // Audit info
@@ -40,7 +40,6 @@ namespace MountainSocialNetwork.Data.Models
 
         public virtual ICollection<UserFavouriteArticle> UserFavouriteArticles { get; set; }
 
-        public virtual ICollection<TimeLinePost> TimeLinePosts { get; set; }
-
+        public virtual ICollection<NewsFeedPost> TimeLinePosts { get; set; }
     }
 }

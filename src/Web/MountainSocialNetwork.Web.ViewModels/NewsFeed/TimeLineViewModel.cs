@@ -4,16 +4,15 @@
     using System.Collections.Generic;
     using System.Text;
 
+    using Microsoft.AspNetCore.Http;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
 
-    public class TimeLineAllPostsViewModel : IMapFrom<TimeLinePost>
+    public class TimeLineViewModel : IMapFrom<NewsFeedPost>
     {
+        public IEnumerable<TimeLineAllPostsViewModel> AllPosts { get; set; }
+
         public string Content { get; set; }
-
-        public string UserUsername { get; set; }
-
-        public DateTime CreatedOn { get; set; }
 
     }
 }

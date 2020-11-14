@@ -13,6 +13,5 @@
         public string UserId { get; set; }
 
         public string PictureURL { get; set; }
-
     }
 }
