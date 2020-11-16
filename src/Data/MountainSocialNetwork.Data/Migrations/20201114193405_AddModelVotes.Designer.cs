@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MountainSocialNetwork.Data;
 
 namespace MountainSocialNetwork.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201114193405_AddModelVotes")]
+    partial class AddModelVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,13 +571,16 @@ namespace MountainSocialNetwork.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsUpVote")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NewsFeedPostId")
+                    b.Property<int>("NewsFeedId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NewsFeedPostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -724,9 +729,7 @@ namespace MountainSocialNetwork.Data.Migrations
                 {
                     b.HasOne("MountainSocialNetwork.Data.Models.NewsFeedPost", "NewsFeedPost")
                         .WithMany("Votes")
-                        .HasForeignKey("NewsFeedPostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("NewsFeedPostId");
 
                     b.HasOne("MountainSocialNetwork.Data.Models.ApplicationUser", "User")
                         .WithMany()

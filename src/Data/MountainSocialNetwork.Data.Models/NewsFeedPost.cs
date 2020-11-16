@@ -8,10 +8,20 @@
 
     public class NewsFeedPost : BaseDeletableModel<int>
     {
+        public NewsFeedPost()
+        {
+            this.NewsFeedComments = new HashSet<NewsFeedComment>();
+            this.Votes = new HashSet<Vote>();
+        }
+
         public string Content { get; set; }
 
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+
+        public ICollection<NewsFeedComment> NewsFeedComments { get; set; }
+
+        public ICollection<Vote> Votes { get; set; }
     }
 }

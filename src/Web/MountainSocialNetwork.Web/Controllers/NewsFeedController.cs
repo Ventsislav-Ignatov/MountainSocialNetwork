@@ -29,11 +29,19 @@
         [HttpGet]
         public IActionResult NewsFeedContent()
         {
+            //var posts = new TimeLineViewModel();
+
+            //var allPosts = this.newsFeedService.GetAllSocialPosts<TimeLineAllPostsViewModel>();
+
+            //posts.AllPosts = allPosts;
+            //return this.View(posts);
+
             var posts = new TimeLineViewModel();
 
-            var allPosts = this.newsFeedService.GetAllSocialPosts<TimeLineAllPostsViewModel>();
+            var allPost = this.newsFeedService.GetAllSocialPosts();
 
-            posts.AllPosts = allPosts;
+            posts.AllPosts = allPost;
+
             return this.View(posts);
         }
 
@@ -87,6 +95,29 @@
             };
 
             await this.newsFeedService.Update(post);
+
+            return this.RedirectToAction(nameof(this.NewsFeedContent));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeletePostInputModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.RedirectToAction(nameof(this.NotOwner));
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var hasRight = await this.newsFeedService.ExistsAndOwner(model.Id, user.Id);
+
+            if (hasRight)
+            {
+                var post = await this.newsFeedService.GetNewsFeedPost(model.Id);
+
+                await this.newsFeedService.Delete(post);
+            }
 
             return this.RedirectToAction(nameof(this.NewsFeedContent));
         }

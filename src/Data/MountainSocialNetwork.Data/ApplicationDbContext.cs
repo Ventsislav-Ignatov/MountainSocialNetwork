@@ -39,6 +39,10 @@
 
         public DbSet<NewsFeedPost> NewsFeedPosts { get; set; }
 
+        public DbSet<NewsFeedComment> NewsFeedComments { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

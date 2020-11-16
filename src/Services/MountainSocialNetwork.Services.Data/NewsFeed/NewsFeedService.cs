@@ -10,6 +10,7 @@
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
+    using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;
 
     public class NewsFeedService : INewsFeedService
     {
@@ -34,28 +35,28 @@
             return timeLinePost.Id;
         }
 
-        public async Task<bool> ExistsAndOwner(int id, string authorId)
-        {
-            return await this.newsFeedRepository.All().AnyAsync(x => x.Id == id && x.UserId == authorId);
-        }
-
-        public IEnumerable<T> GetAllSocialPosts<T>(int? count = null)
-        {
-            IQueryable<NewsFeedPost> timeLinePosts = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn);
-
-            if (count.HasValue)
-            {
-                timeLinePosts = timeLinePosts.Take(count.Value);
-            }
-
-            return timeLinePosts.To<T>().ToList();
-        }
-
         public async Task<T> GetById<T>(int id)
         {
             var post = await this.newsFeedRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
             return post;
         }
+
+        public async Task<bool> ExistsAndOwner(int id, string authorId)
+        {
+            return await this.newsFeedRepository.All().AnyAsync(x => x.Id == id && x.UserId == authorId);
+        }
+
+        //public IEnumerable<T> GetAllSocialPosts<T>(int? count = null)
+        //{
+        //    IQueryable<NewsFeedPost> timeLinePosts = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn);
+
+        //    if (count.HasValue)
+        //    {
+        //        timeLinePosts = timeLinePosts.Take(count.Value);
+        //    }
+
+        //    return timeLinePosts.To<T>().ToList();
+        //}
 
         public async Task<NewsFeedPost> Update(NewsFeedPost newsFeedPost)
         {
@@ -66,6 +67,36 @@
             await this.newsFeedRepository.SaveChangesAsync();
 
             return newsFeedPost;
+        }
+
+        public async Task Delete(NewsFeedPost newsFeedPost)
+        {
+            this.newsFeedRepository.Delete(newsFeedPost);
+
+            await this.newsFeedRepository.SaveChangesAsync();
+        }
+
+        public async Task<NewsFeedPost> GetNewsFeedPost(int id)
+        {
+            var post = await this.newsFeedRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+
+            return post;
+        }
+
+        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int? count = null)
+        {
+            var allPost = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn)
+                .Select(x => new TimeLineAllPostsViewModel
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    UserUsername = x.User.UserName,
+                    CreatedOn = x.CreatedOn,
+                    UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
+                    DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
+                }).ToList();
+
+            return allPost;
         }
     }
 }

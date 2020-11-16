@@ -6,18 +6,24 @@
     using System.Threading.Tasks;
 
     using MountainSocialNetwork.Data.Models;
+    using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;
 
     public interface INewsFeedService
     {
         Task<int> CreateAsync(string content, string userId);
 
-        IEnumerable<T> GetAllSocialPosts<T>(int? count = null);
+        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int? count = null);
 
-        Task<T> GetById<T>(int id);
+        //IEnumerable<T> GetAllSocialPosts<T>(int? count = null);
 
         Task<bool> ExistsAndOwner(int id, string authorId);
 
         Task<NewsFeedPost> Update(NewsFeedPost newsFeedPost);
 
+        Task Delete(NewsFeedPost newsFeedPost);
+
+        Task<NewsFeedPost> GetNewsFeedPost(int id);
+
+        Task<T> GetById<T>(int id);
     }
 }

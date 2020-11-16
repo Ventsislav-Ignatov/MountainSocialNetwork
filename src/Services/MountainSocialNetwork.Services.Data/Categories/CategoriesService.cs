@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Microsoft.EntityFrameworkCore;
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
@@ -23,7 +24,7 @@
         // Get all Categories and return to ViewHomePage
         public async Task<IEnumerable<T>> GetAll<T>(int? count = null)
         {
-            IQueryable<Category> categories =  this.categoryRepository.All().OrderBy(a => a.Name);
+            IQueryable<Category> categories = this.categoryRepository.All().OrderBy(a => a.Name);
 
             if (count.HasValue)
             {

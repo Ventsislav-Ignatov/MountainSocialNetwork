@@ -1,7 +1,6 @@
 ﻿namespace MountainSocialNetwork.Web
 {
     using System.Reflection;
-   
     using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -18,8 +17,10 @@
     using MountainSocialNetwork.Data.Repositories;
     using MountainSocialNetwork.Data.Seeding;
     using MountainSocialNetwork.Services.Data;
+    using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.Search;
     using MountainSocialNetwork.Services.Data.TimeLine;
+    using MountainSocialNetwork.Services.Data.Votes;
     using MountainSocialNetwork.Services.Mapping;
     using MountainSocialNetwork.Services.Messaging;
     using MountainSocialNetwork.Web.ViewModels;
@@ -52,7 +53,7 @@
             services.AddControllersWithViews(
                 options =>
                     {
-                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                      options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }).AddRazorRuntimeCompilation();
             services.AddRazorPages();
 
@@ -64,7 +65,9 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<INewsFeedService, NewsFeedService>();
+            services.AddTransient<INewsFeedCommentService, NewsFeedCommentService>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IArticlePostsService, ArticlePostsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();

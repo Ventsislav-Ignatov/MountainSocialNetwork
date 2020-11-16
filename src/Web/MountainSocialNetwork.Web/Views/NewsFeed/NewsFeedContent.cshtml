@@ -4,7 +4,6 @@
 
 <main>
 
-
     <div class="card social-prof">
         <div class="card-body">
             <div class="w-100">
@@ -21,8 +20,8 @@
                         <li><a href="#">Photos</a></li>
                         <li><a href="#">Videos</a></li>
                     </ul>
-                        <a class="fas fa-user-edit" asp-controller="NewsFeed" asp-action="EditProfile">EditProfile</a>
-                    
+                    <a class="fas fa-user-edit" asp-controller="NewsFeed" asp-action="EditProfile">EditProfile</a>
+
                 </div>
             </div>
         </div>
@@ -154,9 +153,27 @@
                     </div>
                     <div>
                         <a class="fas fa-edit" asp-controller="NewsFeed" asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a>
+
+                        <div>
+                            <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)">
+                                <div class="fa fa-thumbs-up" id="upVotes_@post.Id">
+                                    @post.UpVotes
+                                </div>
+                            </a>
+
+                        </div>
+                        <div>
+                            <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)">
+                                <div class="fa fa-thumbs-down" id="downVotes_@post.Id">
+                                    @post.DownVotes
+                                </div>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
             <div class="card-body">
                 <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
 
@@ -166,111 +183,46 @@
 
             </div>
             <div class="card-footer">
-                <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                 <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                <form asp-controller="NewsFeed" asp-action="Delete" asp-route-id="@post.Id" method="post">
+                    <div>
+                        <button type="submit" class="fa fa-trash">Delete</button>
+                    </div>
+                </form>
             </div>
+            <form method="post" asp-controller="NewsFeedComments" asp-action="CreateComment" asp-route-id="@post.Id" asp-route-content="@Model.Content">
+                <textarea class="form-control" rows="5" placeholder="Comment"></textarea>
+                <div>
+                    <button type="submit" class="fa fa-comment">PostComment</button>
+                </div>
 
-
-            <textarea class="form-control"  placeholder="Replay"></textarea>
-
-          
-
+            </form>
         </div>
             }
-            <!-- Post /////-->
-            <!--- \\\\\\\Post-->
-            <!-- Post /////-->
         </div>
-        <div class="col-lg-3">
-            <div class="card social-timeline-card">
-                <div class="card-body">
-                    <h5 class="card-title">People you may know</h5>
-                    <ul class="friend-list">
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
-                            </div>
-                            <div class="right">
-                                <h3>John Doe</h3>
-                                <p>10 Friends</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+
     </div>
 </main>
+
+@section Scripts {
+    <script>
+        function sendVote(NewsFeedPostId, isUpVote) {
+            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var json = { NewsFeedPostId: NewsFeedPostId, isUpVote: isUpVote };
+            $.ajax({
+                url: "/api/votes",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    console.log(data);
+                    $("#upVotes_" + NewsFeedPostId).html(data.upVotes);
+                    $("#downVotes_" + NewsFeedPostId).html(data.downVotes);
+                }
+            });
+        }
+
+    </script>
+}
