@@ -7,9 +7,8 @@
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
 
-    public class EditNewsFeedPostInputModel : IMapFrom<NewsFeedPost>
+    public class EditNewsFeedPostViewModel : IMapFrom<NewsFeedPost>
     {
-
         public string Content { get; set; }
     }
 }

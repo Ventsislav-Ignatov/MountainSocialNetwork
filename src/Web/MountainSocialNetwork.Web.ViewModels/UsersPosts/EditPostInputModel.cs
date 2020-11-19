@@ -10,15 +10,19 @@
 
     public class EditPostInputModel : IMapFrom<Article>
     {
+        [Required]
         public int Id { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Should be minimum five symbols!")]
         [Display(Name = "Title")]
-        [MinLength(10)]
+        [MinLength(5)]
+        [MaxLength(100)]
         public string Title { get; set; }
 
         [Required]
         [Display(Name = "Content")]
+        [MinLength(800, ErrorMessage = "Short content! Must be more than 200 symbols!")]
+        [MaxLength(30000, ErrorMessage = "Long content! Must be less than 30000 symbols!")]
         public string Content { get; set; }
     }
 }

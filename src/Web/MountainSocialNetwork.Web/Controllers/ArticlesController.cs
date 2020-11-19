@@ -8,6 +8,7 @@
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -51,18 +52,22 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(ArticlePostCreateInputModel input)
+        public async Task<IActionResult> Create(ArticlePostCreateInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(input);
+                return this.View(model);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var blogPostId = await this.blogPostsService.CreateAsync(input.Title, input.Content, user.Id, input.CategoryId);
+            var sanitizer = new HtmlSanitizer();
 
-            foreach (var image in input.Picture)
+            var content = sanitizer.Sanitize(model.Content);
+
+            var blogPostId = await this.blogPostsService.CreateAsync(model.Title, content, user.Id, model.CategoryId);
+
+            foreach (var image in model.Picture)
             {
                 // string name = DateTime.UtcNow.ToString("G", CultureInfo.InvariantCulture);
                 string pictureUrl = await this.cloudinaryService.UploadPictureAsync(image, image.FileName);
@@ -80,11 +85,6 @@
             var postViewModel = await this.blogPostsService.GetById<ArticleByIdViewModel>(id);
 
             return this.View(postViewModel);
-        }
-
-        public IActionResult ArticleHomeTest()
-        {
-            return this.View();
         }
     }
 }

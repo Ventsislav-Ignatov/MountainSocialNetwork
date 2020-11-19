@@ -136,8 +136,8 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=NewsFeed}/{action=NewsFeedContent}/{id?}");
+                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         //endpoints.MapControllerRoute("CategoryName", "BlogHomePage/{name:minlength(2)}", new { controller = "BlogHomePage", action = "CategoriesByName" });
                         endpoints.MapRazorPages();
                     });

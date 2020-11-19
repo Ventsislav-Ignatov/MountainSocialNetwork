@@ -22,8 +22,7 @@
         {
             get
             {
-                var content = WebUtility.HtmlDecode(Regex.Replace(this.Content, @"<[^>]+>", string.Empty));
-                return content.Length > 200 ? content.Substring(0, 200) + "..." : content;
+                return this.Content.Length > 200 ? this.Content.Substring(0, 200) + "..." : this.Content;
             }
         }
 

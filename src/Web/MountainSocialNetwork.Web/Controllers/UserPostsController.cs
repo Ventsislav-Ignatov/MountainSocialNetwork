@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -62,25 +62,29 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(EditPostInputModel editPostInputModel)
+        public async Task<IActionResult> Edit(EditPostInputModel model)
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (!await this.blogPostsByUser.Exists(editPostInputModel.Id, user.Id))
+            if (!await this.blogPostsByUser.Exists(model.Id, user.Id))
             {
                 return this.RedirectToAction("NotOwner", "NewsFeed");
             }
 
             if (!this.ModelState.IsValid)
             {
-                return this.View(editPostInputModel);
+                return this.View(model);
             }
+
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
 
             var newUpdatedPost = new Article
             {
-                Id = editPostInputModel.Id,
-                Title = editPostInputModel.Title,
-                Content = editPostInputModel.Content,
+                Id = model.Id,
+                Title = model.Title,
+                Content = content,
             };
 
             await this.blogPostsByUser.Update(newUpdatedPost);

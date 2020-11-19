@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -56,7 +56,11 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            await this.newsFeedService.CreateAsync(model.Content, user.Id);
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
+
+            await this.newsFeedService.CreateAsync(content, user.Id);
 
             return this.Redirect(nameof(this.NewsFeedContent));
         }
@@ -72,7 +76,7 @@
                 return this.RedirectToAction(nameof(this.NotOwner));
             }
 
-            var editViewModel = await this.newsFeedService.GetById<EditNewsFeedPostInputModel>(id);
+            var editViewModel = await this.newsFeedService.GetById<EditNewsFeedPostViewModel>(id);
 
             return this.View(editViewModel);
         }
@@ -88,10 +92,14 @@
                 return this.RedirectToAction(nameof(this.NotOwner));
             }
 
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
+
             var post = new NewsFeedPost
             {
                 Id = model.Id,
-                Content = model.Content,
+                Content = content,
             };
 
             await this.newsFeedService.Update(post);

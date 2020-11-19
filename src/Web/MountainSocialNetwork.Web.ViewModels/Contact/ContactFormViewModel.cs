@@ -8,19 +8,19 @@
         [Display(Name = "Your Name")]
         public string Name { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Моля въведете вашият email адрес")]
-        [EmailAddress(ErrorMessage = "Моля въведете валиден email адрес")]
-        [Display(Name = "Вашият email адрес")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter your email")]
+        [EmailAddress(ErrorMessage = "Please enter valid email address")]
+        [Display(Name = "Your email address")]
         public string Email { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Моля въведете заглавие на съобщението")]
-        [StringLength(100, ErrorMessage = "Заглавието трябва да е поне {2} и не повече от {1} символа.", MinimumLength = 5)]
-        [Display(Name = "Заглавие на съобщението")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter title for messages")]
+        [StringLength(100, ErrorMessage = "Tile must be at least two {2} and no more than {1} symbols.", MinimumLength = 5)]
+        [Display(Name = "Мessages title")]
         public string Title { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Моля въведете съдържание на съобщението")]
-        [StringLength(10000, ErrorMessage = "Съобщението трябва да е поне {2} символа.", MinimumLength = 20)]
-        [Display(Name = "Съдържание на съобщението")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter title for content")]
+        [StringLength(10000, ErrorMessage = "Tile must be at least two {2} символа.", MinimumLength = 20)]
+        [Display(Name = "Мessages content")]
         public string Content { get; set; }
     }
 }

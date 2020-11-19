@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -54,7 +54,11 @@
                 }
             }
 
-            await this.commentsService.Create(model.PostId, userId, model.Content, parentId);
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
+
+            await this.commentsService.Create(model.PostId, userId, content, parentId);
             return this.RedirectToAction("ById", "Articles", new { id = model.PostId });
         }
     }

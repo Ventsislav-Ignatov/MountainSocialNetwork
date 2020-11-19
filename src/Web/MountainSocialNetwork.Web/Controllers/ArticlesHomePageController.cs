@@ -77,7 +77,6 @@
             else
             {
                 this.ModelState.AddModelError(model.PostId.ToString(), "Already added!");
-                
             }
 
             return this.RedirectToAction("GetAllFavouritePost", "UserPosts");
