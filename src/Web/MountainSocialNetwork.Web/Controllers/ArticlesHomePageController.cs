@@ -79,7 +79,7 @@
                 this.ModelState.AddModelError(model.PostId.ToString(), "Already added!");
             }
 
-            return this.RedirectToAction("GetAllFavouritePost", "UserPosts");
+            return this.RedirectToAction("GetAllFavouriteArticles", "UserPosts");
         }
     }
 }

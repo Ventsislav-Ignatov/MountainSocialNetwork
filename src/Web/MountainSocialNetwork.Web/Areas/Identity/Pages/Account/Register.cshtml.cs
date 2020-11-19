@@ -17,6 +17,7 @@
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
     using MountainSocialNetwork.Data.Models;
+    using MountainSocialNetwork.Web.Infrastructure;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
@@ -53,6 +54,14 @@
             public string Email { get; set; }
 
             [Required]
+            [MinLength(3)]
+            public string FirstName { get; set; }
+
+            [Required]
+            [MinLength(3)]
+            public string LastName { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -62,6 +71,20 @@
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [CurrentYearMaxValue(1900)]
+            [Display(Name = "BirthDay")]
+            [DataType(DataType.Date)]
+            public DateTime DateOfBirth { get; set; }
+
+            [Required]
+            [Display(Name = "Gender")]
+            public bool Gender { get; set; }
+
+            [Required]
+            [Display(Name = "Town")]
+            public string Town { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -76,7 +99,16 @@
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    FirstName = this.Input.FirstName,
+                    LastName = this.Input.LastName,
+                    BirthDay = this.Input.DateOfBirth,
+                    Gender = this.Input.Gender ? true : false,
+                    UserName = this.Input.Email,
+                    Email = this.Input.Email,
+                    Town = this.Input.Town,
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -20,8 +20,8 @@
         public int Id { get; set; }
 
         [Required]
-        [MinLength(5)]
-        [MaxLength(250)]
+        [MinLength(5, ErrorMessage = "Short content! Must be more than 5 symbols!")]
+        [MaxLength(250, ErrorMessage = "Short content! Must be less than 250 symbols!")]
         public string Content { get; set; }
 
     }
