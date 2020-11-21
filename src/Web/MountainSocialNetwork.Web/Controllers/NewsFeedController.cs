@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Ganss.XSS;
@@ -31,7 +32,7 @@
 
         [Authorize]
         [HttpGet]
-        public IActionResult NewsFeedContent()
+        public async Task<IActionResult> NewsFeedContent()
         {
             //var posts = new TimeLineViewModel();
 
@@ -40,11 +41,20 @@
             //posts.AllPosts = allPosts;
             //return this.View(posts);
 
+            var user = this.userManager.GetUserAsync(this.User);
+
             var posts = new TimeLineViewModel();
 
             var allPost = this.newsFeedService.GetAllSocialPosts();
 
             posts.AllPosts = allPost;
+
+            posts.FirstName = user.Result.FirstName;
+            posts.LastName = user.Result.LastName;
+            posts.Description = user.Result.Description;
+            posts.Town = user.Result.Town;
+            posts.BirthDay = user.Result.BirthDay.ToString("d", CultureInfo.InvariantCulture);
+            posts.PictureUrl = await this.newsFeedService.LastPicture(user.Result.Id);
 
             return this.View(posts);
         }

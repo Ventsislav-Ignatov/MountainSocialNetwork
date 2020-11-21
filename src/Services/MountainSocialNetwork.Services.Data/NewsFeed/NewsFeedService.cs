@@ -129,5 +129,12 @@
             await this.pictureRepository.AddAsync(userPicture);
             await this.pictureRepository.SaveChangesAsync();
         }
+
+        public async Task<string> LastPicture(string userId)
+        {
+            var pictures = await this.pictureRepository.All().Where(x => x.ApplicationUserId == x.ApplicationUserId).OrderByDescending(a => a.CreatedOn).Take(1).FirstOrDefaultAsync();
+
+            return pictures.PictureURL;
+        }
     }
 }

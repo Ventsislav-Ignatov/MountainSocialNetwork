@@ -24,5 +24,17 @@
         [MaxLength(250, ErrorMessage = "Short content! Must be less than 250 symbols!")]
         public string Content { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Town { get; set; }
+
+        public string BirthDay { get; set; }
+
+        public string Description { get; set; }
+
+        public string PictureUrl { get; set; }
+
     }
 }

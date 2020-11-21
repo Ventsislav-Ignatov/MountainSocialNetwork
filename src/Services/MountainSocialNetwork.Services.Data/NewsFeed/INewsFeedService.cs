@@ -29,5 +29,7 @@
         Task EditProfile(ApplicationUser user, string userId);
 
         Task CreateProfilePicture(string userId, string pictureUrl);
+
+        Task<string> LastPicture(string userId);
     }
 }
