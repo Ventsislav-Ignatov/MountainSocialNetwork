@@ -16,13 +16,17 @@
 
     public class NewsFeedController : Controller
     {
+        private const string FolderName = "UserProfilePictures";
+
         private readonly UserManager<ApplicationUser> userManager;
         private readonly INewsFeedService newsFeedService;
+        private readonly ICloudinaryService cloudinary;
 
-        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService)
+        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService , ICloudinaryService cloudinary)
         {
             this.userManager = userManager;
             this.newsFeedService = newsFeedService;
+            this.cloudinary = cloudinary;
         }
 
         [Authorize]
@@ -135,9 +139,48 @@
             return this.View();
         }
 
-        public IActionResult EditProfile()
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> EditProfile()
         {
-            return this.View();
+            var user = await this.userManager.GetUserAsync(this.User);
+            var viewUser = new EditProfileInputModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDay = user.BirthDay,
+                Description = user.Description,
+                Town = user.Town,
+                CreatedOn = user.CreatedOn.ToString(),
+            };
+
+            return this.View(viewUser);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditProfile(EditProfileInputModel model)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var newUser = new ApplicationUser
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Description = model.Description,
+                Town = model.Town,
+                BirthDay = model.BirthDay,
+            };
+
+            await this.newsFeedService.EditProfile(newUser, user.Id);
+
+            // string name = DateTime.UtcNow.ToString("G", CultureInfo.InvariantCulture);
+            string pictureUrl = await this.cloudinary.UploadPictureAsync(model.ProfilePicture, model.ProfilePicture.FileName, FolderName);
+
+            await this.newsFeedService.CreateProfilePicture(user.Id, pictureUrl);
+
+            return this.RedirectToAction(nameof(this.NewsFeedContent));
+
         }
     }
 }

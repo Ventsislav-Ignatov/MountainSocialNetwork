@@ -15,7 +15,9 @@
 
         public string Content { get; set; }
 
-        public string UserUsername { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

@@ -15,10 +15,14 @@
     public class NewsFeedService : INewsFeedService
     {
         private readonly IDeletableEntityRepository<NewsFeedPost> newsFeedRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IRepository<UserProfilePicture> pictureRepository;
 
-        public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository)
+        public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository, IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
+            this.userRepository = userRepository;
+            this.pictureRepository = pictureRepository;
         }
 
         public async Task<int> CreateAsync(string content, string userId)
@@ -90,13 +94,40 @@
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    UserUsername = x.User.UserName,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
                     CreatedOn = x.CreatedOn,
                     UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
                     DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
                 }).ToList();
 
             return allPost;
+        }
+
+        public async Task EditProfile(ApplicationUser user, string userId)
+        {
+            var allUsers = await this.userRepository.All().ToListAsync();
+            var currentUser = await this.userRepository.All().Where(x => x.Id == userId).FirstOrDefaultAsync();
+
+            currentUser.FirstName = user.FirstName;
+            currentUser.LastName = user.LastName;
+            currentUser.Description = user.Description;
+            currentUser.Town = user.Town;
+            currentUser.BirthDay = user.BirthDay;
+
+            await this.userRepository.SaveChangesAsync();
+        }
+
+        public async Task CreateProfilePicture(string userId, string pictureUrl)
+        {
+            var userPicture = new UserProfilePicture
+            {
+                PictureURL = pictureUrl,
+                ApplicationUserId = userId,
+            };
+
+            await this.pictureRepository.AddAsync(userPicture);
+            await this.pictureRepository.SaveChangesAsync();
         }
     }
 }

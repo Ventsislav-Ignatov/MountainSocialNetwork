@@ -103,7 +103,9 @@
                             <div class="tab-pane fade active show" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                                 <div class="form-group">
                                     <label class="sr-only" asp-for="Content">post</label>
-                                    <textarea class="form-control" asp-for="Content" rows="3" placeholder="What are you thinking?"></textarea>
+                                    <textarea class="form-control" asp-for="Content" rows="8" placeholder="What are you thinking?"></textarea>
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
@@ -147,7 +149,7 @@
                             <img class="rounded-circle" width="45" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
                         </div>
                         <div class="ml-2">
-                            <div class="h5 m-0 text-blue">@post.UserUsername</div>
+                            <div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div>
                             <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                         </div>
                     </div>
@@ -156,7 +158,7 @@
 
                         <div>
                             <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)">
-                                <div class="fa fa-thumbs-up" id="upVotes_@post.Id">
+                                <div class="fa fa-thumbs-up" style="color: royalblue" id="upVotes_@post.Id">
                                     @post.UpVotes
                                 </div>
                             </a>
@@ -164,7 +166,7 @@
                         </div>
                         <div>
                             <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)">
-                                <div class="fa fa-thumbs-down" id="downVotes_@post.Id">
+                                <div class="fa fa-thumbs-down" style="color: darkred" id="downVotes_@post.Id">
                                     @post.DownVotes
                                 </div>
                             </a>

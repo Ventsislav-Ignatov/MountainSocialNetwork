@@ -25,5 +25,9 @@
         Task<NewsFeedPost> GetNewsFeedPost(int id);
 
         Task<T> GetById<T>(int id);
+
+        Task EditProfile(ApplicationUser user, string userId);
+
+        Task CreateProfilePicture(string userId, string pictureUrl);
     }
 }

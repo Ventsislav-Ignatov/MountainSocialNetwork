@@ -20,6 +20,8 @@
 
     public class ArticlesController : Controller
     {
+        private const string FolderName = "ArticlePostsPictures";
+
         private readonly IArticlePostsService blogPostsService;
 
         private readonly UserManager<ApplicationUser> userManager;
@@ -27,6 +29,7 @@
         private readonly ICategoriesService categoriesService;
 
         private readonly ICloudinaryService cloudinaryService;
+
 
         public ArticlesController(IArticlePostsService blogPostsService, UserManager<ApplicationUser> userManager, ICategoriesService categoriesService, ICloudinaryService cloudinaryService)
         {
@@ -70,7 +73,7 @@
             foreach (var image in model.Picture)
             {
                 // string name = DateTime.UtcNow.ToString("G", CultureInfo.InvariantCulture);
-                string pictureUrl = await this.cloudinaryService.UploadPictureAsync(image, image.FileName);
+                string pictureUrl = await this.cloudinaryService.UploadPictureAsync(image, image.FileName, FolderName);
 
                 await this.blogPostsService.CreateArticlePicturesAsync(blogPostId, user.Id, pictureUrl);
             }
