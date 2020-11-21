@@ -7,7 +7,16 @@
     <div class="card social-prof">
         <div class="card-body">
             <div class="w-100">
-                <img src="@Model.PictureUrl" alt="" class="user-profile">
+                @if (Model.PictureUrl != null)
+                {
+                    <img src="@Model.PictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+
+                }
+                else
+                {
+                    <img src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+
+                }
                 <h3>@Model.FirstName @Model.LastName </h3>
                 <p>Dreamer!</p>
             </div>
@@ -143,71 +152,103 @@
             <!--- \\\\\\\Post-->
             @foreach (var post in Model.AllPosts)
             {
-        <div class="card social-timeline-card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="mr-2">
-                            <img class="rounded-circle" width="45" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                        </div>
-                        <div class="ml-2">
-                            <div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div>
-                            <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
-                        </div>
-                    </div>
-                    <div>
-                        <a class="fas fa-edit" asp-controller="NewsFeed" asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a>
-
-                        <div>
-                            <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)">
-                                <div class="fa fa-thumbs-up" style="color: royalblue" id="upVotes_@post.Id">
-                                    @post.UpVotes
+                <div class="card social-timeline-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
                                 </div>
-                            </a>
-
-                        </div>
-                        <div>
-                            <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)">
-                                <div class="fa fa-thumbs-down" style="color: darkred" id="downVotes_@post.Id">
-                                    @post.DownVotes
+                                <div class="ml-2">
+                                    <div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div>
+                                    <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                                 </div>
-                            </a>
+                            </div>
+                            <div>
+                                <a class="fas fa-edit" asp-controller="NewsFeed" asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a>
+
+                                <div>
+                                    <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)">
+                                        <div class="fa fa-thumbs-up" style="color: royalblue" id="upVotes_@post.Id">
+                                            @post.UpVotes
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div>
+                                    <a class="btn text-red" method="post" onclick="sendVote(@post.Id, false)">
+                                        <div class="fa fa-thumbs-down" style="color: darkred" id="downVotes_@post.Id">
+                                            @post.DownVotes
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+
+                        <h5>@post.Content</h5>
+
+                        <img src="img/gallery/1a.jpg" alt="" class="img-fluid">
+
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                        <form asp-controller="NewsFeed" asp-action="Delete" asp-route-id="@post.Id" method="post">
+                            <div>
+                                <button type="submit" class="fa fa-trash">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                    <form method="post" asp-controller="NewsFeedComments" asp-action="CreateComment" asp-route-id="@post.Id" asp-route-content="@Model.Content">
+                        <textarea class="form-control" rows="5" placeholder="Comment"></textarea>
+                        <div>
+                            <button type="submit" class="fa fa-comment">PostComment</button>
                         </div>
 
-                    </div>
+                    </form>
                 </div>
-            </div>
-
-            <div class="card-body">
-                <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-
-                <h5>@post.Content</h5>
-
-                <img src="img/gallery/1a.jpg" alt="" class="img-fluid">
-
-            </div>
-            <div class="card-footer">
-                <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                <form asp-controller="NewsFeed" asp-action="Delete" asp-route-id="@post.Id" method="post">
-                    <div>
-                        <button type="submit" class="fa fa-trash">Delete</button>
-                    </div>
-                </form>
-            </div>
-            <form method="post" asp-controller="NewsFeedComments" asp-action="CreateComment" asp-route-id="@post.Id" asp-route-content="@Model.Content">
-                <textarea class="form-control" rows="5" placeholder="Comment"></textarea>
-                <div>
-                    <button type="submit" class="fa fa-comment">PostComment</button>
-                </div>
-
-            </form>
-        </div>
             }
         </div>
 
     </div>
 </main>
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text>} ">
+            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.PreviousPageNumber">Previous</a>
+        </li>
+        @for (int i = Model.PageNumber - 2; i < Model.PageNumber; i++)
+        {
+            if (i>0)
+            {
+            <li class="page-item"><a class="page-link" sp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
 
+            }
+        }
+        <li class="page-item active">
+            <span class="page-link">
+                @Model.PageNumber
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        @for (int i = Model.PageNumber + 1; i < Model.PageNumber + 2; i++)
+        {
+            if (i <= Model.PagesCount)
+            {
+            <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+
+            }
+
+        }
+        <li class="page-item @if (!Model.HasNextPage) { <text> disabled </text>} ">
+            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.NextPageNumber">Next</a>
+        </li>
+    </ul>
+</nav>
 @section Scripts {
     <script>
         function sendVote(NewsFeedPostId, isUpVote) {

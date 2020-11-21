@@ -12,7 +12,7 @@
     {
         Task<int> CreateAsync(string content, string userId);
 
-        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int? count = null);
+        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4);
 
         //IEnumerable<T> GetAllSocialPosts<T>(int? count = null);
 
@@ -31,5 +31,7 @@
         Task CreateProfilePicture(string userId, string pictureUrl);
 
         Task<string> LastPicture(string userId);
+
+        int GetPostsCount();
     }
 }

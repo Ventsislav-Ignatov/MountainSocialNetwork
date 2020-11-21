@@ -18,6 +18,7 @@
     public class NewsFeedController : Controller
     {
         private const string FolderName = "UserProfilePictures";
+        private const int PostPerPage = 4;
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly INewsFeedService newsFeedService;
@@ -32,7 +33,7 @@
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> NewsFeedContent()
+        public async Task<IActionResult> NewsFeedContent(int id = 1)
         {
             //var posts = new TimeLineViewModel();
 
@@ -41,20 +42,22 @@
             //posts.AllPosts = allPosts;
             //return this.View(posts);
 
-            var user = this.userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
 
-            var posts = new TimeLineViewModel();
+            var posts = new TimeLineViewModel
+            {
+                PostsPerPage = PostPerPage,
+                PageNumber = id,
+                AllPosts = this.newsFeedService.GetAllSocialPosts(id, PostPerPage),
+                PostsCount = this.newsFeedService.GetPostsCount(),
+            };
 
-            var allPost = this.newsFeedService.GetAllSocialPosts();
-
-            posts.AllPosts = allPost;
-
-            posts.FirstName = user.Result.FirstName;
-            posts.LastName = user.Result.LastName;
-            posts.Description = user.Result.Description;
-            posts.Town = user.Result.Town;
-            posts.BirthDay = user.Result.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            posts.PictureUrl = await this.newsFeedService.LastPicture(user.Result.Id);
+            posts.FirstName = user.FirstName;
+            posts.LastName = user.LastName;
+            posts.Description = user.Description;
+            posts.Town = user.Town;
+            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
+            posts.PictureUrl = await this.newsFeedService.LastPicture(user.Id);
 
             return this.View(posts);
         }

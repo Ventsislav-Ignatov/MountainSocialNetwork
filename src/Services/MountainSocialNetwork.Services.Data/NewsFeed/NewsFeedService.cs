@@ -87,9 +87,10 @@
             return post;
         }
 
-        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int? count = null)
+        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4)
         {
-            var allPost = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn)
+            var allPost = this.newsFeedRepository.AllAsNoTracking().OrderByDescending(a => a.CreatedOn)
+                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
                 .Select(x => new TimeLineAllPostsViewModel
                 {
                     Id = x.Id,
@@ -132,9 +133,22 @@
 
         public async Task<string> LastPicture(string userId)
         {
-            var pictures = await this.pictureRepository.All().Where(x => x.ApplicationUserId == x.ApplicationUserId).OrderByDescending(a => a.CreatedOn).Take(1).FirstOrDefaultAsync();
+            var pictures = await this.pictureRepository.All().Where(x => x.ApplicationUserId == userId).OrderByDescending(a => a.CreatedOn).Take(1).FirstOrDefaultAsync();
 
+            if (pictures != null)
+            {
             return pictures.PictureURL;
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public int GetPostsCount()
+        {
+            return this.newsFeedRepository.All().Count();
         }
     }
 }
