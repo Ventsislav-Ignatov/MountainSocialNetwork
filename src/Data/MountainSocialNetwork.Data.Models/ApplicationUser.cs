@@ -38,7 +38,7 @@ namespace MountainSocialNetwork.Data.Models
 
         public string Town { get; set; }
 
-        public bool Gender { get; set; }
+        public GenderType GenderType { get; set; }
 
         public string Description { get; set; }
 

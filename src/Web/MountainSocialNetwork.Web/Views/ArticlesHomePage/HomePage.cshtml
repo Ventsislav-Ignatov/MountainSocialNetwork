@@ -34,6 +34,7 @@
 
             @foreach (var post in Model.Posts)
             {
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <h1 class="my-4">
                     Page Heading
                     <small>Secondary Text</small>
@@ -46,8 +47,7 @@
                         @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
                         <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
 
-                        <form asp-controller="ArticlesHomePage" asp-action="CreateFavouriteArticle" asp-route-PostId="@post.Id" method="post">
-                            <div asp-validation-summary="All" class="text-danger"></div>
+                        <form method="post" asp-controller="ArticlesHomePage" asp-action="CreateFavouriteArticle" asp-route-PostId="@post.Id">
                             <button class="btn btn-primary" type="submit">Add post to favorites!</button>
                         </form>
 

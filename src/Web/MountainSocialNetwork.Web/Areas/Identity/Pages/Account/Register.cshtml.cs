@@ -104,7 +104,7 @@
                     FirstName = this.Input.FirstName,
                     LastName = this.Input.LastName,
                     BirthDay = this.Input.DateOfBirth,
-                    Gender = this.Input.Gender ? true : false,
+                    GenderType = this.Input.Gender ? GenderType.Male : GenderType.Female,
                     UserName = this.Input.Email,
                     Email = this.Input.Email,
                     Town = this.Input.Town,
