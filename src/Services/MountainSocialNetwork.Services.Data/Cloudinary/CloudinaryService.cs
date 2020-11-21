@@ -19,7 +19,7 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task<string> UploadPictureAsync(IFormFile pictureFile, string fileName)
+        public async Task<string> UploadPictureAsync(IFormFile pictureFile, string fileName, string folderName)
         {
             byte[] destinationData;
 
@@ -35,7 +35,7 @@
             {
                 ImageUploadParams uploadParams = new ImageUploadParams
                 {
-                    Folder = "ArticlePostsPictures",
+                    Folder = folderName,
                     File = new FileDescription(fileName, ms),
                 };
 
