@@ -19,16 +19,17 @@
             this.articleRepository = articleRepository;
         }
 
-        public IEnumerable<T> GetAllArticlePosts<T>(int? count = null)
+        public IEnumerable<T> GetAllArticlePosts<T>(int page, int itemsPerPage = 5)
         {
-            IQueryable<Article> articles = this.articleRepository.All().OrderByDescending(a => a.CreatedOn);
+            var posts = this.articleRepository.AllAsNoTracking().OrderByDescending(a => a.CreatedOn)
+                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage).To<T>().ToList();
 
-            if (count.HasValue)
-            {
-                articles = articles.Take(count.Value);
-            }
+            return posts;
+        }
 
-            return articles.To<T>().ToList();
+        public int GetPostsCount()
+        {
+            return this.articleRepository.AllAsNoTracking().Count();
         }
 
         public async Task<IEnumerable<T>> LastThreePosts<T>()

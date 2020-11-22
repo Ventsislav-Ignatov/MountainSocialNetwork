@@ -208,7 +208,6 @@
                         <div>
                             <button type="submit" class="fa fa-comment">PostComment</button>
                         </div>
-
                     </form>
                 </div>
             }
@@ -216,6 +215,7 @@
 
     </div>
 </main>
+
 <nav aria-label="...">
     <ul class="pagination justify-content-center">
         <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text>} ">
@@ -223,9 +223,9 @@
         </li>
         @for (int i = Model.PageNumber - 2; i < Model.PageNumber; i++)
         {
-            if (i>0)
+            if (i > 0)
             {
-            <li class="page-item"><a class="page-link" sp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
 
             }
         }
@@ -239,7 +239,7 @@
         {
             if (i <= Model.PagesCount)
             {
-            <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
 
             }
 
@@ -249,10 +249,11 @@
         </li>
     </ul>
 </nav>
+<form method="post" id="antiForgeryForm"></form>
 @section Scripts {
     <script>
         function sendVote(NewsFeedPostId, isUpVote) {
-            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
             var json = { NewsFeedPostId: NewsFeedPostId, isUpVote: isUpVote };
             $.ajax({
                 url: "/api/votes",
@@ -260,7 +261,9 @@
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                headers: { 'X-CSRF-TOKEN': token },
+                headers: {
+                    'X-CSRF-TOKEN': antiForgeryToken
+                },
                 success: function (data) {
                     console.log(data);
                     $("#upVotes_" + NewsFeedPostId).html(data.upVotes);

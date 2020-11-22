@@ -18,6 +18,8 @@
 
     public class ArticlesHomePageController : Controller
     {
+        private const int PostPerPage = 6;
+
         private readonly ICategoriesService categories;
         private readonly IArticleHomePageService articles;
         private readonly IFavouritePostService favouritePostService;
@@ -32,20 +34,17 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> HomePage()
+        public async Task<IActionResult> HomePage(int id = 1)
         {
-            var viewModel = new HomeViewModel();
-
-            var categories = await this.categories.GetAll<HomeCategoryViewModel>();
-
-            var blogPosts = this.articles.GetAllArticlePosts<HomeBlogArticleViewModel>();
-
-            var arctiles = await this.articles.LastThreePosts<LastThreeArticlesViewModel>();
-
-            viewModel.Categories = categories;
-            viewModel.Posts = blogPosts;
-            viewModel.LastThreeArticles = arctiles;
-
+            var viewModel = new HomeViewModel
+            {
+                PostsPerPage = PostPerPage,
+                PageNumber = id,
+                PostsCount = this.articles.GetPostsCount(),
+                Categories = await this.categories.GetAll<HomeCategoryViewModel>(),
+                Posts = this.articles.GetAllArticlePosts<HomeBlogArticleViewModel>(id, 5),
+                LastThreeArticles = await this.articles.LastThreePosts<LastThreeArticlesViewModel>(),
+            };
             return this.View(viewModel);
         }
 
