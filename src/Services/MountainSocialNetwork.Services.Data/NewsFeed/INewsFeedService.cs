@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using MountainSocialNetwork.Data.Models;
+    using MountainSocialNetwork.Web.ViewModels.NewsFeed;
     using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;
 
     public interface INewsFeedService
@@ -13,6 +14,8 @@
         Task<int> CreateAsync(string content, string userId);
 
         IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4);
+
+        Task<IEnumerable<PostCommentViewModel>> GetAllComments();
 
         //IEnumerable<T> GetAllSocialPosts<T>(int? count = null);
 

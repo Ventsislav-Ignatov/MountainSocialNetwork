@@ -10,6 +10,7 @@
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
+    using MountainSocialNetwork.Web.ViewModels.NewsFeed;
     using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;
 
     public class NewsFeedService : INewsFeedService
@@ -17,12 +18,16 @@
         private readonly IDeletableEntityRepository<NewsFeedPost> newsFeedRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserProfilePicture> pictureRepository;
+        private readonly IDeletableEntityRepository<NewsFeedComment> commentRepository;
 
-        public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository, IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository)
+        public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository,
+            IDeletableEntityRepository<NewsFeedComment> commentRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
             this.userRepository = userRepository;
             this.pictureRepository = pictureRepository;
+            this.commentRepository = commentRepository;
         }
 
         public async Task<int> CreateAsync(string content, string userId)
@@ -149,6 +154,23 @@
         public int GetPostsCount()
         {
             return this.newsFeedRepository.All().Count();
+        }
+
+        public async Task<IEnumerable<PostCommentViewModel>> GetAllComments()
+        {
+            var comments = await this.commentRepository.AllAsNoTracking()
+                .Select(a => new PostCommentViewModel
+                {
+                    Id = a.Id,
+                    Content = a.Content,
+                    FirstName = a.User.FirstName,
+                    LastName = a.User.LastName,
+                    CreatedOn = a.CreatedOn,
+                    ParentId = a.ParentId,
+                    NewsFeedPostId = a.NewsFeedPostId,
+                }).ToListAsync();
+
+            return comments;
         }
     }
 }

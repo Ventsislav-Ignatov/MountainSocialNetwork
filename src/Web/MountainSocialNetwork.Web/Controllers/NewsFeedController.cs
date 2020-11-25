@@ -50,6 +50,7 @@
                 PageNumber = id,
                 AllPosts = this.newsFeedService.GetAllSocialPosts(id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCount(),
+                NewsComments = await this.newsFeedService.GetAllComments(),
             };
 
             posts.FirstName = user.FirstName;
