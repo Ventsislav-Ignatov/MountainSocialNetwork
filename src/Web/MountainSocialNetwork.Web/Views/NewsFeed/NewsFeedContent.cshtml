@@ -158,14 +158,14 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="mr-2">
                                     @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
-                                    @if (Model.PictureUrl != null)
-                                    {
-                                        <img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                    @if (post.OwnerPictureUrl != null)
+                                     {
+                                        <img class="rounded-circle" width="95" height="85"  src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
 
                                     }
                                     else
                                     {
-                                        <img class="rounded-circle" width="45" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+                                        <img class="rounded-circle" width="95" height="85" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
 
                                     }
                                 </div>
@@ -330,7 +330,7 @@
             $.ajax({
                 url: "/api/votes",
                 type: "POST",
-                data: JSON.getJSON(json),
+                data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 headers: {

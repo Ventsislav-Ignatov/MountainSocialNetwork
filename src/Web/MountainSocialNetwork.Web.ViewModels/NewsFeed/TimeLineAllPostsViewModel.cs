@@ -25,6 +25,8 @@
 
         public int DownVotes { get; set; }
 
+        public string OwnerPictureUrl { get; set; }
+
         //public void CreateMappings(IProfileExpression configuration)
         //{
         //    configuration.CreateMap<NewsFeedPost, TimeLineAllPostsViewModel>()

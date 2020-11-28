@@ -105,6 +105,11 @@
                     CreatedOn = x.CreatedOn,
                     UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
                     DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
+                    OwnerPictureUrl = x.User.UserProfilePictures
+                    .Where(a => a.ApplicationUserId == x.UserId)
+                    .OrderByDescending(o => o.CreatedOn)
+                    .Select(s => s.PictureURL)
+                    .FirstOrDefault().ToString(),
                 }).ToList();
 
             return allPost;
