@@ -4,12 +4,13 @@
 
 <main>
 
-    <div class="card social-prof">
+    <div class="card social-prof" style="background-image: url(@Model.CoverPictureUrl);height: 500px;background-size: cover;">
+      
         <div class="card-body">
             <div class="w-100">
-                @if (Model.PictureUrl != null)
+                @if (Model.ProfilePictureUrl != null)
                 {
-                    <img src="@Model.PictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                    <img src="@Model.ProfilePictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
 
                 }
                 else
@@ -32,7 +33,7 @@
                     <a class="fas fa-user-edit" asp-controller="NewsFeed" asp-action="EditProfile">EditProfile</a>
 
                 </div>
-            </div>
+            </div>  
         </div>
     </div>
     <div class="row">

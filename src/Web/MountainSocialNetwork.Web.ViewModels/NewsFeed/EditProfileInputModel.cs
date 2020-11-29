@@ -26,5 +26,7 @@
 
         public IFormFile ProfilePicture { get; set; }
 
+        public IFormFile CoverPhoto { get; set; }
+
     }
 }

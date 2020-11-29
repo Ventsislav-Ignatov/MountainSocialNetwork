@@ -19,15 +19,17 @@
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserProfilePicture> pictureRepository;
         private readonly IDeletableEntityRepository<NewsFeedComment> commentRepository;
+        private readonly IRepository<UserCoverPicture> coverPictureRepository;
 
         public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository,
-            IDeletableEntityRepository<NewsFeedComment> commentRepository)
+            IDeletableEntityRepository<NewsFeedComment> commentRepository, IRepository<UserCoverPicture> coverPictureRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
             this.userRepository = userRepository;
             this.pictureRepository = pictureRepository;
             this.commentRepository = commentRepository;
+            this.coverPictureRepository = coverPictureRepository;
         }
 
         public async Task<int> CreateAsync(string content, string userId)
@@ -141,14 +143,27 @@
             await this.pictureRepository.SaveChangesAsync();
         }
 
-        public async Task<string> LastPicture(string userId)
+        public async Task<string> LastProfilePicture(string userId)
         {
             var pictures = await this.pictureRepository.All().Where(x => x.ApplicationUserId == userId).OrderByDescending(a => a.CreatedOn).Take(1).FirstOrDefaultAsync();
 
             if (pictures != null)
             {
-            return pictures.PictureURL;
+              return pictures.PictureURL;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
+        public async Task<string> LastCoverPicture(string userId)
+        {
+            var coverPicture = await this.coverPictureRepository.All().Where(x => x.ApplicationUserId == userId).OrderByDescending(a => a.CreatedOn).FirstOrDefaultAsync();
+
+            if (coverPicture != null)
+            {
+                return coverPicture.PictureURL;
             }
             else
             {
@@ -176,6 +191,19 @@
                 }).ToListAsync();
 
             return comments;
+        }
+
+        public async Task CreateCoverPicture(string userId, string pictureUrl)
+        {
+
+            var userPicture = new UserCoverPicture
+            {
+                PictureURL = pictureUrl,
+                ApplicationUserId = userId,
+            };
+
+            await this.coverPictureRepository.AddAsync(userPicture);
+            await this.coverPictureRepository.SaveChangesAsync();
         }
     }
 }

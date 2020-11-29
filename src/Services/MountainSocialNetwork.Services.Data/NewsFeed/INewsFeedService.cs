@@ -33,7 +33,11 @@
 
         Task CreateProfilePicture(string userId, string pictureUrl);
 
-        Task<string> LastPicture(string userId);
+        Task CreateCoverPicture(string userId, string pictureUrl);
+
+        Task<string> LastProfilePicture(string userId);
+
+        Task<string> LastCoverPicture(string userId);
 
         int GetPostsCount();
     }

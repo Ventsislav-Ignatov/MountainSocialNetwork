@@ -45,6 +45,8 @@
 
         public DbSet<UserProfilePicture> ProfilePictures { get; set; }
 
+        public DbSet<UserCoverPicture> CoverPictures { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

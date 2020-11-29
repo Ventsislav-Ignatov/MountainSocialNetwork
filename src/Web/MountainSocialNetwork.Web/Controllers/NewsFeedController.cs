@@ -17,7 +17,8 @@
 
     public class NewsFeedController : Controller
     {
-        private const string FolderName = "UserProfilePictures";
+        private const string FolderNameProfilePicture = "UserProfilePictures";
+        private const string FolderNameCoverPicture = "UserCoverPictures";
         private const int PostPerPage = 4;
 
         private readonly UserManager<ApplicationUser> userManager;
@@ -58,7 +59,8 @@
             posts.Description = user.Description;
             posts.Town = user.Town;
             posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            posts.PictureUrl = await this.newsFeedService.LastPicture(user.Id);
+            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
 
             return this.View(posts);
         }
@@ -189,9 +191,20 @@
             await this.newsFeedService.EditProfile(newUser, user.Id);
 
             // string name = DateTime.UtcNow.ToString("G", CultureInfo.InvariantCulture);
-            string pictureUrl = await this.cloudinary.UploadPictureAsync(model.ProfilePicture, model.ProfilePicture.FileName, FolderName);
+            if (model.ProfilePicture != null)
+            {
+            string pictureUrlProfile = await this.cloudinary.UploadPictureAsync(model.ProfilePicture, model.ProfilePicture.FileName, FolderNameProfilePicture);
+            await this.newsFeedService.CreateProfilePicture(user.Id, pictureUrlProfile);
+            }
 
-            await this.newsFeedService.CreateProfilePicture(user.Id, pictureUrl);
+            if (model.CoverPhoto != null)
+            {
+            string pictureUrlCover = await this.cloudinary.UploadPictureAsync(model.CoverPhoto, model.CoverPhoto.FileName, FolderNameCoverPicture);
+            await this.newsFeedService.CreateCoverPicture(user.Id, pictureUrlCover);
+            }
+
+
+
 
             return this.RedirectToAction(nameof(this.NewsFeedContent));
 
