@@ -12,6 +12,7 @@
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Data;
     using MountainSocialNetwork.Services.Data.TimeLine;
+    using MountainSocialNetwork.Web.ViewModels.Gallery;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
     using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;
 
@@ -203,11 +204,23 @@
             await this.newsFeedService.CreateCoverPicture(user.Id, pictureUrlCover);
             }
 
-
-
-
             return this.RedirectToAction(nameof(this.NewsFeedContent));
+        }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ProfilePicturesGallery()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var pictures = await this.newsFeedService.GetAllProfilePictures<GalleryViewModel>(user.Id);
+
+            var viewModel = new GalleryResponseViewModel
+            {
+                UserProfilePictures = pictures,
+            };
+
+            return this.View(viewModel);
         }
     }
 }

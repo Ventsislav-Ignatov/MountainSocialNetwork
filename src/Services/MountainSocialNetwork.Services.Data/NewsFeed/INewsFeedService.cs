@@ -40,5 +40,7 @@
         Task<string> LastCoverPicture(string userId);
 
         int GetPostsCount();
+
+        Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId);
     }
 }

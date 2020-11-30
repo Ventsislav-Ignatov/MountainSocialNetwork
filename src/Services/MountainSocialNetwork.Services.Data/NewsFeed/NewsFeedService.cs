@@ -21,6 +21,7 @@
         private readonly IDeletableEntityRepository<NewsFeedComment> commentRepository;
         private readonly IRepository<UserCoverPicture> coverPictureRepository;
 
+
         public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository,
             IDeletableEntityRepository<NewsFeedComment> commentRepository, IRepository<UserCoverPicture> coverPictureRepository)
@@ -204,6 +205,13 @@
 
             await this.coverPictureRepository.AddAsync(userPicture);
             await this.coverPictureRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId)
+        {
+            var pictures = await this.pictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
+
+            return pictures;
         }
     }
 }
