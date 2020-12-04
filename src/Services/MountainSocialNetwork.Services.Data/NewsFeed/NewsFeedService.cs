@@ -189,6 +189,11 @@
                     CreatedOn = a.CreatedOn,
                     ParentId = a.ParentId,
                     NewsFeedPostId = a.NewsFeedPostId,
+                    PictureURL = a.User.UserProfilePictures
+                    .Where(x => x.ApplicationUserId == a.UserId)
+                    .OrderByDescending(o => o.CreatedOn)
+                    .Select(s => s.PictureURL)
+                    .FirstOrDefault().ToString(),
                 }).ToListAsync();
 
             return comments;

@@ -5,7 +5,7 @@
 <main>
 
     <div class="card social-prof" style="background-image: url(@Model.CoverPictureUrl); height: 500px; background-size: cover;">
-      
+
         <div class="card-body">
             <div class="w-100">
                 @if (Model.ProfilePictureUrl != null)
@@ -33,7 +33,7 @@
                     <a class="fas fa-user-edit" asp-controller="NewsFeed" asp-action="EditProfile">EditProfile</a>
 
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
     <div class="row">
@@ -144,10 +144,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="mr-2">
-                                    @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
+                                 
                                     @if (post.OwnerPictureUrl != null)
-                                     {
-                                        <img class="rounded-circle" width="95" height="85"  src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                    {
+                                        <img class="rounded-circle" width="95" height="85" src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
 
                                     }
                                     else
@@ -213,47 +213,35 @@
                     {
                         if (comments.NewsFeedPostId == post.Id)
                         {
-                            <div class="timeline-comment">
-                                <div class="timeline-comment-header">
-                                    @*<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />*@
-                                    <p>@comments.FirstName @comments.LastName <time datetime="@post.CreatedOn.ToString("O")"></time></p>
+
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-2">
+                                            @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
+                                            @if (post.OwnerPictureUrl != null)
+                                            {
+                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+
+                                            }
+                                            else
+                                            {
+                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+
+                                            }
+                                        </div>
+                                        <div class="ml-2">
+                                            <div class="h5 m-0 text-blue">@comments.FirstName  @comments.LastName</div>
+                                            <div class="h7 text-muted"><time datetime="@comments.CreatedOn.ToString("O")"></time></div>
+                                            <p class="pull-right">@comments.Content</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="pull-right">@comments.Content</p>
                             </div>
                         }
                     }
 
 
-
-
-
-
-                    @*<ul class="comments-list">
-                            <li class="comment">
-                                <a class="pull-left" href="#">
-                                    <img class="avatar" src="https://bootdey.com/img/Content/user_3.jpg" alt="avatar">
-                                </a>
-                                <div class="comment-body">
-                                    <div class="comment-heading">
-                                        <h4 class="user">Ryan Haywood</h4>
-                                        <h5 class="time">3 minutes ago</h5>
-                                    </div>
-                                    <p>Relax my friend</p>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <a class="pull-left" href="#">
-                                    <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg" alt="avatar">
-                                </a>
-                                <div class="comment-body">
-                                    <div class="comment-heading">
-                                        <h4 class="user">Gavino Free</h4>
-                                        <h5 class="time">3 minutes ago</h5>
-                                    </div>
-                                    <p>Ok, cool.</p>
-                                </div>
-                            </li>
-                        </ul>*@
 
                 </div>
             }

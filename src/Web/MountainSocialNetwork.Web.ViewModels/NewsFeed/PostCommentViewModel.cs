@@ -23,6 +23,6 @@
 
         public int NewsFeedPostId { get; set; }
 
-
+        public string PictureURL { get; set; }
     }
 }
