@@ -1,4 +1,4 @@
-﻿@model MountainSocialNetwork.Web.ViewModels.Gallery.ProfileGalleryResponseViewModel
+﻿@model MountainSocialNetwork.Web.ViewModels.Gallery.CoverGalleryResponseViewModel
 
 <!DOCTYPE html>
 <html>
@@ -27,7 +27,7 @@
         <div class="tz-gallery">
 
             <div class="row">
-                @foreach (var picture in Model.UserProfilePictures)
+                @foreach (var picture in Model.UserCoverPictures)
                 {
                     <div class="col-sm-6 col-md-4">
                         <a class="lightbox" href="@picture.PictureURL">

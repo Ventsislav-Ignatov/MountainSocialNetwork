@@ -26,7 +26,7 @@
         private readonly INewsFeedService newsFeedService;
         private readonly ICloudinaryService cloudinary;
 
-        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService , ICloudinaryService cloudinary)
+        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService, ICloudinaryService cloudinary)
         {
             this.userManager = userManager;
             this.newsFeedService = newsFeedService;
@@ -213,11 +213,27 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var pictures = await this.newsFeedService.GetAllProfilePictures<GalleryViewModel>(user.Id);
+            var pictures = await this.newsFeedService.GetAllProfilePictures<ProfileGalleryViewModel>(user.Id);
 
-            var viewModel = new GalleryResponseViewModel
+            var viewModel = new ProfileGalleryResponseViewModel
             {
                 UserProfilePictures = pictures,
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CoverPicturesGallery()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var coverPictures = await this.newsFeedService.GetAllCoverPictures<CoverGalleryViewModel>(user.Id);
+
+            var viewModel = new CoverGalleryResponseViewModel
+            {
+                UserCoverPictures = coverPictures,
             };
 
             return this.View(viewModel);

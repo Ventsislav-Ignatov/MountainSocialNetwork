@@ -209,9 +209,16 @@
 
         public async Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId)
         {
-            var pictures = await this.pictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
+            var profilePictures = await this.pictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
 
-            return pictures;
+            return profilePictures;
+        }
+
+        public async Task<IEnumerable<T>> GetAllCoverPictures<T>(string userId)
+        {
+            var coverPictures = await this.coverPictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
+
+            return coverPictures;
         }
     }
 }

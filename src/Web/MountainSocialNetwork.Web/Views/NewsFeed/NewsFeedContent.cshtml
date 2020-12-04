@@ -28,7 +28,7 @@
                         <li><a href="#">About</a></li>
                         <li><a href="#">Friends</a></li>
                         <li><a asp-controller="NewsFeed" asp-action="ProfilePicturesGallery">ProfilePhotos</a></li>
-                        <li><a href="#">Videos</a></li>
+                        <li><a asp-controller="NewsFeed" asp-action="CoverPicturesGallery">CoverPhotos</a></li>
                     </ul>
                     <a class="fas fa-user-edit" asp-controller="NewsFeed" asp-action="EditProfile">EditProfile</a>
 
@@ -267,6 +267,7 @@
         <div>
             <label for="Content"></label>
             <textarea name="Content" id="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div>
             <input type="submit" class="btn btn-primary" value="Add comment" />
