@@ -8,7 +8,7 @@
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
 
-    public class EditPostInputModel : IMapFrom<Article>
+    public class EditArticleInputModel : IMapFrom<Article>
     {
         [Required]
         public int Id { get; set; }

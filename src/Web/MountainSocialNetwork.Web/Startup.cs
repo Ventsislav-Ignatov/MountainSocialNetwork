@@ -17,6 +17,7 @@
     using MountainSocialNetwork.Data.Repositories;
     using MountainSocialNetwork.Data.Seeding;
     using MountainSocialNetwork.Services.Data;
+    using MountainSocialNetwork.Services.Data.Administrator;
     using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.Search;
     using MountainSocialNetwork.Services.Data.TimeLine;
@@ -66,6 +67,7 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<IAdministratorService, AdministratorService>();
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<INewsFeedService, NewsFeedService>();
             services.AddTransient<INewsFeedCommentService, NewsFeedCommentService>();
@@ -79,8 +81,8 @@
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISearchService, SearchService>();
-            services.AddTransient<IEmailSender>(
-               serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
+            //services.AddTransient<IEmailSender, MailKitEmailSender>();
+            //services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
 
             // Cloudinary
             Account cloudinaryCredentials = new Account(

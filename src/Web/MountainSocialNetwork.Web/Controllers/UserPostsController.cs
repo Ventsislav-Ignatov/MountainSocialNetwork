@@ -55,14 +55,14 @@
                 return this.RedirectToAction("NotOwner", "NewsFeed");
             }
 
-            var editViewModel = await this.postsService.GetById<EditPostInputModel>(id);
+            var editViewModel = await this.postsService.GetById<EditArticleInputModel>(id);
 
             return this.View(editViewModel);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(EditPostInputModel model)
+        public async Task<IActionResult> Edit(EditArticleInputModel model)
         {
             var user = await this.userManager.GetUserAsync(this.User);
 

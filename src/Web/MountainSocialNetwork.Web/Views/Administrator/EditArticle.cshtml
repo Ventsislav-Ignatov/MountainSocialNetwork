@@ -19,7 +19,7 @@
 </script>
 
 
-<form method="post" asp-action="Edit" asp-controller="UserPosts">
+<form method="post" asp-action="EditArticle" asp-controller="Administrator">
     <input asp-for="Id" type="hidden" />
     <div>
 
@@ -39,12 +39,12 @@
 
     @*<div>
 
-        <label asp-for="CategoryId"></label>
-        <select asp-for="CategoryId" asp-items="Model.Categories.Select(x=> new SelectListItem(x.Name, x.Id.ToString()))"></select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <label asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" asp-items="Model.Categories.Select(x=> new SelectListItem(x.Name, x.Id.ToString()))"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
 
 
-    </div>*@
+        </div>*@
     <input type="submit" class="btn btn-primary" />
 
 </form>

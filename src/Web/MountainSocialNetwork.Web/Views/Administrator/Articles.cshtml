@@ -1,0 +1,66 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.ArticleAdministrationResponseModel
+@{
+    this.ViewData["Title"] = "Articles Administrator Page!";
+}
+
+<table class="table table-bordered table-hover table-striped" id="DataTable">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                ShortContent
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model.Articles)
+        {
+        <tr>
+            <td>
+                @post.UserFirstName  @post.UserLastName
+            </td>
+            <td>
+                @post.UserUserName
+            </td>
+            <td>
+                <time datetime="@post.CreatedOn.ToString("O")"></time>
+            </td>
+            <td>
+                @post.Title
+            </td>
+            <td>
+                @post.ShortContent
+            </td>
+            <td>
+                <a asp-action="EditArticle" asp-controller="Administrator" asp-route-id="@post.Id">Edit</a> |
+                <a @*asp-action="Details" asp-route-id="@item.Id"*@>Details</a> |
+                <a asp-action="DeleteArticle" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+        });
+    </script>
+} 

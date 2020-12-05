@@ -1,0 +1,66 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.NewsFeedPostAdministrationResponseModel
+@{
+    this.ViewData["Title"] = "NewsFeedPosts Administrator Page!";
+}
+
+<table class="table table-bordered table-hover table-striped" id="DataTable">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                IsDeleted
+            </th>
+            <th>
+                ShortContent
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model.NewsFeedPosts)
+        {
+        <tr>
+            <td>
+                @post.UserFirstName  @post.UserLastName
+            </td>
+            <td>
+                @post.UserUserName
+            </td>
+            <td>
+                <time datetime="@post.CreatedOn.ToString("O")"></time>
+            </td>
+            <td>
+                @post.IsDelete
+            </td>
+            <td>
+                @post.ShortContent
+            </td>
+            <td>
+                <a asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a> |
+                <a @*asp-action="Details" asp-route-id="@item.Id"*@>Details</a> |
+                <a asp-action="DeleteNewsFeedPost" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+        });
+    </script>
+} 
