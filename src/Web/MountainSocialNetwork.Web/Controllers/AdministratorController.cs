@@ -25,6 +25,7 @@
             return this.View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> NewsFeedPost()
         {
             var newsFeedPost = await this.administratorService.GetAllNewsFeedPost<NewsFeedPostAdministrationViewModel>();
@@ -37,6 +38,7 @@
             return this.View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Articles()
         {
             var articles = await this.administratorService.GetAllArticlesPost<ArticleAdministrationViewModel>();
@@ -121,5 +123,9 @@
             return this.RedirectToAction(nameof(this.Articles));
         }
 
+        public IActionResult DetailArticle(int id)
+        {
+            return this.RedirectToAction("ById", "Articles", new { id = id });
+        }
     }
 }

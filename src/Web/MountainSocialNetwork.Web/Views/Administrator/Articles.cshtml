@@ -47,7 +47,7 @@
             </td>
             <td>
                 <a asp-action="EditArticle" asp-controller="Administrator" asp-route-id="@post.Id">Edit</a> |
-                <a @*asp-action="Details" asp-route-id="@item.Id"*@>Details</a> |
+                <a asp-action="DetailArticle" asp-controller="Administrator" asp-route-id="@post.Id">Details</a> |
                 <a asp-action="DeleteArticle" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
             </td>
         </tr>
