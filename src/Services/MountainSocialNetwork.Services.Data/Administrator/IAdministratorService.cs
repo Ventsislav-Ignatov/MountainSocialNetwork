@@ -11,21 +11,32 @@
 
          Task<IEnumerable<T>> GetAllArticlesPost<T>();
 
+         Task<IEnumerable<T>> GetAllNewsFeedComment<T>();
+
          Task DeleteNewsFeedPost(NewsFeedPost newsFeedPost);
 
-         Task<NewsFeedPost> GetNewsFeedPost(int id);
 
          Task DeleteArticle(Article article);
- 
+
+         Task DeleteNewsFeedComment(NewsFeedComment comment);
+
          Task<Article> GetArticle(int id);
+
+         Task<NewsFeedComment> GetNewsFeedComment(int id);
 
          Task<NewsFeedPost> UpdateNewsFeedPost(NewsFeedPost article);
 
          Task<Article> UpdateArticle(Article article);
 
+         Task<NewsFeedComment> UpdateComment(NewsFeedComment comment);
+
          Task<T> GetByIdNewsFeedPost<T>(int id);
 
          Task<T> GetByIdArticle<T>(int id);
+
+         Task<T> GetByIdComment<T>(int id);
+
+         Task<NewsFeedPost> GetNewsFeedPost(int id);
 
     }
 }

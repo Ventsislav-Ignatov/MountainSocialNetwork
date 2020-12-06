@@ -19,7 +19,7 @@
         public string Title { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter title for content")]
-        [StringLength(10000, ErrorMessage = "Tile must be at least two {2} символа.", MinimumLength = 20)]
+        [StringLength(10000, ErrorMessage = "Tile must be at least two {2} symbols.", MinimumLength = 20)]
         [Display(Name = "Мessages content")]
         public string Content { get; set; }
     }

@@ -31,7 +31,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(model);
+                return this.NoContent();
             }
 
             var userId = this.userManager.GetUserId(this.User);

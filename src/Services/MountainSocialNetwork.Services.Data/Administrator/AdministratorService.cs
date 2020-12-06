@@ -13,11 +13,14 @@
     {
         private readonly IDeletableEntityRepository<NewsFeedPost> newsFeedRepository;
         private readonly IDeletableEntityRepository<Article> articleRepository;
+        private readonly IDeletableEntityRepository<NewsFeedComment> newsFeedCommentRepository;
 
-        public AdministratorService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository, IDeletableEntityRepository<Article> articleRepository)
+        public AdministratorService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository, IDeletableEntityRepository<Article> articleRepository,
+            IDeletableEntityRepository<NewsFeedComment> newsFeedCommentRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
             this.articleRepository = articleRepository;
+            this.newsFeedCommentRepository = newsFeedCommentRepository;
         }
 
         public async Task<IEnumerable<T>> GetAllArticlesPost<T>()
@@ -32,6 +35,13 @@
             var allPosts = await this.newsFeedRepository.All().OrderByDescending(x => x.CreatedOn).To<T>().ToListAsync();
 
             return allPosts;
+        }
+
+        public async Task<IEnumerable<T>> GetAllNewsFeedComment<T>()
+        {
+            var comments = await this.newsFeedCommentRepository.All().OrderByDescending(x => x.CreatedOn).To<T>().ToListAsync();
+
+            return comments;
         }
 
         public async Task DeleteNewsFeedPost(NewsFeedPost newsFeedPost)
@@ -95,6 +105,38 @@
         {
             var article = await this.articleRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
             return article;
+        }
+
+        public async Task DeleteNewsFeedComment(NewsFeedComment comment)
+        {
+            this.newsFeedCommentRepository.Delete(comment);
+
+            await this.newsFeedCommentRepository.SaveChangesAsync();
+
+        }
+
+        public async Task<NewsFeedComment> GetNewsFeedComment(int id)
+        {
+            var comment = await this.newsFeedCommentRepository.All().Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            return comment;
+        }
+
+        public async Task<NewsFeedComment> UpdateComment(NewsFeedComment comment)
+        {
+            var currentComment = await this.newsFeedCommentRepository.All().FirstOrDefaultAsync(b => b.Id == comment.Id);
+
+            currentComment.Content = comment.Content;
+
+            await this.newsFeedCommentRepository.SaveChangesAsync();
+
+            return currentComment;
+        }
+
+        public async Task<T> GetByIdComment<T>(int id)
+        {
+            var comment = await this.newsFeedCommentRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
+            return comment;
         }
     }
 }

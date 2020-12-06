@@ -7,6 +7,7 @@
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Data.Administrator;
     using MountainSocialNetwork.Web.ViewModels.Administration;
+    using MountainSocialNetwork.Web.ViewModels.Comments;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
     using MountainSocialNetwork.Web.ViewModels.UsersPosts;
 
@@ -51,6 +52,19 @@
             return this.View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> NewsFeedComments()
+        {
+            var comments = await this.administratorService.GetAllNewsFeedComment<NewsFeedCommentViewModel>();
+
+            var model = new NewsFeedCommentResponseModel
+            {
+                Comments = comments,
+            };
+
+            return this.View(model);
+        }
+
         public async Task<IActionResult> DeleteNewsFeedPost(int id)
         {
                 var post = await this.administratorService.GetNewsFeedPost(id);
@@ -58,6 +72,15 @@
                 await this.administratorService.DeleteNewsFeedPost(post);
 
                 return this.RedirectToAction(nameof(this.NewsFeedPost));
+        }
+
+        public async Task<IActionResult> DeleteNewsFeedComment(int id)
+        {
+            var post = await this.administratorService.GetNewsFeedComment(id);
+
+            await this.administratorService.DeleteNewsFeedComment(post);
+
+            return this.RedirectToAction(nameof(this.NewsFeedComments));
         }
 
         public async Task<IActionResult> DeleteArticle(int id)
@@ -126,6 +149,34 @@
         public IActionResult DetailArticle(int id)
         {
             return this.RedirectToAction("ById", "Articles", new { id = id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditNewsFeedComment(int id)
+        {
+            var commentView = await this.administratorService.GetByIdComment<EditCommentViewModel>(id);
+
+            return this.View(commentView);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditNewsFeedComment(EditCommentViewModel model)
+        {
+
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
+
+            var comment = new NewsFeedComment
+            {
+                Id = model.Id,
+                Content = model.Content,
+            };
+
+            await this.administratorService.UpdateComment(comment);
+
+            return this.RedirectToAction(nameof(this.NewsFeedComments));
+
         }
     }
 }

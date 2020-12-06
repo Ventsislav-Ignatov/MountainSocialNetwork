@@ -194,7 +194,7 @@
                     .OrderByDescending(o => o.CreatedOn)
                     .Select(s => s.PictureURL)
                     .FirstOrDefault().ToString(),
-                }).ToListAsync();
+                }).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
             return comments;
         }
