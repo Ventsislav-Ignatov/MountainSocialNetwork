@@ -81,7 +81,7 @@
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISearchService, SearchService>();
-            //services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.AddTransient<IEmailSender, MailKitEmailSender>();
             //services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
 
             // Cloudinary

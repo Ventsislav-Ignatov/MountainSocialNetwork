@@ -19,9 +19,10 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <div class="media flex-wrap w-100 align-items-center">
-                                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                                    <img class="rounded-circle" width="95" height="75" src="@comment.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+
                                     <div class="media-body ml-3">
-                                        @comment.UserUserName
+                                        @comment.UserFirstName @comment.UserLastName
                                         <div class="text-muted small">
                                             <time datetime="@comment.CreatedOn.ToString("O")"></time>
                                         </div>

@@ -17,6 +17,10 @@
 
         public string Content { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
+        public int CommentsCount { get; set; }
+
         public string ShortContent
         {
             get
@@ -26,6 +30,10 @@
         }
 
         public string UserUserName { get; set; }
+
+        public string UserFirstName { get; set; }
+
+        public string UserLastName { get; set; }
 
         public string ArticlePicturesPictureURL { get; set; }
 

@@ -6,13 +6,13 @@
 {
 
     <div class="card mb-4">
-        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+        <img class="card-img-top w-auto" src="@post.PictureUrl" height="500" alt="Card image cap">
         <div class="card-body">
             <h2 class="card-title">@post.ArticleTitle</h2>
             <p class="card-text">@Html.Raw(post.ShortContent)</p>
             @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
-            <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
-            
+            <a asp-controller="Articles" asp-action="ById" asp-route-Id="@post.ArticleId"><button class="btn btn-outline-success my-2 my-sm-0" type="button">Read More</button></a>
+
 
 
         </div>
