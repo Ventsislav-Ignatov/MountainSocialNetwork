@@ -54,7 +54,7 @@
         "plugins/code/plugin.min.js",
         "plugins/media/plugin.min.js",
         "plugins/emoticons/plugin.min.js",
-        "plugins/emoticons/js/emojis.min.js"    
+        "plugins/emoticons/js/emojis.min.js"
       ]
     },
     {
@@ -85,6 +85,14 @@
       "destination": "wwwroot/lib/moment/",
       "files": [
         "min/moment-with-locales.min.js"
+      ]
+    },
+    {
+      "library": "datatables@1.10.18",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "media/css/jquery.dataTables.min.css",
+        "media/js/jquery.dataTables.min.js"
       ]
     }
   ]

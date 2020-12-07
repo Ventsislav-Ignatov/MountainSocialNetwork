@@ -18,7 +18,7 @@
 
     public class ArticlesHomePageController : Controller
     {
-        private const int PostPerPage = 6;
+        private const int PostPerPage = 3;
 
         private readonly ICategoriesService categories;
         private readonly IArticleHomePageService articles;
@@ -42,7 +42,7 @@
                 PageNumber = id,
                 PostsCount = this.articles.GetPostsCount(),
                 Categories = await this.categories.GetAll<HomeCategoryViewModel>(),
-                Posts = this.articles.GetAllArticlePosts<HomeBlogArticleViewModel>(id, 5),
+                Posts = this.articles.GetAllArticlePosts<HomeBlogArticleViewModel>(id, PostPerPage),
                 LastThreeArticles = await this.articles.LastThreePosts<LastThreeArticlesViewModel>(),
             };
             return this.View(viewModel);

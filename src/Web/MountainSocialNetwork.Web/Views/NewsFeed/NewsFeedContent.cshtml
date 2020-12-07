@@ -1,4 +1,7 @@
 ﻿@model MountainSocialNetwork.Web.ViewModels.SocialTimeLine.TimeLineViewModel
+@{
+    this.ViewData["Title"] = "NewsFeed";
+}
 
 <link href="~/css/newsfeed.css" rel="stylesheet" />
 
@@ -144,7 +147,6 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="mr-2">
-                                 
                                     @if (post.OwnerPictureUrl != null)
                                     {
                                         <img class="rounded-circle" width="95" height="85" src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
