@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -37,13 +38,6 @@
         [HttpGet]
         public async Task<IActionResult> NewsFeedContent(int id = 1)
         {
-            //var posts = new TimeLineViewModel();
-
-            //var allPosts = this.newsFeedService.GetAllSocialPosts<TimeLineAllPostsViewModel>();
-
-            //posts.AllPosts = allPosts;
-            //return this.View(posts);
-
             var user = await this.userManager.GetUserAsync(this.User);
 
             var posts = new TimeLineViewModel
@@ -146,6 +140,10 @@
                 var post = await this.newsFeedService.GetNewsFeedPost(model.Id);
 
                 await this.newsFeedService.Delete(post);
+            }
+            else
+            {
+                return this.RedirectToAction(nameof(this.NotOwner));
             }
 
             return this.RedirectToAction(nameof(this.NewsFeedContent));

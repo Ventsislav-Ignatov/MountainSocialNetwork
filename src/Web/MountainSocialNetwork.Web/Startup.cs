@@ -72,16 +72,13 @@
             services.AddTransient<INewsFeedService, NewsFeedService>();
             services.AddTransient<INewsFeedCommentService, NewsFeedCommentService>();
             services.AddTransient<ISettingsService, SettingsService>();
-            services.AddTransient<IArticlePostsService, ArticlePostsService>();
+            services.AddTransient<IArticlePostService, ArticlePostsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IArticleHomePageService, ArticleHomePageService>();
-            services.AddTransient<IArticleByUserService, ArticleByUserService>();
             services.AddTransient<IContactService, ContactService>();
-            services.AddTransient<IFavouritePostService, FavouritePostService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISearchService, SearchService>();
-            services.AddTransient<IEmailSender, MailKitEmailSender>();
             //services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
 
             // Cloudinary

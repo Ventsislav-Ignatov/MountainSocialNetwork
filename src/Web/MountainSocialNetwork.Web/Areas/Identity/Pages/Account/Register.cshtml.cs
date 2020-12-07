@@ -17,7 +17,6 @@
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
     using MountainSocialNetwork.Data.Models;
-    using MountainSocialNetwork.Web.Infrastructure;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
@@ -73,7 +72,6 @@
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [CurrentYearMaxValue(1900)]
             [Display(Name = "BirthDay")]
             [DataType(DataType.Date)]
             public DateTime DateOfBirth { get; set; }

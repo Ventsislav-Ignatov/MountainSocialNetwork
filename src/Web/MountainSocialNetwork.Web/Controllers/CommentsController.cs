@@ -29,12 +29,12 @@
         {
             var userId = this.userManager.GetUserId(this.User);
 
-            var hasRightToPost = await this.commentsService.LastPublishedPost(userId);
+            //var hasRightToPost = await this.commentsService.LastPublishedPost(userId);
 
-            if (hasRightToPost != null)
-            {
-            int minutes = DateTime.UtcNow.Minute - hasRightToPost.CreatedOn.Minute;
-            }
+            //if (hasRightToPost != null)
+            //{
+            //int minutes = DateTime.UtcNow.Minute - hasRightToPost.CreatedOn.Minute;
+            //}
 
             //if (minutes < 1)
             //{

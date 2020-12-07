@@ -17,12 +17,13 @@
     using MountainSocialNetwork.Services.Data;
     using MountainSocialNetwork.Web.ViewModels.BlogHomePage;
     using MountainSocialNetwork.Web.ViewModels.BlogPosts;
+    using MountainSocialNetwork.Web.ViewModels.UsersPosts;
 
     public class ArticlesController : Controller
     {
         private const string FolderName = "ArticlePostsPictures";
 
-        private readonly IArticlePostsService blogPostsService;
+        private readonly IArticlePostService blogPostsService;
 
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -30,8 +31,7 @@
 
         private readonly ICloudinaryService cloudinaryService;
 
-
-        public ArticlesController(IArticlePostsService blogPostsService, UserManager<ApplicationUser> userManager, ICategoriesService categoriesService, ICloudinaryService cloudinaryService)
+        public ArticlesController(IArticlePostService blogPostsService, UserManager<ApplicationUser> userManager, ICategoriesService categoriesService, ICloudinaryService cloudinaryService)
         {
             this.blogPostsService = blogPostsService;
             this.userManager = userManager;
@@ -88,6 +88,85 @@
             var postViewModel = await this.blogPostsService.GetById<ArticleByIdViewModel>(id);
 
             return this.View(postViewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (!await this.blogPostsService.Exists(id, user.Id))
+            {
+                return this.RedirectToAction("NotOwner", "NewsFeed");
+            }
+
+            var editViewModel = await this.blogPostsService.GetById<EditArticleInputModel>(id);
+
+            return this.View(editViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditArticleInputModel model)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (!await this.blogPostsService.Exists(model.Id, user.Id))
+            {
+                return this.RedirectToAction("NotOwner", "NewsFeed");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var sanitizer = new HtmlSanitizer();
+
+            var content = sanitizer.Sanitize(model.Content);
+
+            var newUpdatedPost = new Article
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Content = content,
+            };
+
+            await this.blogPostsService.Update(newUpdatedPost);
+
+            return this.RedirectToAction("ById", "Articles", new { id = model.Id });
+
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ArticlePostByUser()
+        {
+            var model = new UsersPostsByIdViewModel();
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var viewModel = await this.blogPostsService.GetAll<UserPostByIdModel>(user.Id);
+
+            model.Posts = viewModel;
+
+            return this.View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllFavouriteArticles()
+        {
+            var viewModel = new UsersPostsByIdViewModel();
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var favouritePosts = await this.blogPostsService.GetAllFavouritePost<UserFavouriteArticlesViewModel>(user.Id);
+
+            viewModel.FavouritePosts = favouritePosts;
+
+            return this.View(viewModel);
         }
     }
 }

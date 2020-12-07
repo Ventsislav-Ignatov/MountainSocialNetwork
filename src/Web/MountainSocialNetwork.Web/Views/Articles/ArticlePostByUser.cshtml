@@ -11,8 +11,8 @@
             <h2 class="card-title">@post.Title</h2>
             <p class="card-text">@Html.Raw(post.ShortContent)</p>
             @*//<a href="#" class="btn btn-primary">Read More &rarr;</a>*@
-            <a>@Html.ActionLink("Read More", "ById", "Articles", new { Id = post.Id }, new { @class = "btn btn-primary" })</a>
-            <a class="btn btn-primary" asp-controller="UserPosts" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+            <a asp-controller="Articles" asp-action="ById" asp-route-Id="@post.Id"><button class="btn btn-outline-success my-2 my-sm-0" type="button">Read More</button></a>
+            <a class="btn btn-outline-success my-2 my-sm-0" asp-controller="Articles" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
             @*//asp-controller="BlogPosts" asp-action="ById" asp-route="@post.Id"*@
         </div>
         <div class="card-footer text-muted">

@@ -22,14 +22,14 @@
 
         private readonly ICategoriesService categories;
         private readonly IArticleHomePageService articles;
-        private readonly IFavouritePostService favouritePostService;
+        private readonly IArticlePostService postService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ArticlesHomePageController(ICategoriesService categories, IArticleHomePageService articles, IFavouritePostService favouritePostService, UserManager<ApplicationUser> userManager)
+        public ArticlesHomePageController(ICategoriesService categories, IArticleHomePageService articles, IArticlePostService postService, UserManager<ApplicationUser> userManager)
         {
             this.categories = categories;
             this.articles = articles;
-            this.favouritePostService = favouritePostService;
+            this.postService = postService;
             this.userManager = userManager;
         }
 
@@ -67,18 +67,18 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var isAlreadyAdd = await this.favouritePostService.AlreadyAdded(model.PostId, user.Id);
+            var isAlreadyAdd = await this.postService.AlreadyAdded(model.PostId, user.Id);
 
             if (!isAlreadyAdd)
             {
-                await this.favouritePostService.AddFavouritePost(model.PostId, user.Id);
+                await this.postService.AddFavouritePost(model.PostId, user.Id);
             }
             else
             {
                 this.ModelState.AddModelError(model.PostId.ToString(), "Already added!");
             }
 
-            return this.RedirectToAction("GetAllFavouriteArticles", "UserPosts");
+            return this.RedirectToAction("GetAllFavouriteArticles", "Articles");
         }
     }
 }
