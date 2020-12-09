@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-
-using MountainSocialNetwork.Web.ViewModels;
-
-using Microsoft.AspNetCore.Mvc;
-
-namespace MountainSocialNetwork.Web.Controllers
+﻿namespace MountainSocialNetwork.Web.Controllers
 {
+    using System.Diagnostics;
+
+    using Microsoft.AspNetCore.Mvc;
+    using MountainSocialNetwork.Web.ViewModels;
+
     public class HomeController : BaseController
     {
         public IActionResult Index()

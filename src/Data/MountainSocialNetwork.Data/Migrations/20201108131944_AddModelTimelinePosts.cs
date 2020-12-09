@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MountainSocialNetwork.Data.Migrations
+﻿namespace MountainSocialNetwork.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddModelTimelinePosts : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

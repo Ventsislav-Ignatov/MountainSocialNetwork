@@ -61,6 +61,32 @@
         }
 
         [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> PersonalNewsFeed(int id = 1)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var posts = new TimeLineViewModel
+            {
+                PostsPerPage = PostPerPage,
+                PageNumber = id,
+                AllPosts = this.newsFeedService.GetAllSocialPostsByUser(user.Id, id, PostPerPage),
+                PostsCount = this.newsFeedService.GetPostsCount(),
+                NewsComments = await this.newsFeedService.GetAllComments(),
+            };
+
+            posts.FirstName = user.FirstName;
+            posts.LastName = user.LastName;
+            posts.Description = user.Description;
+            posts.Town = user.Town;
+            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
+            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+
+            return this.View(posts);
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreatePost(TimeLineViewModel model)
         {

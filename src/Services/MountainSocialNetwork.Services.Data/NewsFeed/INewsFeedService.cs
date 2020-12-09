@@ -15,6 +15,8 @@
 
         IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4);
 
+        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPostsByUser(string userId, int page, int itemsPerPage = 4);
+
         Task<IEnumerable<PostCommentViewModel>> GetAllComments();
 
         //IEnumerable<T> GetAllSocialPosts<T>(int? count = null);

@@ -118,6 +118,29 @@
             return allPost;
         }
 
+        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPostsByUser(string userId, int page, int itemsPerPage = 4)
+        {
+            var allPost = this.newsFeedRepository.AllAsNoTracking().Where(x => x.UserId == userId).OrderByDescending(a => a.CreatedOn)
+               .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+               .Select(x => new TimeLineAllPostsViewModel
+               {
+                   Id = x.Id,
+                   Content = x.Content,
+                   FirstName = x.User.FirstName,
+                   LastName = x.User.LastName,
+                   CreatedOn = x.CreatedOn,
+                   UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
+                   DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
+                   OwnerPictureUrl = x.User.UserProfilePictures
+                   .Where(a => a.ApplicationUserId == x.UserId)
+                   .OrderByDescending(o => o.CreatedOn)
+                   .Select(s => s.PictureURL)
+                   .FirstOrDefault().ToString(),
+               }).ToList();
+
+            return allPost;
+        }
+
         public async Task EditProfile(ApplicationUser user, string userId)
         {
             var allUsers = await this.userRepository.All().ToListAsync();

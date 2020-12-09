@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MountainSocialNetwork.Data.Migrations
+﻿namespace MountainSocialNetwork.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddModelVotesUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

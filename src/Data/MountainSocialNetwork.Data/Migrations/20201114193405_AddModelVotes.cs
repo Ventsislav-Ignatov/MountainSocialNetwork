@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MountainSocialNetwork.Data.Migrations
+﻿namespace MountainSocialNetwork.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddModelVotes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +19,7 @@ namespace MountainSocialNetwork.Data.Migrations
                     NewsFeedId = table.Column<int>(nullable: false),
                     NewsFeedPostId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: false),
-                    Type = table.Column<int>(nullable: false)
+                    Type = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {

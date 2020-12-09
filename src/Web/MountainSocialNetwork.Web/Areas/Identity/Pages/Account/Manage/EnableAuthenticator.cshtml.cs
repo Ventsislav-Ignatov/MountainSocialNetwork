@@ -57,10 +57,10 @@
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await this.userManager.GetUserAsync(User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             await this.LoadSharedKeyAndQrCodeUriAsync(user);
@@ -73,7 +73,7 @@
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             if (!this.ModelState.IsValid)
@@ -90,43 +90,43 @@
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError("Input.Code", "Verification code is invalid.");
-                await LoadSharedKeyAndQrCodeUriAsync(user);
-                return Page();
+                this.ModelState.AddModelError("Input.Code", "Verification code is invalid.");
+                await this.LoadSharedKeyAndQrCodeUriAsync(user);
+                return this.Page();
             }
 
-            await userManager.SetTwoFactorEnabledAsync(user, true);
-            var userId = await userManager.GetUserIdAsync(user);
-            logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+            await this.userManager.SetTwoFactorEnabledAsync(user, true);
+            var userId = await this.userManager.GetUserIdAsync(user);
+            this.logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
 
-            StatusMessage = "Your authenticator app has been verified.";
+            this.StatusMessage = "Your authenticator app has been verified.";
 
-            if (await userManager.CountRecoveryCodesAsync(user) == 0)
+            if (await this.userManager.CountRecoveryCodesAsync(user) == 0)
             {
-                var recoveryCodes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-                RecoveryCodes = recoveryCodes.ToArray();
-                return RedirectToPage("./ShowRecoveryCodes");
+                var recoveryCodes = await this.userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                this.RecoveryCodes = recoveryCodes.ToArray();
+                return this.RedirectToPage("./ShowRecoveryCodes");
             }
             else
             {
-                return RedirectToPage("./TwoFactorAuthentication");
+                return this.RedirectToPage("./TwoFactorAuthentication");
             }
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await userManager.GetAuthenticatorKeyAsync(user);
+            var unformattedKey = await this.userManager.GetAuthenticatorKeyAsync(user);
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                await userManager.ResetAuthenticatorKeyAsync(user);
-                unformattedKey = await userManager.GetAuthenticatorKeyAsync(user);
+                await this.userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await this.userManager.GetAuthenticatorKeyAsync(user);
             }
 
-            SharedKey = FormatKey(unformattedKey);
+            this.SharedKey = this.FormatKey(unformattedKey);
 
-            var email = await userManager.GetEmailAsync(user);
-            AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
+            var email = await this.userManager.GetEmailAsync(user);
+            this.AuthenticatorUri = this.GenerateQrCodeUri(email, unformattedKey);
         }
 
         private string FormatKey(string unformattedKey)
@@ -150,8 +150,8 @@
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                urlEncoder.Encode("MountainSocialNetwork.Web"),
-                urlEncoder.Encode(email),
+                this.urlEncoder.Encode("MountainSocialNetwork.Web"),
+                this.urlEncoder.Encode(email),
                 unformattedKey);
         }
     }
