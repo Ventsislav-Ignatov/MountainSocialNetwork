@@ -79,7 +79,8 @@
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISearchService, SearchService>();
-            //services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
+            services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
 
             // Cloudinary
             Account cloudinaryCredentials = new Account(
