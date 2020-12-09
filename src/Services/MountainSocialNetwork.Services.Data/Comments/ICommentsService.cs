@@ -12,7 +12,5 @@
         Task Create(int articleId, string userId, string content, int? parentId = null);
 
         bool IsInPostId(int commentId, int articleId);
-
-        Task<Comment> LastPublishedPost(string userId);
     }
 }

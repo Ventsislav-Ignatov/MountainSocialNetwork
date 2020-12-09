@@ -10,7 +10,5 @@
     public interface INewsFeedCommentService
     {
         Task Create(int newsFeedPostId, string userId, string content, int? parentId = null);
-
-        bool IsInPostId(int commentId, int articleId);
     }
 }

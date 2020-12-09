@@ -40,16 +40,5 @@
                .Select(x => x.ArticleId).FirstOrDefault();
             return commentPostId == articleId;
         }
-
-        public async Task<Comment> LastPublishedPost(string userId)
-        {
-            var comment = await this.commentsRepository
-                .All()
-                .Where(a => a.UserId == userId)
-                .OrderByDescending(o => o.CreatedOn)
-                .FirstOrDefaultAsync();
-
-            return comment;
-        }
     }
 }

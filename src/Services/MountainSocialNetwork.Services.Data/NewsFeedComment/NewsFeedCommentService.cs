@@ -1,15 +1,10 @@
 ﻿namespace MountainSocialNetwork.Services.Data.NewsFeed
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
 
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
-    using MountainSocialNetwork.Web.ViewModels.NewsFeed;
-    using Microsoft.EntityFrameworkCore;
 
     public class NewsFeedCommentService : INewsFeedCommentService
     {
@@ -33,11 +28,6 @@
 
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
-        }
-
-        public bool IsInPostId(int commentId, int articleId)
-        {
-            return true;
         }
     }
 }
