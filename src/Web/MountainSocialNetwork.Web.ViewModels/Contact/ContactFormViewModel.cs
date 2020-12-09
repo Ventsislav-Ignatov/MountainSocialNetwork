@@ -1,5 +1,7 @@
 ﻿namespace MountainSocialNetwork.Web.ViewModels.Contact
 {
+    using MountainSocialNetwork.Web.Infrastructure;
+
     using System.ComponentModel.DataAnnotations;
 
     public class ContactFormViewModel
@@ -22,5 +24,8 @@
         [StringLength(10000, ErrorMessage = "Tile must be at least two {2} symbols.", MinimumLength = 20)]
         [Display(Name = "Мessages content")]
         public string Content { get; set; }
+
+        [GoogleReCaptchaValidation]
+        public string RecaptchaValue { get; set; }
     }
 }
