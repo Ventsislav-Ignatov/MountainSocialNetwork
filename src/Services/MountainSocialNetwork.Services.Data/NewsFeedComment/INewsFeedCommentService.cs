@@ -10,5 +10,7 @@
     public interface INewsFeedCommentService
     {
         Task Create(int newsFeedPostId, string userId, string content, int? parentId = null);
+
+        Task DeleteWhenPostIsDeleted(int postId);
     }
 }

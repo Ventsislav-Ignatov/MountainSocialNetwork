@@ -169,7 +169,9 @@
 
         public async Task<string> LastProfilePicture(string userId)
         {
-            var pictures = await this.pictureRepository.All().Where(x => x.ApplicationUserId == userId).OrderByDescending(a => a.CreatedOn).Take(1).FirstOrDefaultAsync();
+            var pictures = await this.pictureRepository.All()
+                .Where(x => x.ApplicationUserId == userId)
+                .OrderByDescending(a => a.CreatedOn).FirstOrDefaultAsync();
 
             if (pictures != null)
             {

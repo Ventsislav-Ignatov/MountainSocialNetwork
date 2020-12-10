@@ -1,0 +1,70 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.ArticleCommentResponseModel
+@{
+    this.ViewData["Title"] = "Article comments Administrator Page!";
+}
+
+<table class="table table-bordered table-hover table-striped" id="DataTable">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                ArticleId
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                ParentId
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model.ArticleComments)
+        {
+        <tr>
+            <td>
+                @post.UserFirstName  @post.UserLastName
+            </td>
+            <td>
+                @post.Content
+            </td>
+            <td>
+                @post.ArticleId
+            </td>
+            <td>
+                @post.Id
+            </td>
+            <td>
+                @post.ParentId
+            </td>
+            <td>
+                <time datetime="@post.CreatedOn.ToString("O")"></time>
+            </td>
+            <td>|
+                <a asp-action="DeleteArticleComment" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+        });
+    </script>
+} 

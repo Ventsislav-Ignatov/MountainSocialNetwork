@@ -1,11 +1,13 @@
 ﻿namespace MountainSocialNetwork.Web.Controllers
 {
     using System.Threading.Tasks;
+
     using Ganss.XSS;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Data.Administrator;
+    using MountainSocialNetwork.Web.ViewModels;
     using MountainSocialNetwork.Web.ViewModels.Administration;
     using MountainSocialNetwork.Web.ViewModels.Comments;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
@@ -67,11 +69,11 @@
 
         public async Task<IActionResult> DeleteNewsFeedPost(int id)
         {
-                var post = await this.administratorService.GetNewsFeedPost(id);
+            var post = await this.administratorService.GetNewsFeedPost(id);
 
-                await this.administratorService.DeleteNewsFeedPost(post);
+            await this.administratorService.DeleteNewsFeedPost(post);
 
-                return this.RedirectToAction(nameof(this.NewsFeedPost));
+            return this.RedirectToAction(nameof(this.NewsFeedPost));
         }
 
         public async Task<IActionResult> DeleteNewsFeedComment(int id)
@@ -176,6 +178,73 @@
             await this.administratorService.UpdateComment(comment);
 
             return this.RedirectToAction(nameof(this.NewsFeedComments));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Categories()
+        {
+            var categories = await this.administratorService.GetAllCategories<CategoryViewModel>();
+
+            var model = new CategoriesResponseModel
+            {
+                Categories = categories,
+            };
+
+            return this.View(model);
+        }
+
+        [HttpGet]
+
+        public IActionResult CreateCategory()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory(CategoryInputModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var category = new Category
+            {
+                Name = model.Name,
+                Title = model.Name,
+                Description = model.Name,
+            };
+
+            await this.administratorService.CreateCategory(category);
+
+            return this.RedirectToAction(nameof(this.Categories));
+        }
+
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await this.administratorService.DeleteCategory(id);
+
+            return this.RedirectToAction(nameof(this.Categories));
+
+        }
+
+        public async Task<IActionResult> ArticleComments()
+        {
+            var comments = await this.administratorService.GetAllArticlesComment<ArticleCommentAdministrationViewModel>();
+
+            var model = new ArticleCommentResponseModel
+            {
+                ArticleComments = comments,
+            };
+
+            return this.View(model);
+        }
+
+        public async Task<IActionResult> DeleteArticleComment(int id)
+        {
+            await this.administratorService.DeleteArticleComment(id);
+
+            return this.RedirectToAction(nameof(this.ArticleComments));
 
         }
     }

@@ -12,5 +12,7 @@
         Task<IEnumerable<T>> GetAll<T>(int? count = null);
 
         Task<T> CategoriesByName<T>(string name);
+
+        Task<bool> CategoryExits(int id);
     }
 }

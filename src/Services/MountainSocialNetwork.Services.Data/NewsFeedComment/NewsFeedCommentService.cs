@@ -1,8 +1,10 @@
 ﻿namespace MountainSocialNetwork.Services.Data.NewsFeed
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.EntityFrameworkCore;
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
 
@@ -27,6 +29,18 @@
             };
 
             await this.commentsRepository.AddAsync(comment);
+            await this.commentsRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteWhenPostIsDeleted(int postId)
+        {
+            var comments = await this.commentsRepository.AllAsNoTracking().Where(x => x.NewsFeedPostId == postId).ToListAsync();
+
+            foreach (var comment in comments)
+            {
+                this.commentsRepository.Delete(comment);
+            }
+
             await this.commentsRepository.SaveChangesAsync();
         }
     }

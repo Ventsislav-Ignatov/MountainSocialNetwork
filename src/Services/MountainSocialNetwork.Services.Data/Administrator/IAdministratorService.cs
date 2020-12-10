@@ -13,8 +13,11 @@
 
          Task<IEnumerable<T>> GetAllNewsFeedComment<T>();
 
-         Task DeleteNewsFeedPost(NewsFeedPost newsFeedPost);
+         Task<IEnumerable<T>> GetAllArticlesComment<T>();
 
+         Task<IEnumerable<T>> GetAllCategories<T>();
+
+         Task DeleteNewsFeedPost(NewsFeedPost newsFeedPost);
 
          Task DeleteArticle(Article article);
 
@@ -37,6 +40,12 @@
          Task<T> GetByIdComment<T>(int id);
 
          Task<NewsFeedPost> GetNewsFeedPost(int id);
+
+         Task CreateCategory(Category category);
+
+         Task DeleteCategory(int id);
+
+         Task DeleteArticleComment(int id);
 
     }
 }

@@ -1,0 +1,61 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.CategoriesResponseModel
+@{
+    this.ViewData["Title"] = "Categories Administrator Page!";
+}
+
+<table class="table table-bordered table-hover table-striped" id="DataTable">
+
+        <a class="btn btn-outline-success my-2 my-sm-0" asp-action="CreateCategory" asp-controller="Administrator">Create new category</a>
+    <br />
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model.Categories)
+        {
+        <tr>
+            <td>
+                @category.Name
+            </td>
+            <td>
+                @category.Name
+            </td>
+            <td>
+                @category.Name
+            </td>
+            <td>
+                <time datetime="@category.CreatedOn.ToString("O")"></time>
+            </td>
+            <td>
+                <a asp-action="DeleteCategory" asp-controller="Administrator" asp-route-id="@category.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+        });
+    </script>
+} 

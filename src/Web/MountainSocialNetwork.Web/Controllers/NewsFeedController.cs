@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Data;
+    using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.TimeLine;
     using MountainSocialNetwork.Web.ViewModels.Gallery;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
@@ -25,12 +26,14 @@
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly INewsFeedService newsFeedService;
+        private readonly INewsFeedCommentService newsFeedCommentService;
         private readonly ICloudinaryService cloudinary;
 
-        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService, ICloudinaryService cloudinary)
+        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService, INewsFeedCommentService newsFeedCommentService, ICloudinaryService cloudinary)
         {
             this.userManager = userManager;
             this.newsFeedService = newsFeedService;
+            this.newsFeedCommentService = newsFeedCommentService;
             this.cloudinary = cloudinary;
         }
 
@@ -165,6 +168,8 @@
             {
                 var post = await this.newsFeedService.GetNewsFeedPost(model.Id);
 
+                await this.newsFeedCommentService.DeleteWhenPostIsDeleted(post.Id);
+
                 await this.newsFeedService.Delete(post);
             }
             else
@@ -193,6 +198,7 @@
                 Description = user.Description,
                 Town = user.Town,
                 CreatedOn = user.CreatedOn.ToString(),
+                PictureURL = await this.newsFeedService.LastProfilePicture(user.Id),
             };
 
             return this.View(viewUser);

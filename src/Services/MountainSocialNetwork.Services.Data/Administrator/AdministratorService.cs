@@ -14,13 +14,18 @@
         private readonly IDeletableEntityRepository<NewsFeedPost> newsFeedRepository;
         private readonly IDeletableEntityRepository<Article> articleRepository;
         private readonly IDeletableEntityRepository<NewsFeedComment> newsFeedCommentRepository;
+        private readonly IDeletableEntityRepository<Category> categoryRepository;
+        private readonly IDeletableEntityRepository<Comment> commentRepository;
 
         public AdministratorService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository, IDeletableEntityRepository<Article> articleRepository,
-            IDeletableEntityRepository<NewsFeedComment> newsFeedCommentRepository)
+            IDeletableEntityRepository<NewsFeedComment> newsFeedCommentRepository, IDeletableEntityRepository<Category> categoryRepository,
+            IDeletableEntityRepository<Comment> commentRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
             this.articleRepository = articleRepository;
             this.newsFeedCommentRepository = newsFeedCommentRepository;
+            this.categoryRepository = categoryRepository;
+            this.commentRepository = commentRepository;
         }
 
         public async Task<IEnumerable<T>> GetAllArticlesPost<T>()
@@ -60,6 +65,13 @@
 
         public async Task DeleteArticle(Article article)
         {
+            var comments = await this.commentRepository.All().Where(x => x.ArticleId == article.Id).ToListAsync();
+
+            foreach (var com in comments)
+            {
+                await this.DeleteArticleComment(com.Id);
+            }
+
             this.articleRepository.Delete(article);
 
             await this.articleRepository.SaveChangesAsync();
@@ -137,6 +149,56 @@
         {
             var comment = await this.newsFeedCommentRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
             return comment;
+        }
+
+        public async Task CreateCategory(Category category)
+        {
+
+            await this.categoryRepository.AddAsync(category);
+            await this.categoryRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteCategory(int id)
+        {
+            var category = await this.categoryRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+
+            var articlesInCategory = await this.articleRepository.All().Where(x => x.CategoryId == id).ToListAsync();
+
+            foreach (var article in articlesInCategory)
+            {
+                this.articleRepository.Delete(article);
+            }
+
+            if (category != null)
+            {
+                this.categoryRepository.Delete(category);
+            }
+
+            await this.categoryRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllCategories<T>()
+        {
+
+            var allCategory = await this.categoryRepository.All().OrderByDescending(x => x.CreatedOn).To<T>().ToListAsync();
+
+            return allCategory;
+        }
+
+        public async Task<IEnumerable<T>> GetAllArticlesComment<T>()
+        {
+            var comments = await this.commentRepository.All().OrderBy(x => x.Id).To<T>().ToListAsync();
+
+            return comments;
+        }
+
+        public async Task DeleteArticleComment(int id)
+        {
+            var comment = await this.commentRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+
+            this.commentRepository.Delete(comment);
+
+            await this.commentRepository.SaveChangesAsync();
         }
     }
 }

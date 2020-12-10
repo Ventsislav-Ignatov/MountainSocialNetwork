@@ -1,0 +1,21 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.CategoryInputModel
+@{
+    this.ViewData["Title"] = "Create Category";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+
+
+<form method="post" asp-action="CreateCategory" asp-controller="Administrator">
+    <div>
+
+        <label asp-for="Name"></label>
+        <textarea asp-for="Name"class="form-control"></textarea>
+        <span asp-validation-for="Name"class="text-danger"></span>
+
+
+    </div>
+    <input type="submit" class="btn btn-primary" />
+
+</form>

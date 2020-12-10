@@ -17,12 +17,11 @@
 
         [Required]
         [Display(Name = "Content")]
-        [MinLength(800, ErrorMessage = "Short content! Must be more than 200 symbols!")]
+        [MinLength(800, ErrorMessage = "Short content! Must be more than 800 symbols!")]
         [MaxLength(30000, ErrorMessage = "Long content! Must be less than 30000 symbols!")]
         public string Content { get; set; }
 
         [Required]
-        [Range(1, 4)]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 

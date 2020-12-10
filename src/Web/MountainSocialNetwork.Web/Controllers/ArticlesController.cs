@@ -57,8 +57,16 @@
         [HttpPost]
         public async Task<IActionResult> Create(ArticlePostCreateInputModel model)
         {
+
+            if (!await this.categoriesService.CategoryExits(model.CategoryId))
+            {
+                return this.RedirectToAction(nameof(this.Create));
+            }
+
             if (!this.ModelState.IsValid)
             {
+                var categories = await this.categoriesService.GetAll<CategoryDropDownViewModel>();
+                model.Categories = categories;
                 return this.View(model);
             }
 

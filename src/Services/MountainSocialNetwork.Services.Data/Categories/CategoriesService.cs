@@ -39,5 +39,19 @@
             var category = await this.categoryRepository.All().Where(x => x.Name == name).To<T>().FirstOrDefaultAsync();
             return category;
         }
+
+        public async Task<bool> CategoryExits(int id)
+        {
+            var category = await this.categoryRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+
+            if (category != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

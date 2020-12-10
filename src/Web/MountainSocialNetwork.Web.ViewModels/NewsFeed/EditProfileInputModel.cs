@@ -28,5 +28,6 @@
 
         public IFormFile CoverPhoto { get; set; }
 
+        public string PictureURL { get; set; }
     }
 }
