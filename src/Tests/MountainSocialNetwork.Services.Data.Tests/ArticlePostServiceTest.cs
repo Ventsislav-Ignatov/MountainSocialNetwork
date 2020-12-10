@@ -23,7 +23,6 @@
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
             var dbContext = new ApplicationDbContext(options);
 
-
             var repositoryArticle = new EfDeletableEntityRepository<Article>(dbContext);
             var repositoryArticlePicture = new EfRepository<ArticlePicture>(dbContext);
             var repositoryUserFavouriteArticle = new EfDeletableEntityRepository<UserFavouriteArticle>(dbContext);

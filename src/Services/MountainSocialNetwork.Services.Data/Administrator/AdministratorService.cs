@@ -151,11 +151,19 @@
             return comment;
         }
 
-        public async Task CreateCategory(Category category)
+        public async Task<int> CreateCategory(string name)
         {
+            var category = new Category
+            {
+                Name = name,
+                Title = name,
+                Description = name,
+            };
 
             await this.categoryRepository.AddAsync(category);
             await this.categoryRepository.SaveChangesAsync();
+
+            return category.Id;
         }
 
         public async Task DeleteCategory(int id)
@@ -164,13 +172,13 @@
 
             var articlesInCategory = await this.articleRepository.All().Where(x => x.CategoryId == id).ToListAsync();
 
-            foreach (var article in articlesInCategory)
-            {
-                this.articleRepository.Delete(article);
-            }
-
             if (category != null)
             {
+                foreach (var article in articlesInCategory)
+                {
+                    this.articleRepository.Delete(article);
+                }
+
                 this.categoryRepository.Delete(category);
             }
 

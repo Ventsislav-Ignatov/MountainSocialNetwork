@@ -41,7 +41,7 @@
 
          Task<NewsFeedPost> GetNewsFeedPost(int id);
 
-         Task CreateCategory(Category category);
+         Task<int> CreateCategory(string name);
 
          Task DeleteCategory(int id);
 

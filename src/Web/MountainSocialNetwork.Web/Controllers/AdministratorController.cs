@@ -208,14 +208,7 @@
                 return this.View(model);
             }
 
-            var category = new Category
-            {
-                Name = model.Name,
-                Title = model.Name,
-                Description = model.Name,
-            };
-
-            await this.administratorService.CreateCategory(category);
+            await this.administratorService.CreateCategory(model.Name);
 
             return this.RedirectToAction(nameof(this.Categories));
         }
