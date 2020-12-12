@@ -105,6 +105,7 @@
                     Content = x.Content,
                     FirstName = x.User.FirstName,
                     LastName = x.User.LastName,
+                    UserName = x.User.UserName,
                     CreatedOn = x.CreatedOn,
                     UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
                     DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),

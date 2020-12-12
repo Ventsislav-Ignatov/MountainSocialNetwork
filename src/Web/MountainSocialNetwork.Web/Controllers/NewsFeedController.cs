@@ -90,6 +90,35 @@
         }
 
         [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> PersonalNewsFeedByUser(string userName, int id = 1)
+        {
+            var user = await this.userManager.FindByNameAsync(userName);
+
+            var posts = new TimeLineViewModel
+            {
+                PostsPerPage = PostPerPage,
+                PageNumber = id,
+                UserName = user.UserName,
+                AllPosts = this.newsFeedService.GetAllSocialPostsByUser(user.Id, id, PostPerPage),
+                PostsCount = this.newsFeedService.GetPostsCount(),
+                NewsComments = await this.newsFeedService.GetAllComments(),
+            };
+
+            posts.FirstName = user.FirstName;
+            posts.LastName = user.LastName;
+            posts.Description = user.Description;
+            posts.Town = user.Town;
+            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
+            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+
+            return this.View(posts);
+
+
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreatePost(TimeLineViewModel model)
         {
@@ -255,9 +284,41 @@
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> ProfilePicturesGalleryForUser(string userName)
+        {
+            var user = await this.userManager.FindByNameAsync(userName);
+
+            var pictures = await this.newsFeedService.GetAllProfilePictures<ProfileGalleryViewModel>(user.Id);
+
+            var viewModel = new ProfileGalleryResponseViewModel
+            {
+                UserProfilePictures = pictures,
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> CoverPicturesGallery()
         {
             var user = await this.userManager.GetUserAsync(this.User);
+
+            var coverPictures = await this.newsFeedService.GetAllCoverPictures<CoverGalleryViewModel>(user.Id);
+
+            var viewModel = new CoverGalleryResponseViewModel
+            {
+                UserCoverPictures = coverPictures,
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CoverPicturesGalleryForUser(string userName)
+        {
+            var user = await this.userManager.FindByNameAsync(userName);
 
             var coverPictures = await this.newsFeedService.GetAllCoverPictures<CoverGalleryViewModel>(user.Id);
 

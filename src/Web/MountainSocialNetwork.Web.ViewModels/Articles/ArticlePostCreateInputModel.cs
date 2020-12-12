@@ -15,7 +15,7 @@
         [MaxLength(100)]
         public string Title { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Should be minimum 800 symbols!")]
         [Display(Name = "Content")]
         [MinLength(800, ErrorMessage = "Short content! Must be more than 800 symbols!")]
         [MaxLength(30000, ErrorMessage = "Long content! Must be less than 30000 symbols!")]

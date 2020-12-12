@@ -27,6 +27,8 @@
 
         public string OwnerPictureUrl { get; set; }
 
+        public string UserName { get; set; }
+
         //public void CreateMappings(IProfileExpression configuration)
         //{
         //    configuration.CreateMap<NewsFeedPost, TimeLineAllPostsViewModel>()
