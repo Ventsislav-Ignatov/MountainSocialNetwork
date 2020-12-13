@@ -1,5 +1,11 @@
 ﻿@model MountainSocialNetwork.Web.ViewModels.SocialTimeLine.TimeLineViewModel
+@using Microsoft.AspNetCore.Identity
+@using MountainSocialNetwork.Data.Models
+@using System.Globalization;
+@inject UserManager<ApplicationUser> UserManager
 @{
+    var currentUser = await this.UserManager.GetUserAsync(this.User);
+
     this.ViewData["Title"] = "Personal NewsFeed";
 }
 
@@ -20,7 +26,7 @@
                     <img src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
 
                 }
-                <h3>@Model.FirstName @Model.LastName </h3>
+                <h3>@currentUser.FirstName @currentUser.LastName </h3>
                 <p>Dreamer!</p>
             </div>
             <div class="row ">
@@ -41,12 +47,21 @@
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="h7 "><strong>Name : </strong>@Model.FirstName @Model.LastName</div>
+                    <div class="h7 "><strong>Name : </strong>@currentUser.FirstName @currentUser.LastName</div>
                     <div class="h7">
-                        <strong>About :</strong> @Model.Description
+                        <strong>About :</strong> @currentUser.Description
                     </div>
                     <div class="h7">
-                        <strong>Born :</strong> @Model.BirthDay
+                        <strong>Born :</strong> @currentUser.BirthDay.ToString("d", CultureInfo.InvariantCulture)
+                    </div>
+                    <div class="h7">
+                        <strong>Birthplace :</strong> @currentUser.Town
+                    </div>
+                    <div class="h7">
+                        <a><strong>Friends @Model.FriendCount</strong></a>
+                    </div>
+                    <div class="h7">
+                        <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request</strong></a>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -147,17 +162,17 @@
                                 <div class="mr-2">
                                     @if (post.OwnerPictureUrl != null)
                                     {
-                                        <img class="rounded-circle" width="95" height="85" src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                        <img class="rounded-circle" width="95" height="85" src="@post.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png">
 
                                     }
                                     else
                                     {
-                                        <img class="rounded-circle" width="95" height="85" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+                                        <img class="rounded-circle" width="95" height="85" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="">
 
                                     }
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div>
+                                    <div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div>
                                     <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                                 </div>
                             </div>
@@ -221,12 +236,12 @@
                                             @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
                                             @if (post.OwnerPictureUrl != null)
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png">
 
                                             }
                                             else
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="">
 
                                             }
                                         </div>
@@ -266,13 +281,13 @@
 <nav aria-label="...">
     <ul class="pagination justify-content-center">
         <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text>} ">
-            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.PreviousPageNumber">Previous</a>
+            <a class="page-link" asp-action="PersonalNewsFeed" asp-route-id="@Model.PreviousPageNumber">Previous</a>
         </li>
         @for (int i = Model.PageNumber - 2; i < Model.PageNumber; i++)
         {
             if (i > 0)
             {
-                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-action="PersonalNewsFeed" asp-route-id="@i">@i</a></li>
 
             }
         }
@@ -286,13 +301,13 @@
         {
             if (i <= Model.PagesCount)
             {
-                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-action="PersonalNewsFeed" asp-route-id="@i">@i</a></li>
 
             }
 
         }
         <li class="page-item @if (!Model.HasNextPage) { <text> disabled </text>} ">
-            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.NextPageNumber">Next</a>
+            <a class="page-link" asp-action="PersonalNewsFeed" asp-route-id="@Model.NextPageNumber">Next</a>
         </li>
     </ul>
 </nav>

@@ -40,6 +40,11 @@
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
+                    <form asp-action="SendFriendRequest" asp-controller="Friend" method="post">
+                        <input type="hidden" name="userName" value="@Model.UserName" />
+                        <a><i class="fas fa-user-friends">  Add Friend</i></a>
+                        <button type="submit"></button>
+                    </form>
                     <div class="h7 "><strong>Name : </strong>@Model.FirstName @Model.LastName</div>
                     <div class="h7">
                         <strong>About :</strong> @Model.Description
@@ -156,7 +161,7 @@
                                     }
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div>
+                                    <div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div>
                                     <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                                 </div>
                             </div>
@@ -220,12 +225,12 @@
                                             @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
                                             @if (post.OwnerPictureUrl != null)
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png">
 
                                             }
                                             else
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" >
 
                                             }
                                         </div>
@@ -265,13 +270,13 @@
 <nav aria-label="...">
     <ul class="pagination justify-content-center">
         <li class="page-item @if (!Model.HasPreviousPage) { <text> disabled </text>} ">
-            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.PreviousPageNumber">Previous</a>
+            <a class="page-link" asp-action="PersonalNewsFeedByUser" asp-route-userName="@Model.UserName" asp-route-id="@Model.PreviousPageNumber">Previous</a>
         </li>
         @for (int i = Model.PageNumber - 2; i < Model.PageNumber; i++)
         {
             if (i > 0)
             {
-                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-route-userName="@Model.UserName" asp-action="PersonalNewsFeedByUser" asp-route-id="@i">@i</a></li>
 
             }
         }
@@ -285,13 +290,13 @@
         {
             if (i <= Model.PagesCount)
             {
-                <li class="page-item"><a class="page-link" asp-action="NewsFeedContent" asp-route-id="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-route-userName="@Model.UserName" asp-action="PersonalNewsFeedByUser" asp-route-id="@i">@i</a></li>
 
             }
 
         }
         <li class="page-item @if (!Model.HasNextPage) { <text> disabled </text>} ">
-            <a class="page-link" asp-action="NewsFeedContent" asp-route-id="@Model.NextPageNumber">Next</a>
+            <a class="page-link" asp-action="PersonalNewsFeedByUser" asp-route-userName="@Model.UserName" asp-route-id="@Model.NextPageNumber">Next</a>
         </li>
     </ul>
 </nav>

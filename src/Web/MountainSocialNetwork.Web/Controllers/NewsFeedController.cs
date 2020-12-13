@@ -43,24 +43,19 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var posts = new TimeLineViewModel
+            var model = new TimeLineViewModel
             {
                 PostsPerPage = PostPerPage,
                 PageNumber = id,
-                AllPosts = this.newsFeedService.GetAllSocialPosts(id, PostPerPage),
+                AllPosts = this.newsFeedService.GetAllSocialPosts<TimeLineAllPostsViewModel>(id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCount(),
                 NewsComments = await this.newsFeedService.GetAllComments(),
             };
 
-            posts.FirstName = user.FirstName;
-            posts.LastName = user.LastName;
-            posts.Description = user.Description;
-            posts.Town = user.Town;
-            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
 
-            return this.View(posts);
+            return this.View(model);
         }
 
         [Authorize]
@@ -69,24 +64,20 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var posts = new TimeLineViewModel
+            var model = new TimeLineViewModel
             {
                 PostsPerPage = PostPerPage,
                 PageNumber = id,
-                AllPosts = this.newsFeedService.GetAllSocialPostsByUser(user.Id, id, PostPerPage),
-                PostsCount = this.newsFeedService.GetPostsCount(),
+                AllPosts = this.newsFeedService.GetAllSocialPostsByUser<TimeLineAllPostsViewModel>(user.Id, id, PostPerPage),
+                PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
                 NewsComments = await this.newsFeedService.GetAllComments(),
+                FriendCount = await this.newsFeedService.GetFriendCount(user.Id),
             };
 
-            posts.FirstName = user.FirstName;
-            posts.LastName = user.LastName;
-            posts.Description = user.Description;
-            posts.Town = user.Town;
-            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
 
-            return this.View(posts);
+            return this.View(model);
         }
 
         [Authorize]
@@ -95,25 +86,25 @@
         {
             var user = await this.userManager.FindByNameAsync(userName);
 
-            var posts = new TimeLineViewModel
+            var model = new TimeLineViewModel
             {
                 PostsPerPage = PostPerPage,
                 PageNumber = id,
                 UserName = user.UserName,
-                AllPosts = this.newsFeedService.GetAllSocialPostsByUser(user.Id, id, PostPerPage),
-                PostsCount = this.newsFeedService.GetPostsCount(),
+                AllPosts = this.newsFeedService.GetAllSocialPostsByUser<TimeLineAllPostsViewModel>(user.Id, id, PostPerPage),
+                PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
                 NewsComments = await this.newsFeedService.GetAllComments(),
             };
 
-            posts.FirstName = user.FirstName;
-            posts.LastName = user.LastName;
-            posts.Description = user.Description;
-            posts.Town = user.Town;
-            posts.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            posts.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            posts.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Description = user.Description;
+            model.Town = user.Town;
+            model.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
 
-            return this.View(posts);
+            return this.View(model);
 
 
         }

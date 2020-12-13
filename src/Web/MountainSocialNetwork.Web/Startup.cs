@@ -1,6 +1,7 @@
 ﻿namespace MountainSocialNetwork.Web
 {
     using System.Reflection;
+
     using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -18,6 +19,7 @@
     using MountainSocialNetwork.Data.Seeding;
     using MountainSocialNetwork.Services.Data;
     using MountainSocialNetwork.Services.Data.Administrator;
+    using MountainSocialNetwork.Services.Data.Friend;
     using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.Search;
     using MountainSocialNetwork.Services.Data.TimeLine;
@@ -56,6 +58,7 @@
                     {
                       options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }).AddRazorRuntimeCompilation();
+            services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -80,6 +83,7 @@
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.AddTransient<IFriendService, FriendService>();
             services.Configure<MailKitEmailSenderOptions>(this.configuration.GetSection("SmtpSettings"));
 
             // Cloudinary
@@ -136,11 +140,10 @@
 
             app.UseEndpoints(
                 endpoints =>
-                    {
-                        endpoints.MapControllerRoute("default", "{controller=NewsFeed}/{action=NewsFeedContent}/{id?}");
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        //endpoints.MapControllerRoute("CategoryName", "BlogHomePage/{name:minlength(2)}", new { controller = "BlogHomePage", action = "CategoriesByName" });
-                        endpoints.MapRazorPages();
+                {
+                    endpoints.MapControllerRoute("default", "{controller=NewsFeed}/{action=NewsFeedContent}/{id?}");
+                    endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
                     });
         }
     }

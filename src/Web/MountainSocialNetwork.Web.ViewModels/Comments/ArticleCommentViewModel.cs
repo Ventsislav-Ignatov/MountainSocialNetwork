@@ -31,7 +31,7 @@
             configuration.CreateMap<Comment, ArticleCommentViewModel>()
                 .ForMember(x => x.OwnerPictureUrl, opt =>
                 opt.MapFrom(x =>
-                   x.User.UserProfilePictures.OrderByDescending(x=>x.CreatedOn).FirstOrDefault().PictureURL));
+                   x.User.UserProfilePictures.OrderByDescending(x => x.CreatedOn).FirstOrDefault().PictureURL));
         }
     }
 }

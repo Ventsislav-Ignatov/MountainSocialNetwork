@@ -1,0 +1,120 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Friend.UserRequestFriendshipResponseModel
+@using Microsoft.AspNetCore.Identity
+@using MountainSocialNetwork.Data.Models
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    var currentUser = await this.UserManager.GetUserAsync(this.User);
+
+    this.ViewData["Title"] = "Friend Request";
+}
+
+
+<link href="~/css/FriendReuqest.css" rel="stylesheet" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
+                <!-- begin profile -->
+                <div class="profile">
+                    <div class="profile-header">
+                        <!-- BEGIN profile-header-cover -->
+                        <div class="profile-header-cover"></div>
+                        <!-- END profile-header-cover -->
+                        <!-- BEGIN profile-header-content -->
+                        <div class="profile-header-content">
+                            <!-- BEGIN profile-header-img -->
+                            <div class="profile-header-img">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                            </div>
+                            <!-- END profile-header-img -->
+                            <!-- BEGIN profile-header-info -->
+                            <div class="profile-header-info">
+                                <h4 class="m-t-10 m-b-5">Sean Ngu</h4>
+                                <p class="m-b-10">UXUI + Frontend Developer</p>
+                                <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
+                            </div>
+                            <!-- END profile-header-info -->
+                        </div>
+                        <!-- END profile-header-content -->
+                        <!-- BEGIN profile-header-tab -->
+                        <ul class="profile-header-tab nav nav-tabs">
+                            <li class="nav-item"><a href="#profile-post" class="nav-link" data-toggle="tab">POSTS</a></li>
+                            <li class="nav-item"><a href="#profile-about" class="nav-link" data-toggle="tab">ABOUT</a></li>
+                            <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">PHOTOS</a></li>
+                            <li class="nav-item"><a href="#profile-videos" class="nav-link" data-toggle="tab">VIDEOS</a></li>
+                            <li class="nav-item"><a href="#profile-friends" class="nav-link active show" data-toggle="tab">FRIENDS</a></li>
+                        </ul>
+                        <!-- END profile-header-tab -->
+                    </div>
+                </div>
+                <!-- end profile -->
+                <!-- begin profile-content -->
+                @foreach (var friend in Model.Friendship)
+                {
+                    <div class="profile-content">
+                        <!-- begin tab-content -->
+                        <div class="tab-content p-0">
+                            <!-- begin #profile-friends tab -->
+                            <div class="tab-pane fade in active show" id="profile-friends">
+                                <h4 class="m-t-0 m-b-20">Friend List (14)</h4>
+                                <!-- begin row -->
+                                <!-- end col-6 -->
+                                <!-- begin col-6 -->
+                                <!-- end col-6 -->
+                                <!-- begin col-6 -->
+                                <div class="col-md-6 m-b-2">
+                                    <div class="p-10 bg-white">
+                                        <div class="media media-xs overflow-visible">
+                                            <a class="media-left">
+                                                @if (friend.PictureURL != null)
+                                                {
+                                                    <img width="150" height="100" src="@friend.PictureURL">
+
+                                                }
+                                                else
+                                                {
+                                                    <img src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" width="150" height="100">
+                                                }
+                                            </a>
+                                            <div class="media-body valign-middle">
+                                                <b class="text-inverse">@friend.SenderFirstName @friend.SenderLastName</b>
+                                            </div>
+                                            <div class="media-body valign-middle text-right overflow-visible">
+                                                <div>
+                                                    <form method="post" asp-controller="Friend" asp-action="ApproveFriendRequest">
+                                                        <input type="hidden" name="ReceiverId" value="@currentUser.UserName" />
+                                                        <input type="hidden" name="SenderName" value="@friend.SenderUserName" />
+                                                        <a class="btn btn-default">Approve</a>
+                                                        <button type="submit"></button>
+                                                    </form>
+                                                </div>
+                                                <div>
+                                                    <form method="post" asp-controller="Friend" asp-action="DeclineFriendRequest">
+                                                        <input type="hidden" name="ReceiverId" value="@currentUser.UserName" />
+                                                        <input type="hidden" name="SenderName" value="@friend.SenderUserName" />
+                                                        <a class="btn btn-default">Decline</a>
+                                                        <button type="submit"></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end col-6 -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end #profile-friends tab -->
+                    </div>
+                }
+                <!-- end tab-content -->
+            </div>
+            <!-- end profile-content -->
+        </div>
+    </div>
+</div>

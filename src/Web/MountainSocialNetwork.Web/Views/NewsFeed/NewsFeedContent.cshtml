@@ -1,5 +1,11 @@
 ﻿@model MountainSocialNetwork.Web.ViewModels.SocialTimeLine.TimeLineViewModel
+@using Microsoft.AspNetCore.Identity
+@using MountainSocialNetwork.Data.Models
+@using System.Globalization;
+@inject UserManager<ApplicationUser> UserManager
 @{
+    var currentUser = await this.UserManager.GetUserAsync(this.User);
+
     this.ViewData["Title"] = "NewsFeed";
 }
 
@@ -21,7 +27,7 @@
                     <img src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
 
                 }
-                <h3>@Model.FirstName @Model.LastName </h3>
+                <h3>@currentUser.FirstName @currentUser.LastName </h3>
                 <p>Dreamer!</p>
             </div>
             <div class="row ">
@@ -42,28 +48,21 @@
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="h7 "><strong>Name : </strong>@Model.FirstName @Model.LastName</div>
+                    <div class="h7 "><strong>Name : </strong>@currentUser.FirstName @currentUser.LastName</div>
                     <div class="h7">
-                        <strong>About :</strong> @Model.Description
+                        <strong>About :</strong> @currentUser.Description
                     </div>
                     <div class="h7">
-                        <strong>Born :</strong> @Model.BirthDay
+                        <strong>Born :</strong> @currentUser.BirthDay.ToString("d", CultureInfo.InvariantCulture)
+                    </div>
+                    <div class="h7">
+                        <strong>Birthplace :</strong> @currentUser.Town
+                    </div>
+                    <br />
+                    <div class="h7">
+                        <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request</strong></a>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Followers</div>
-                        <div class="h5">5.2342</div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Following</div>
-                        <div class="h5">6758</div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Themes</div>
-                        <div class="h5">6758</div>
-                    </li>
-                </ul>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -158,7 +157,7 @@
                                     }
                                 </div>
                                 <div class="ml-2">
-                                    <a  asp-controller="NewsFeed" asp-action="PersonalNewsFeedByUser" asp-route-userName="@post.UserName"><div class="h5 m-0 text-blue">@post.FirstName  @post.LastName</div></a>
+                                    <a asp-controller="NewsFeed" asp-action="PersonalNewsFeedByUser" asp-route-userName="@post.UserUserName"><div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div></a>
                                     <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                                 </div>
                             </div>
@@ -222,12 +221,12 @@
                                             @*<img class="rounded-circle" width="45" src="@Model.PictureUrl" alt="">*@
                                             @if (post.OwnerPictureUrl != null)
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="@comments.PictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png">
 
                                             }
                                             else
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="">
 
                                             }
                                         </div>
@@ -318,7 +317,6 @@
                     console.log(data);
                     $("#upVotes_" + NewsFeedPostId).html(data.upVotes);
                     $("#downVotes_" + NewsFeedPostId).html(data.downVotes);
-                    alert("Liked successfully!");
                 }
             });
         }

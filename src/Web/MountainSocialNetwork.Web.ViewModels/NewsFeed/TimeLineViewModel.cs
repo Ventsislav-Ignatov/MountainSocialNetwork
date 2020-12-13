@@ -12,12 +12,10 @@
     using MountainSocialNetwork.Services.Mapping;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
 
-    public class TimeLineViewModel : IMapFrom<NewsFeedPost>, IHaveCustomMappings
+    public class TimeLineViewModel
     {
         public IEnumerable<TimeLineAllPostsViewModel> AllPosts { get; set; }
 
-        [Required]
-        public int Id { get; set; }
 
         [Required]
         [MinLength(5, ErrorMessage = "Short content! Must be more than 5 symbols!")]
@@ -40,6 +38,8 @@
 
         public string CoverPictureUrl { get; set; }
 
+        public int FriendCount { get; set; }
+
         public int PageNumber { get; set; }
 
         public int PostsCount { get; set; }
@@ -57,14 +57,5 @@
         public int PagesCount => (int)Math.Ceiling((double)this.PostsCount / this.PostsPerPage);
 
         public IEnumerable<PostCommentViewModel> NewsComments { get; set; }
-
-        public void CreateMappings(IProfileExpression configuration)
-        {
-            configuration.CreateMap<NewsFeedPost, TimeLineViewModel>()
-                .ForMember(x => x.Id, options =>
-                {
-                    options.MapFrom(a => a.Id);
-                });
-        }
     }
 }

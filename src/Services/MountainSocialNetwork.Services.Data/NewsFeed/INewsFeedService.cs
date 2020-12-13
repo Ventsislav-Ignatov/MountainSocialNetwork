@@ -13,13 +13,13 @@
     {
         Task<int> CreateAsync(string content, string userId);
 
-        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4);
+        IEnumerable<T> GetAllSocialPosts<T>(int page, int itemsPerPage = 4);
 
-        IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPostsByUser(string userId, int page, int itemsPerPage = 4);
+        //IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4);
+
+        IEnumerable<T> GetAllSocialPostsByUser<T>(string userId, int page, int itemsPerPage = 4);
 
         Task<IEnumerable<PostCommentViewModel>> GetAllComments();
-
-        //IEnumerable<T> GetAllSocialPosts<T>(int? count = null);
 
         Task<bool> ExistsAndOwner(int id, string authorId);
 
@@ -43,8 +43,12 @@
 
         int GetPostsCount();
 
+        int GetPostsCountByUser(string userId);
+
         Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId);
 
         Task<IEnumerable<T>> GetAllCoverPictures<T>(string userId);
+
+        Task<int> GetFriendCount(string userId);
     }
 }

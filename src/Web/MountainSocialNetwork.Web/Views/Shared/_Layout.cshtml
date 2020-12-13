@@ -32,15 +32,12 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                         {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Administrator" asp-action="Administration">Administration</a>
-                    </li>
-}
+                           <li class="nav-item">
+                          <a class="nav-link text-dark" asp-controller="Administrator" asp-action="Administration">Administration</a>
+                            </li>
+                        } 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Forecast" asp-action="Forecast">Forecast</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Chat">Live Chat</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Contact">Contacts</a>

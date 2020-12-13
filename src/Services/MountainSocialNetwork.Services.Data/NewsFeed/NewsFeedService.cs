@@ -20,17 +20,19 @@
         private readonly IRepository<UserProfilePicture> pictureRepository;
         private readonly IDeletableEntityRepository<NewsFeedComment> commentRepository;
         private readonly IRepository<UserCoverPicture> coverPictureRepository;
-
+        private readonly IDeletableEntityRepository<Friend> friendRepository;
 
         public NewsFeedService(IDeletableEntityRepository<NewsFeedPost> newsFeedRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository, IRepository<UserProfilePicture> pictureRepository,
-            IDeletableEntityRepository<NewsFeedComment> commentRepository, IRepository<UserCoverPicture> coverPictureRepository)
+            IDeletableEntityRepository<NewsFeedComment> commentRepository, IRepository<UserCoverPicture> coverPictureRepository,
+            IDeletableEntityRepository<Friend> friendRepository)
         {
             this.newsFeedRepository = newsFeedRepository;
             this.userRepository = userRepository;
             this.pictureRepository = pictureRepository;
             this.commentRepository = commentRepository;
             this.coverPictureRepository = coverPictureRepository;
+            this.friendRepository = friendRepository;
         }
 
         public async Task<int> CreateAsync(string content, string userId)
@@ -58,17 +60,13 @@
             return await this.newsFeedRepository.All().AnyAsync(x => x.Id == id && x.UserId == authorId);
         }
 
-        //public IEnumerable<T> GetAllSocialPosts<T>(int? count = null)
-        //{
-        //    IQueryable<NewsFeedPost> timeLinePosts = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn);
+        public IEnumerable<T> GetAllSocialPosts<T>(int page, int itemsPerPage = 4)
+        {
+            var posts = this.newsFeedRepository.All().OrderByDescending(x => x.CreatedOn)
+                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage).To<T>().ToList();
 
-        //    if (count.HasValue)
-        //    {
-        //        timeLinePosts = timeLinePosts.Take(count.Value);
-        //    }
-
-        //    return timeLinePosts.To<T>().ToList();
-        //}
+            return posts;
+        }
 
         public async Task<NewsFeedPost> Update(NewsFeedPost newsFeedPost)
         {
@@ -95,49 +93,35 @@
             return post;
         }
 
-        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4)
-        {
-            var allPost = this.newsFeedRepository.AllAsNoTracking().OrderByDescending(a => a.CreatedOn)
-                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
-                .Select(x => new TimeLineAllPostsViewModel
-                {
-                    Id = x.Id,
-                    Content = x.Content,
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    UserName = x.User.UserName,
-                    CreatedOn = x.CreatedOn,
-                    UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
-                    DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
-                    OwnerPictureUrl = x.User.UserProfilePictures
-                    .Where(a => a.ApplicationUserId == x.UserId)
-                    .OrderByDescending(o => o.CreatedOn)
-                    .Select(s => s.PictureURL)
-                    .FirstOrDefault().ToString(),
-                }).ToList();
+        //public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPosts(int page, int itemsPerPage = 4)
+        //{
+        //    var allPost = this.newsFeedRepository.All().OrderByDescending(a => a.CreatedOn)
+        //      .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+        //      .Select(x => new TimeLineAllPostsViewModel
+        //      {
+        //          Id = x.Id,
+        //          Content = x.Content,
+        //          UserUserName = x.User.UserName,
+        //          UserFirstName = x.User.FirstName,
+        //          UserLastName = x.User.LastName,
+        //          CreatedOn = x.CreatedOn,
+        //          UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
+        //          DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
+        //          OwnerPictureUrl = x.User.UserProfilePictures
+        //          .Where(a => a.ApplicationUserId == x.UserId)
+        //          .OrderByDescending(o => o.CreatedOn)
+        //          .Select(s => s.PictureURL)
+        //          .FirstOrDefault().ToString(),
+        //      }).ToList();
 
-            return allPost;
-        }
+        //    return allPost;
+        //}
 
-        public IEnumerable<TimeLineAllPostsViewModel> GetAllSocialPostsByUser(string userId, int page, int itemsPerPage = 4)
+        public IEnumerable<T> GetAllSocialPostsByUser<T>(string userId, int page, int itemsPerPage = 4)
         {
-            var allPost = this.newsFeedRepository.AllAsNoTracking().Where(x => x.UserId == userId).OrderByDescending(a => a.CreatedOn)
+            var allPost = this.newsFeedRepository.All().Where(x => x.UserId == userId).OrderByDescending(a => a.CreatedOn)
                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
-               .Select(x => new TimeLineAllPostsViewModel
-               {
-                   Id = x.Id,
-                   Content = x.Content,
-                   FirstName = x.User.FirstName,
-                   LastName = x.User.LastName,
-                   CreatedOn = x.CreatedOn,
-                   UpVotes = x.Votes.Where(v => v.IsUpVote == true).Count(),
-                   DownVotes = x.Votes.Where(d => d.IsUpVote == false).Count(),
-                   OwnerPictureUrl = x.User.UserProfilePictures
-                   .Where(a => a.ApplicationUserId == x.UserId)
-                   .OrderByDescending(o => o.CreatedOn)
-                   .Select(s => s.PictureURL)
-                   .FirstOrDefault().ToString(),
-               }).ToList();
+               .To<T>().ToList();
 
             return allPost;
         }
@@ -203,6 +187,11 @@
             return this.newsFeedRepository.All().Count();
         }
 
+        public int GetPostsCountByUser(string userId)
+        {
+            return this.newsFeedRepository.All().Where(x => x.UserId == userId).Count();
+        }
+
         public async Task<IEnumerable<PostCommentViewModel>> GetAllComments()
         {
             var comments = await this.commentRepository.AllAsNoTracking()
@@ -250,6 +239,13 @@
             var coverPictures = await this.coverPictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
 
             return coverPictures;
+        }
+
+        public async Task<int> GetFriendCount(string userId)
+        {
+            var friendCount = await this.friendRepository.All().Where(x => x.ReceiverId == userId).CountAsync();
+
+            return friendCount;
         }
     }
 }

@@ -47,6 +47,10 @@
 
         public DbSet<UserCoverPicture> CoverPictures { get; set; }
 
+        public DbSet<Friend> UserFriends { get; set; }
+
+        public DbSet<FriendRequest> UserFriendRequests { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -74,6 +78,18 @@
             this.ConfigureUserIdentityRelations(builder);
 
             builder.Entity<UserFavouriteArticle>().HasKey(s => new { s.UserId, s.ArticleId });
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(e => e.Friends)
+                .WithOne(e => e.Receiver);
+
+            builder.Entity<FriendRequest>()
+                .HasOne(e => e.Sender)
+                .WithMany(e => e.FriendRequestSend);
+
+            builder.Entity<FriendRequest>()
+                .HasOne(e => e.Receiver)
+                .WithMany(e => e.FriendRequestReceived);
 
             EntityIndexesConfiguration.Configure(builder);
 

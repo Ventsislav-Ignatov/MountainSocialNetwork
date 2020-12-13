@@ -45,8 +45,7 @@
             configuration.CreateMap<Article, HomeBlogArticleViewModel>()
                 .ForMember(x => x.PictureUrl, opt =>
                 opt.MapFrom(x =>
-                x.ArticlePictures.OrderByDescending(p => p.CreatedOn).FirstOrDefault().PictureURL
-                ));
+                x.ArticlePictures.OrderByDescending(p => p.CreatedOn).FirstOrDefault().PictureURL));
         }
     }
 }
