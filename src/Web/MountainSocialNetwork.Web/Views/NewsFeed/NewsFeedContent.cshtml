@@ -4,9 +4,12 @@
 @using System.Globalization;
 @inject UserManager<ApplicationUser> UserManager
 @{
+    this.ViewData["Title"] = "NewsFeed";
+
     var currentUser = await this.UserManager.GetUserAsync(this.User);
 
-    this.ViewData["Title"] = "NewsFeed";
+    var description = "Go in edit profile and put a description";
+
 }
 
 <link href="~/css/newsfeed.css" rel="stylesheet" />
@@ -50,7 +53,14 @@
                 <div class="card-body">
                     <div class="h7 "><strong>Name : </strong>@currentUser.FirstName @currentUser.LastName</div>
                     <div class="h7">
-                        <strong>About :</strong> @currentUser.Description
+                        @if (currentUser.Description != null)
+                        {
+                            <strong>About: </strong>@currentUser.Description
+                        }
+                        else
+                        {
+                            <strong>About: </strong> @description
+                        }
                     </div>
                     <div class="h7">
                         <strong>Born :</strong> @currentUser.BirthDay.ToString("d", CultureInfo.InvariantCulture)

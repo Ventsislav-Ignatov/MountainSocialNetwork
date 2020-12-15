@@ -85,8 +85,8 @@
             <div class="col-lg-4">
                 <img class="card-img-top" height="250" width="200   " src="@article.ArticlePicturesPictureURL" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
 
-                <h2>@article.Title</h2>
-                <p>@article.ShortContent</p>
+                <h2>@article.ShortTitle</h2>
+                <p>@Html.Raw(article.ShortContent)</p>
                 <div class="card-footer text-muted">
                     <a class="fas fa-calendar-alt"> Posted on <time datetime="@article.CreatedOn.ToString("O")"></time> by  </a>
                     <a class="fas fa-user"> @article.UserFirstName @article.UserLastName  </a>
@@ -224,19 +224,19 @@
             </div>
 
 
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Last Published Articles</h5>
-                <div class="card-body">
-                    @foreach (var last in Model.LastThreeArticles)
-                    {
-                        <a asp-controller="Articles" asp-action="ById" asp-route-id="@last.Id">
-                            @last.Title by @last.UserUserName
-                        </a>
-                    }
-                </div>
+                <!-- Side Widget -->
+                <!--<div class="card my-4">
+                    <h5 class="card-header">Last Published Articles</h5>
+                    <div class="card-body">
+                        @foreach (var last in Model.LastThreeArticles)
+                        {
+                            <a asp-controller="Articles" asp-action="ById" asp-route-id="@last.Id">
+                                @last.Title by @last.UserUserName
+                            </a>
+                        }
+                    </div>
 
-            </div>
+                </div>-->
 
         </div>
         <!-- /.row -->

@@ -160,7 +160,7 @@
 
             if (pictures != null)
             {
-              return pictures.PictureURL;
+                return pictures.PictureURL;
             }
             else
             {
@@ -243,7 +243,7 @@
 
         public async Task<int> GetFriendCount(string userId)
         {
-            var friendCount = await this.friendRepository.All().Where(x => x.ReceiverId == userId).CountAsync();
+            var friendCount = await this.friendRepository.All().Where(x => x.ReceiverId == userId || x.SenderId == userId).CountAsync();
 
             return friendCount;
         }

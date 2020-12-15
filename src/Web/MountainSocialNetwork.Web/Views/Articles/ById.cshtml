@@ -19,7 +19,17 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <div class="media flex-wrap w-100 align-items-center">
-                                    <img class="rounded-circle" width="95" height="75" src="@comment.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+
+                                    @if (comment.OwnerPictureUrl != null)
+                                    {
+                                        <img class="rounded-circle" width="95" height="85" src="@comment.OwnerPictureUrl" alt="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" class="user-profile">
+
+                                    }
+                                    else
+                                    {
+                                        <img class="rounded-circle" width="95" height="85" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" class="user-profile">
+
+                                    }
 
                                     <div class="media-body ml-3">
                                         @comment.UserFirstName @comment.UserLastName

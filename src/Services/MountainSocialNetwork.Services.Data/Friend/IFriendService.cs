@@ -5,14 +5,20 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using MountainSocialNetwork.Web.ViewModels.Friend;
+
     public interface IFriendService
     {
+        Task<IEnumerable<T>> GetAllFriendRequestAsync<T>(string userId);
+
         Task CreateFriendRequestAsync(string senderId, string receiverId);
 
         Task ApproveFriendRequestAsync(string senderId, string receiverId);
 
         Task DeclineFriendRequestAsync(string senderId, string receiverId);
 
-        Task<IEnumerable<T>> GetAllFriendRequestAsync<T>(string userId);
+        IEnumerable<UserFriendshipViewModel> GetAllFriendAsync(string userId);
+
+        Task<bool> AlredyFriend(string senderId, string receiverId);
     }
 }

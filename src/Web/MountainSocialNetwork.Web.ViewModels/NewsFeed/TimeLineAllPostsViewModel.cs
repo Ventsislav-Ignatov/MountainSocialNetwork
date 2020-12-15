@@ -42,8 +42,10 @@
                 })
                 .ForMember(x => x.OwnerPictureUrl, options =>
                 {
-                    options.MapFrom(x => x.User.UserProfilePictures.Where(a => a.ApplicationUserId == x.UserId)
-                    .OrderByDescending(o => o.CreatedOn).Select(x => x.PictureURL).FirstOrDefault().ToString());
+                    options.MapFrom(x => x.User.UserProfilePictures.
+                                     OrderByDescending(x => x.CreatedOn)
+                                     .FirstOrDefault(a => a.ApplicationUserId == x.UserId)
+                                     .PictureURL);
                 });
         }
     }

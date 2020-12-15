@@ -15,6 +15,14 @@
 
         public string Title { get; set; }
 
+        public string ShortTitle
+        {
+            get
+            {
+                return this.Title.Length > 15 ? this.Title.Substring(0, 15) + "..." : this.Title;
+            }
+        }
+
         public string Content { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -25,7 +33,7 @@
         {
             get
             {
-                return this.Content.Length > 200 ? this.Content.Substring(0, 200) + "..." : this.Content;
+                return this.Content.Length > 60 ? this.Content.Substring(0, 60) + "..." : this.Content;
             }
         }
 

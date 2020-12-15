@@ -44,9 +44,16 @@
 
             var userReceiver = await this.userManager.FindByNameAsync(userName);
 
+            var alredyFriend = await this.friendService.AlredyFriend(userSender.Id, userReceiver.Id);
+
+            if (alredyFriend)
+            {
+                return this.View(nameof(this.AlreadyFriend));
+            }
+
             await this.friendService.CreateFriendRequestAsync(userSender.Id, userReceiver.Id);
 
-            return this.Ok();
+            return this.RedirectToAction("NewsFeedContent", "NewsFeed");
         }
 
         [Authorize]
@@ -78,5 +85,26 @@
 
         }
 
+        [Authorize]
+        [HttpGet]
+
+        public IActionResult GetAllFriends(string userId)
+        {
+            var friends = this.friendService.GetAllFriendAsync(userId);
+
+            var model = new UserFriendshipResponseModel
+            {
+                Friends = friends,
+            };
+
+            return this.View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult AlreadyFriend()
+        {
+            return this.View();
+        }
     }
 }

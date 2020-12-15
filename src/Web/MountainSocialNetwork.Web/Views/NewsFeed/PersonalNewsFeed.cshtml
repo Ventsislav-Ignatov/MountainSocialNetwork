@@ -58,7 +58,7 @@
                         <strong>Birthplace :</strong> @currentUser.Town
                     </div>
                     <div class="h7">
-                        <a><strong>Friends @Model.FriendCount</strong></a>
+                        <a asp-controller="Friend" asp-action="GetAllFriends" asp-route-userId="@currentUser.Id"><strong>Friends @Model.FriendCount</strong></a>
                     </div>
                     <div class="h7">
                         <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request</strong></a>

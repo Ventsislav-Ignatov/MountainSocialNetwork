@@ -1,0 +1,63 @@
+﻿@model MountainSocialNetwork.Web.ViewModels.Friend.UserFriendshipResponseModel
+@using Microsoft.AspNetCore.Identity
+@using MountainSocialNetwork.Data.Models
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    var currentUser = await this.UserManager.GetUserAsync(this.User);
+
+    this.ViewData["Title"] = "Friend Request";
+}
+
+
+<link href="~/css/FriendReuqest.css" rel="stylesheet" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="container">
+
+    @foreach (var friend in Model.Friends)
+    {
+        <div class="profile-content">
+            <!-- begin tab-content -->
+            <div class="tab-content p-0">
+                <!-- begin #profile-friends tab -->
+                <div class="tab-pane fade in active show" id="profile-friends">
+
+                    <!-- begin row -->
+                    <!-- end col-6 -->
+                    <!-- begin col-6 -->
+                    <!-- end col-6 -->
+                    <!-- begin col-6 -->
+                    <div class="col-md-6 m-b-2">
+                        <div class="p-10 bg-white">
+                            <div class="media media-xs overflow-visible">
+                                <a class="media-left">
+                                    @if (friend.PictureURL != null)
+                                    {
+                                        <img width="150" height="100" src="@friend.PictureURL">
+
+                                    }
+                                    else
+                                    {
+                                        <img src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" width="150" height="100">
+                                    }
+                                </a>
+                                <div class="media-body valign-middle">
+                                    <b class="text-inverse">@friend.FirstName @friend.LastName</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col-6 -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end #profile-friends tab -->
+        </div>
+    }
+    <!-- end tab-content -->
+</div>
+<!-- end profile-content -->
+</div>

@@ -8,6 +8,7 @@
     using MountainSocialNetwork.Data.Common.Repositories;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Mapping;
+    using MountainSocialNetwork.Web.ViewModels.Friend;
 
     public class FriendService : IFriendService
     {
@@ -18,6 +19,16 @@
         {
             this.friendRequestRepository = friendRequestRepository;
             this.friendRepository = friendRepository;
+        }
+
+        public async Task<IEnumerable<T>> GetAllFriendRequestAsync<T>(string userId)
+        {
+            var friendRequests = await this.friendRequestRepository.All()
+                .Where(x => x.Status == FriendRequestStatus.Pending && x.ReceiverId == userId)
+                .To<T>()
+                .ToListAsync();
+
+            return friendRequests;
         }
 
         public async Task CreateFriendRequestAsync(string senderId, string receiverId)
@@ -63,14 +74,56 @@
             await this.friendRequestRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllFriendRequestAsync<T>(string userId)
+        public IEnumerable<UserFriendshipViewModel> GetAllFriendAsync(string userId)
         {
-            var friendRequests = await this.friendRequestRepository.All()
-                .Where(x => x.Status == FriendRequestStatus.Pending && x.ReceiverId == userId)
-                .To<T>()
-                .ToListAsync();
+            List<UserFriendshipViewModel> friends = null;
 
-            return friendRequests;
+            if (this.friendRepository.All().Any(x => x.ReceiverId == userId))
+            {
+                friends = this.friendRepository.All().Where(x => x.ReceiverId == userId)
+                    .Select(x => new UserFriendshipViewModel
+                    {
+                        FirstName = x.Sender.FirstName,
+                        LastName = x.Sender.LastName,
+                        PictureURL = x.Sender.UserProfilePictures.OrderByDescending(a => a.CreatedOn).FirstOrDefault().PictureURL,
+                    }).ToList();
+            }
+
+            if (this.friendRepository.All().Any(x => x.SenderId == userId))
+            {
+                List<UserFriendshipViewModel> friendsTwo = null;
+
+                friendsTwo = this.friendRepository.All().Where(x => x.SenderId == userId)
+                  .Select(x => new UserFriendshipViewModel
+                  {
+                      FirstName = x.Sender.FirstName,
+                      LastName = x.Sender.LastName,
+                      PictureURL = x.Sender.UserProfilePictures.OrderByDescending(a => a.CreatedOn).FirstOrDefault().PictureURL,
+                  }).ToList();
+
+                foreach (var frien in friendsTwo)
+                {
+                    friends.Add(frien);
+                }
+            }
+
+            return friends;
+        }
+
+        public async Task<bool> AlredyFriend(string senderId, string receiverId)
+        {
+            var alredyFriend = await this.friendRepository.All()
+                .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
+                .FirstOrDefaultAsync();
+
+            if (alredyFriend != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
