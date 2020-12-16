@@ -1,5 +1,5 @@
 
-# [MountainCommunity](mountains.png)
+!# MountainCommunity
 ## 👉 Project Introduction 👈
 ###### MountainCommunity is my defense project for ASP.NET Core course at SoftUni. It is a ready-to-use ASP.NET Core application.
 
