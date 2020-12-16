@@ -12,13 +12,19 @@
 
     public class FriendService : IFriendService
     {
+
         private readonly IDeletableEntityRepository<FriendRequest> friendRequestRepository;
         private readonly IDeletableEntityRepository<Friend> friendRepository;
+        private List<UserFriendshipViewModel> senderFriends;
+
+        private List<UserFriendshipViewModel> receiverFriends;
 
         public FriendService(IDeletableEntityRepository<FriendRequest> friendRequestRepository, IDeletableEntityRepository<Friend> friendRepository)
         {
             this.friendRequestRepository = friendRequestRepository;
             this.friendRepository = friendRepository;
+            this.senderFriends = new List<UserFriendshipViewModel>();
+            this.receiverFriends = new List<UserFriendshipViewModel>();
         }
 
         public async Task<IEnumerable<T>> GetAllFriendRequestAsync<T>(string userId)
@@ -33,6 +39,16 @@
 
         public async Task CreateFriendRequestAsync(string senderId, string receiverId)
         {
+
+            var hasAlredySendFriendShip = await this.friendRequestRepository.All()
+                .Where(x => (x.SenderId == senderId && x.ReceiverId == receiverId) || (x.SenderId == receiverId && x.ReceiverId == senderId))
+                .FirstOrDefaultAsync(a => a.IsDeleted == false);
+
+            if (hasAlredySendFriendShip != null)
+            {
+                this.friendRequestRepository.Delete(hasAlredySendFriendShip);
+            }
+
             var newFriendRequest = new FriendRequest
             {
                 SenderId = senderId,
@@ -76,11 +92,10 @@
 
         public IEnumerable<UserFriendshipViewModel> GetAllFriendAsync(string userId)
         {
-            List<UserFriendshipViewModel> friends = null;
 
             if (this.friendRepository.All().Any(x => x.ReceiverId == userId))
             {
-                friends = this.friendRepository.All().Where(x => x.ReceiverId == userId)
+                this.senderFriends = this.friendRepository.All().Where(x => x.ReceiverId == userId)
                     .Select(x => new UserFriendshipViewModel
                     {
                         FirstName = x.Sender.FirstName,
@@ -91,39 +106,84 @@
 
             if (this.friendRepository.All().Any(x => x.SenderId == userId))
             {
-                List<UserFriendshipViewModel> friendsTwo = null;
 
-                friendsTwo = this.friendRepository.All().Where(x => x.SenderId == userId)
+                this.receiverFriends = this.friendRepository.All().Where(x => x.SenderId == userId)
                   .Select(x => new UserFriendshipViewModel
                   {
-                      FirstName = x.Sender.FirstName,
-                      LastName = x.Sender.LastName,
-                      PictureURL = x.Sender.UserProfilePictures.OrderByDescending(a => a.CreatedOn).FirstOrDefault().PictureURL,
+                      FirstName = x.Receiver.FirstName,
+                      LastName = x.Receiver.LastName,
+                      PictureURL = x.Receiver.UserProfilePictures.OrderByDescending(a => a.CreatedOn).FirstOrDefault().PictureURL,
                   }).ToList();
 
-                foreach (var frien in friendsTwo)
+                foreach (var currentFriend in this.receiverFriends)
                 {
-                    friends.Add(frien);
+
+                    this.senderFriends.Add(currentFriend);
                 }
             }
 
-            return friends;
+            return this.senderFriends;
         }
 
-        public async Task<bool> AlredyFriend(string senderId, string receiverId)
+        public async Task<bool> AlredyFriendOrSendFriendRequest(string senderId, string receiverId)
         {
             var alredyFriend = await this.friendRepository.All()
-                .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
-                .FirstOrDefaultAsync();
+                                                          .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
+                                                          .FirstOrDefaultAsync();
+
+            var alredySendFriendRequest = await this.friendRequestRepository.All()
+                    .Where(x => (x.SenderId == senderId && x.ReceiverId == receiverId && x.Status == FriendRequestStatus.Pending) || (x.SenderId == receiverId && x.ReceiverId == senderId && x.Status == FriendRequestStatus.Pending))
+                     .FirstOrDefaultAsync();
 
             if (alredyFriend != null)
             {
-                return false;
+                return true;
             }
-            else
+            else if (alredySendFriendRequest != null)
             {
                 return true;
             }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<int> RequestFriendCount(string userId)
+        {
+            var count = await this.friendRequestRepository.All()
+                                                    .Where(x => x.ReceiverId == userId)
+                                                    .Where(a => a.Status == FriendRequestStatus.Pending)
+                                                    .CountAsync();
+
+            return count;
+        }
+
+        public async Task<bool> AreTwoUsersFriends(string loginUserId, string friendId)
+        {
+            var isFriend = await this.friendRepository.All().Where(x => (x.SenderId == loginUserId && x.ReceiverId == friendId) || (x.SenderId == friendId && x.ReceiverId == loginUserId))
+                .FirstOrDefaultAsync();
+
+            if (isFriend != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task DeleteFriendShip(string loggedUserId, string userId)
+        {
+            var friend = await this.friendRepository.All()
+                .Where(x => (x.ReceiverId == loggedUserId && x.SenderId == userId) || (x.SenderId == loggedUserId && x.ReceiverId == userId))
+                .FirstOrDefaultAsync();
+
+            this.friendRepository.Delete(friend);
+
+            await this.friendRepository.SaveChangesAsync();
         }
     }
 }

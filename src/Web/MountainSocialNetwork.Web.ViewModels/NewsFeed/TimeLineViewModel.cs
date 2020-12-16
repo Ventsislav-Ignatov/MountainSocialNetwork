@@ -40,6 +40,10 @@
 
         public int FriendCount { get; set; }
 
+        public int? RequestFriendCount { get; set; }
+
+        public bool? IsFried { get; set; }
+
         public int PageNumber { get; set; }
 
         public int PostsCount { get; set; }

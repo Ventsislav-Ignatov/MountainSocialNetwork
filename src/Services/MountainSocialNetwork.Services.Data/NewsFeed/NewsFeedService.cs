@@ -212,7 +212,7 @@
                 }).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
             return comments;
-        }
+        }   
 
         public async Task CreateCoverPicture(string userId, string pictureUrl)
         {

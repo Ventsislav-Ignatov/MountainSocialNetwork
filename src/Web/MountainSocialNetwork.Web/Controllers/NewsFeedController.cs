@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using MountainSocialNetwork.Data.Models;
     using MountainSocialNetwork.Services.Data;
+    using MountainSocialNetwork.Services.Data.Friend;
     using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.TimeLine;
     using MountainSocialNetwork.Web.ViewModels.Gallery;
@@ -28,13 +29,16 @@
         private readonly INewsFeedService newsFeedService;
         private readonly INewsFeedCommentService newsFeedCommentService;
         private readonly ICloudinaryService cloudinary;
+        private readonly IFriendService friendService;
 
-        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService, INewsFeedCommentService newsFeedCommentService, ICloudinaryService cloudinary)
+        public NewsFeedController(UserManager<ApplicationUser> userManager, INewsFeedService newsFeedService, INewsFeedCommentService newsFeedCommentService, 
+            ICloudinaryService cloudinary, IFriendService friendService)
         {
             this.userManager = userManager;
             this.newsFeedService = newsFeedService;
             this.newsFeedCommentService = newsFeedCommentService;
             this.cloudinary = cloudinary;
+            this.friendService = friendService;
         }
 
         [Authorize]
@@ -72,6 +76,7 @@
                 PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
                 NewsComments = await this.newsFeedService.GetAllComments(),
                 FriendCount = await this.newsFeedService.GetFriendCount(user.Id),
+                RequestFriendCount = await this.friendService.RequestFriendCount(user.Id),
             };
 
             model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
@@ -84,6 +89,8 @@
         [HttpGet]
         public async Task<IActionResult> PersonalNewsFeedByUser(string userName, int id = 1)
         {
+            var loggedUser = await this.userManager.GetUserAsync(this.User);
+
             var user = await this.userManager.FindByNameAsync(userName);
 
             var model = new TimeLineViewModel
@@ -94,6 +101,7 @@
                 AllPosts = this.newsFeedService.GetAllSocialPostsByUser<TimeLineAllPostsViewModel>(user.Id, id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
                 NewsComments = await this.newsFeedService.GetAllComments(),
+                IsFried = await this.friendService.AreTwoUsersFriends(loggedUser.Id, user.Id),
             };
 
             model.FirstName = user.FirstName;

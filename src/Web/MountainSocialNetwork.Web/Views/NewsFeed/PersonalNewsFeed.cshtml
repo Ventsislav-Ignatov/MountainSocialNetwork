@@ -61,7 +61,7 @@
                         <a asp-controller="Friend" asp-action="GetAllFriends" asp-route-userId="@currentUser.Id"><strong>Friends @Model.FriendCount</strong></a>
                     </div>
                     <div class="h7">
-                        <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request</strong></a>
+                        <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request @Model.RequestFriendCount</strong></a>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">

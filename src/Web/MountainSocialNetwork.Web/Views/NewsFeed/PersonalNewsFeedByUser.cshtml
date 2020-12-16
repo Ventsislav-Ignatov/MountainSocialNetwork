@@ -40,11 +40,22 @@
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
-                    <form asp-action="SendFriendRequest" asp-controller="Friend" method="post">
-                        <input type="hidden" name="userName" value="@Model.UserName" />
-                        <a><i class="fas fa-user-friends">  Add Friend</i></a>
-                        <button type="submit"></button>
-                    </form>
+                    @if (Model.IsFried.HasValue && Model.IsFried.Value == true)
+                    {
+                        <form asp-action="DeleteFriendShip" asp-controller="Friend" method="post">
+                            <input type="hidden" name="userName" value="@Model.UserName" />
+                            <a><i class="fas fa-user-friends">  Delete Friend</i></a>
+                            <button type="submit"></button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="SendFriendRequest" asp-controller="Friend" method="post">
+                            <input type="hidden" name="userName" value="@Model.UserName" />
+                            <a><i class="fas fa-user-friends">  Add Friend</i></a>
+                            <button type="submit"></button>
+                        </form>
+                    }
                     <div class="h7 "><strong>Name : </strong>@Model.FirstName @Model.LastName</div>
                     <div class="h7">
                         <strong>About :</strong> @Model.Description
@@ -230,7 +241,7 @@
                                             }
                                             else
                                             {
-                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="" >
+                                                <img class="rounded-circle" width="45" height="65" src="https://res.cloudinary.com/mountaincommunity/image/upload/v1605979876/UserProfilePictures/user-picture_qoe68b.png" alt="">
 
                                             }
                                         </div>
