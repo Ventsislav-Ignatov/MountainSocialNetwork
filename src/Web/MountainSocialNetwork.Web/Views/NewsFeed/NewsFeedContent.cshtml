@@ -69,9 +69,9 @@
                         <strong>Birthplace :</strong> @currentUser.Town
                     </div>
                     <br />
-                    <div class="h7">
+                    @*<div class="h7">
                         <a asp-controller="Friend" asp-action="GetFriendRequest"><strong>Friend Request</strong></a>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <div class="card">
@@ -167,12 +167,26 @@
                                     }
                                 </div>
                                 <div class="ml-2">
-                                    <a asp-controller="NewsFeed" asp-action="PersonalNewsFeedByUser" asp-route-userName="@post.UserUserName"><div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div></a>
+                                    @if (currentUser.UserName == post.UserUserName)
+                                    {
+                                        <a><div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div></a>
+
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="NewsFeed" asp-action="PersonalNewsFeedByUser" asp-route-userName="@post.UserUserName"><div class="h5 m-0 text-blue">@post.UserFirstName  @post.UserLastName</div></a>
+
+                                    }
                                     <div class="h7 text-muted"><time datetime="@post.CreatedOn.ToString("O")"></time></div>
                                 </div>
                             </div>
                             <div>
+                                @if (currentUser.UserName == post.UserUserName)
+                                {
                                 <a class="fas fa-edit" asp-controller="NewsFeed" asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a>
+
+                                }
+                               
 
                                 <div>
                                     <a class="btn text-green" method="post" onclick="sendVote(@post.Id, true)">
@@ -211,12 +225,14 @@
                     <div class="px-4 pt-3"> <button type="submit" class="btn btn-primary float-right" onclick="showAddCommentForm(@post.Id)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
                     <div class="card-footer">
 
-
-                        <form asp-controller="NewsFeed" asp-action="Delete" asp-route-id="@post.Id" method="post">
-                            <div>
-                                <button type="submit" class="fa fa-trash">Delete</button>
-                            </div>
-                        </form>
+                        @if (currentUser.UserName == post.UserUserName)
+                        {
+                            <form asp-controller="NewsFeed" asp-action="Delete" asp-route-id="@post.Id" method="post">
+                                <div>
+                                    <button type="submit" class="fa fa-trash">Delete</button>
+                                </div>
+                            </form>
+                        }
                     </div>
 
                     @foreach (var comments in @Model.NewsComments)

@@ -135,6 +135,11 @@
                     .Where(x => (x.SenderId == senderId && x.ReceiverId == receiverId && x.Status == FriendRequestStatus.Pending) || (x.SenderId == receiverId && x.ReceiverId == senderId && x.Status == FriendRequestStatus.Pending))
                      .FirstOrDefaultAsync();
 
+            if (senderId == receiverId)
+            {
+                return true;
+            }
+
             if (alredyFriend != null)
             {
                 return true;

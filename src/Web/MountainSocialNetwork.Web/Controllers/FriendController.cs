@@ -66,7 +66,7 @@
 
             await this.friendService.ApproveFriendRequestAsync(userSender.Id, userReceiver.Id);
 
-            return this.RedirectToAction(nameof(this.GetFriendRequest));
+            return this.RedirectToAction("NewsFeedContent", "NewsFeed");
 
         }
 
