@@ -43,7 +43,7 @@
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var categories = await this.categoriesService.GetAll<CategoryDropDownViewModel>();
+            var categories = await this.categoriesService.GetAllAsync<CategoryDropDownViewModel>();
 
             var viewModel = new ArticlePostCreateInputModel()
             {
@@ -58,14 +58,14 @@
         public async Task<IActionResult> Create(ArticlePostCreateInputModel model)
         {
 
-            if (!await this.categoriesService.CategoryExits(model.CategoryId))
+            if (!await this.categoriesService.CategoryExitsAsync(model.CategoryId))
             {
                 return this.RedirectToAction(nameof(this.Create));
             }
 
             if (!this.ModelState.IsValid)
             {
-                var categories = await this.categoriesService.GetAll<CategoryDropDownViewModel>();
+                var categories = await this.categoriesService.GetAllAsync<CategoryDropDownViewModel>();
                 model.Categories = categories;
                 return this.View(model);
             }
@@ -93,7 +93,7 @@
         [HttpGet]
         public async Task<IActionResult> ById(int id)
         {
-            var postViewModel = await this.blogPostsService.GetById<ArticleByIdViewModel>(id);
+            var postViewModel = await this.blogPostsService.GetByIdAsync<ArticleByIdViewModel>(id);
 
             return this.View(postViewModel);
         }
@@ -104,12 +104,12 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (!await this.blogPostsService.Exists(id, user.Id))
+            if (!await this.blogPostsService.ExistsAsync(id, user.Id))
             {
                 return this.RedirectToAction("NotOwner", "NewsFeed");
             }
 
-            var editViewModel = await this.blogPostsService.GetById<EditArticleInputModel>(id);
+            var editViewModel = await this.blogPostsService.GetByIdAsync<EditArticleInputModel>(id);
 
             return this.View(editViewModel);
         }
@@ -120,7 +120,7 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (!await this.blogPostsService.Exists(model.Id, user.Id))
+            if (!await this.blogPostsService.ExistsAsync(model.Id, user.Id))
             {
                 return this.RedirectToAction("NotOwner", "NewsFeed");
             }
@@ -141,7 +141,7 @@
                 Content = content,
             };
 
-            await this.blogPostsService.Update(newUpdatedPost);
+            await this.blogPostsService.UpdateAsync(newUpdatedPost);
 
             return this.RedirectToAction("ById", "Articles", new { id = model.Id });
 
@@ -155,7 +155,7 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var viewModel = await this.blogPostsService.GetAll<UserPostByIdModel>(user.Id);
+            var viewModel = await this.blogPostsService.GetAllAsync<UserPostByIdModel>(user.Id);
 
             model.Posts = viewModel;
 
@@ -170,7 +170,7 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var favouritePosts = await this.blogPostsService.GetAllFavouritePost<UserFavouriteArticlesViewModel>(user.Id);
+            var favouritePosts = await this.blogPostsService.GetAllFavouritePostAsync<UserFavouriteArticlesViewModel>(user.Id);
 
             viewModel.FavouritePosts = favouritePosts;
 

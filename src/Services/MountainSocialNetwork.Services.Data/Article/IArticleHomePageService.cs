@@ -7,9 +7,9 @@
 
     public interface IArticleHomePageService
     {
-        IEnumerable<T> GetAllArticlePosts<T>(int page, int itemsPerPage = 5);
+        IEnumerable<T> GetAllArticlePostsAsync<T>(int page, int itemsPerPage = 5);
 
-        Task<IEnumerable<T>> LastThreePosts<T>();
+        Task<IEnumerable<T>> LastThreePostsAsync<T>();
 
         int GetPostsCount();
     }

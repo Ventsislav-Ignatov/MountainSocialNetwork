@@ -11,19 +11,19 @@
 
         Task CreateArticlePicturesAsync(int articleId, string userId, string pictureURL);
 
-        Task<T> GetById<T>(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
-        Task<IEnumerable<T>> GetAll<T>(string userId);
+        Task<IEnumerable<T>> GetAllAsync<T>(string userId);
 
-        Task<Article> Update(Article article);
+        Task<Article> UpdateAsync(Article article);
 
-        Task<bool> Exists(int id, string authorId);
+        Task<bool> ExistsAsync(int id, string authorId);
 
-        Task AddFavouritePost(int articleId, string userId);
+        Task AddFavouritePostAsync(int articleId, string userId);
 
-        Task<bool> AlreadyAdded(int articleId, string userId);
+        Task<bool> AlreadyAddedAsync(int articleId, string userId);
 
-        Task<IEnumerable<T>> GetAllFavouritePost<T>(string userId);
+        Task<IEnumerable<T>> GetAllFavouritePostAsync<T>(string userId);
 
     }
 }

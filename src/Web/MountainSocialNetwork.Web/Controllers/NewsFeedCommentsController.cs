@@ -36,7 +36,7 @@
 
             var userId = this.userManager.GetUserId(this.User);
 
-            await this.newsFeedCommentService.Create(model.PostId, userId, model.Content, null);
+            await this.newsFeedCommentService.CreateAsync(model.PostId, userId, model.Content, null);
 
             return this.RedirectToAction("NewsFeedContent", "NewsFeed");
         }

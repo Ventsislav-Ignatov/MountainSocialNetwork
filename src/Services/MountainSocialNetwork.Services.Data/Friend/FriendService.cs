@@ -125,7 +125,7 @@
             return this.senderFriends;
         }
 
-        public async Task<bool> AlredyFriendOrSendFriendRequest(string senderId, string receiverId)
+        public async Task<bool> AlredyFriendOrSendFriendRequestAsync(string senderId, string receiverId)
         {
             var alredyFriend = await this.friendRepository.All()
                                                           .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
@@ -150,7 +150,7 @@
 
         }
 
-        public async Task<int> RequestFriendCount(string userId)
+        public async Task<int> RequestFriendCountAsync(string userId)
         {
             var count = await this.friendRequestRepository.All()
                                                     .Where(x => x.ReceiverId == userId)
@@ -160,7 +160,7 @@
             return count;
         }
 
-        public async Task<bool> AreTwoUsersFriends(string loginUserId, string friendId)
+        public async Task<bool> AreTwoUsersFriendsAsync(string loginUserId, string friendId)
         {
             var isFriend = await this.friendRepository.All().Where(x => (x.SenderId == loginUserId && x.ReceiverId == friendId) || (x.SenderId == friendId && x.ReceiverId == loginUserId))
                 .FirstOrDefaultAsync();
@@ -175,7 +175,7 @@
             }
         }
 
-        public async Task DeleteFriendShip(string loggedUserId, string userId)
+        public async Task DeleteFriendShipAsync(string loggedUserId, string userId)
         {
             var friend = await this.friendRepository.All()
                 .Where(x => (x.ReceiverId == loggedUserId && x.SenderId == userId) || (x.SenderId == loggedUserId && x.ReceiverId == userId))

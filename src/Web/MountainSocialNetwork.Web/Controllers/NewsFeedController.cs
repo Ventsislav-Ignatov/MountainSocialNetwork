@@ -53,11 +53,11 @@
                 PageNumber = id,
                 AllPosts = this.newsFeedService.GetAllSocialPosts<TimeLineAllPostsViewModel>(id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCount(),
-                NewsComments = await this.newsFeedService.GetAllComments(),
+                NewsComments = await this.newsFeedService.GetAllCommentsAsync(),
             };
 
-            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePictureAsync(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPictureAsync(user.Id);
 
             return this.View(model);
         }
@@ -74,13 +74,13 @@
                 PageNumber = id,
                 AllPosts = this.newsFeedService.GetAllSocialPostsByUser<TimeLineAllPostsViewModel>(user.Id, id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
-                NewsComments = await this.newsFeedService.GetAllComments(),
-                FriendCount = await this.newsFeedService.GetFriendCount(user.Id),
-                RequestFriendCount = await this.friendService.RequestFriendCount(user.Id),
+                NewsComments = await this.newsFeedService.GetAllCommentsAsync(),
+                FriendCount = await this.newsFeedService.GetFriendCountAsync(user.Id),
+                RequestFriendCount = await this.friendService.RequestFriendCountAsync(user.Id),
             };
 
-            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePictureAsync(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPictureAsync(user.Id);
 
             return this.View(model);
         }
@@ -100,8 +100,8 @@
                 UserName = user.UserName,
                 AllPosts = this.newsFeedService.GetAllSocialPostsByUser<TimeLineAllPostsViewModel>(user.Id, id, PostPerPage),
                 PostsCount = this.newsFeedService.GetPostsCountByUser(user.Id),
-                NewsComments = await this.newsFeedService.GetAllComments(),
-                IsFried = await this.friendService.AreTwoUsersFriends(loggedUser.Id, user.Id),
+                NewsComments = await this.newsFeedService.GetAllCommentsAsync(),
+                IsFried = await this.friendService.AreTwoUsersFriendsAsync(loggedUser.Id, user.Id),
             };
 
             model.FirstName = user.FirstName;
@@ -109,12 +109,10 @@
             model.Description = user.Description;
             model.Town = user.Town;
             model.BirthDay = user.BirthDay.ToString("d", CultureInfo.InvariantCulture);
-            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePicture(user.Id);
-            model.CoverPictureUrl = await this.newsFeedService.LastCoverPicture(user.Id);
+            model.ProfilePictureUrl = await this.newsFeedService.LastProfilePictureAsync(user.Id);
+            model.CoverPictureUrl = await this.newsFeedService.LastCoverPictureAsync(user.Id);
 
             return this.View(model);
-
-
         }
 
         [Authorize]
@@ -143,12 +141,12 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (!await this.newsFeedService.ExistsAndOwner(id, user.Id))
+            if (!await this.newsFeedService.ExistsAndOwnerAsync(id, user.Id))
             {
                 return this.RedirectToAction(nameof(this.NotOwner));
             }
 
-            var editViewModel = await this.newsFeedService.GetById<EditNewsFeedPostViewModel>(id);
+            var editViewModel = await this.newsFeedService.GetByIdAsync<EditNewsFeedPostViewModel>(id);
 
             return this.View(editViewModel);
         }
@@ -159,7 +157,7 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (!await this.newsFeedService.ExistsAndOwner(model.Id, user.Id))
+            if (!await this.newsFeedService.ExistsAndOwnerAsync(model.Id, user.Id))
             {
                 return this.RedirectToAction(nameof(this.NotOwner));
             }
@@ -174,7 +172,7 @@
                 Content = content,
             };
 
-            await this.newsFeedService.Update(post);
+            await this.newsFeedService.UpdateAsync(post);
 
             return this.RedirectToAction(nameof(this.NewsFeedContent));
         }
@@ -190,15 +188,15 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var hasRight = await this.newsFeedService.ExistsAndOwner(model.Id, user.Id);
+            var hasRight = await this.newsFeedService.ExistsAndOwnerAsync(model.Id, user.Id);
 
             if (hasRight)
             {
-                var post = await this.newsFeedService.GetNewsFeedPost(model.Id);
+                var post = await this.newsFeedService.GetNewsFeedPostAsync(model.Id);
 
-                await this.newsFeedCommentService.DeleteWhenPostIsDeleted(post.Id);
+                await this.newsFeedCommentService.DeleteWhenPostIsDeletedAsync(post.Id);
 
-                await this.newsFeedService.Delete(post);
+                await this.newsFeedService.DeleteAsync(post);
             }
             else
             {
@@ -226,7 +224,7 @@
                 Description = user.Description,
                 Town = user.Town,
                 CreatedOn = user.CreatedOn.ToString(),
-                PictureURL = await this.newsFeedService.LastProfilePicture(user.Id),
+                PictureURL = await this.newsFeedService.LastProfilePictureAsync(user.Id),
             };
 
             return this.View(viewUser);
@@ -247,19 +245,19 @@
                 BirthDay = model.BirthDay,
             };
 
-            await this.newsFeedService.EditProfile(newUser, user.Id);
+            await this.newsFeedService.EditProfileAsync(newUser, user.Id);
 
             // string name = DateTime.UtcNow.ToString("G", CultureInfo.InvariantCulture);
             if (model.ProfilePicture != null)
             {
             string pictureUrlProfile = await this.cloudinary.UploadPictureAsync(model.ProfilePicture, model.ProfilePicture.FileName, FolderNameProfilePicture);
-            await this.newsFeedService.CreateProfilePicture(user.Id, pictureUrlProfile);
+            await this.newsFeedService.CreateProfilePictureAsync(user.Id, pictureUrlProfile);
             }
 
             if (model.CoverPhoto != null)
             {
             string pictureUrlCover = await this.cloudinary.UploadPictureAsync(model.CoverPhoto, model.CoverPhoto.FileName, FolderNameCoverPicture);
-            await this.newsFeedService.CreateCoverPicture(user.Id, pictureUrlCover);
+            await this.newsFeedService.CreateCoverPictureAsync(user.Id, pictureUrlCover);
             }
 
             return this.RedirectToAction(nameof(this.NewsFeedContent));
@@ -271,7 +269,7 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var pictures = await this.newsFeedService.GetAllProfilePictures<ProfileGalleryViewModel>(user.Id);
+            var pictures = await this.newsFeedService.GetAllProfilePicturesAsync<ProfileGalleryViewModel>(user.Id);
 
             var viewModel = new ProfileGalleryResponseViewModel
             {
@@ -287,7 +285,7 @@
         {
             var user = await this.userManager.FindByNameAsync(userName);
 
-            var pictures = await this.newsFeedService.GetAllProfilePictures<ProfileGalleryViewModel>(user.Id);
+            var pictures = await this.newsFeedService.GetAllProfilePicturesAsync<ProfileGalleryViewModel>(user.Id);
 
             var viewModel = new ProfileGalleryResponseViewModel
             {
@@ -303,7 +301,7 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var coverPictures = await this.newsFeedService.GetAllCoverPictures<CoverGalleryViewModel>(user.Id);
+            var coverPictures = await this.newsFeedService.GetAllCoverPicturesAsync<CoverGalleryViewModel>(user.Id);
 
             var viewModel = new CoverGalleryResponseViewModel
             {
@@ -319,7 +317,7 @@
         {
             var user = await this.userManager.FindByNameAsync(userName);
 
-            var coverPictures = await this.newsFeedService.GetAllCoverPictures<CoverGalleryViewModel>(user.Id);
+            var coverPictures = await this.newsFeedService.GetAllCoverPicturesAsync<CoverGalleryViewModel>(user.Id);
 
             var viewModel = new CoverGalleryResponseViewModel
             {

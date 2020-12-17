@@ -46,7 +46,7 @@
 
             var content = sanitizer.Sanitize(model.Content);
 
-            await this.commentsService.Create(model.PostId, userId, content, parentId);
+            await this.commentsService.CreateAsync(model.PostId, userId, content, parentId);
             return this.RedirectToAction("ById", "Articles", new { id = model.PostId });
         }
     }

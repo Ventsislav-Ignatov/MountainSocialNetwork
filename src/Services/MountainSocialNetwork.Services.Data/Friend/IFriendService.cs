@@ -13,7 +13,7 @@
 
         Task CreateFriendRequestAsync(string senderId, string receiverId);
 
-        Task DeleteFriendShip(string loggedUserId, string userId);
+        Task DeleteFriendShipAsync(string loggedUserId, string userId);
 
         Task ApproveFriendRequestAsync(string senderId, string receiverId);
 
@@ -21,10 +21,10 @@
 
         IEnumerable<UserFriendshipViewModel> GetAllFriendAsync(string userId);
 
-        Task<bool> AlredyFriendOrSendFriendRequest(string senderId, string receiverId);
+        Task<bool> AlredyFriendOrSendFriendRequestAsync(string senderId, string receiverId);
 
-        Task<int> RequestFriendCount(string userId);
+        Task<int> RequestFriendCountAsync(string userId);
 
-        Task<bool> AreTwoUsersFriends(string loginUserId, string friendId);
+        Task<bool> AreTwoUsersFriendsAsync(string loginUserId, string friendId);
     }
 }

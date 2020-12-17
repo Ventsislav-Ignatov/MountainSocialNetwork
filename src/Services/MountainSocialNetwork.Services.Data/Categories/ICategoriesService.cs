@@ -9,10 +9,10 @@
 
     public interface ICategoriesService
     {
-        Task<IEnumerable<T>> GetAll<T>(int? count = null);
+        Task<IEnumerable<T>> GetAllAsync<T>(int? count = null);
 
-        Task<T> CategoriesByName<T>(string name);
+        Task<T> CategoriesByNameAsync<T>(string name);
 
-        Task<bool> CategoryExits(int id);
+        Task<bool> CategoryExitsAsync(int id);
     }
 }

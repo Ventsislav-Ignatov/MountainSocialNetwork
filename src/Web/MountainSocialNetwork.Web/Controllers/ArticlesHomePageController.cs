@@ -41,9 +41,9 @@
                 PostsPerPage = PostPerPage,
                 PageNumber = id,
                 PostsCount = this.articles.GetPostsCount(),
-                Categories = await this.categories.GetAll<HomeCategoryViewModel>(),
-                Posts = this.articles.GetAllArticlePosts<HomeBlogArticleViewModel>(id, PostPerPage),
-                LastThreeArticles = await this.articles.LastThreePosts<LastThreeArticlesViewModel>(),
+                Categories = await this.categories.GetAllAsync<HomeCategoryViewModel>(),
+                Posts = this.articles.GetAllArticlePostsAsync<HomeBlogArticleViewModel>(id, PostPerPage),
+                LastThreeArticles = await this.articles.LastThreePostsAsync<LastThreeArticlesViewModel>(),
             };
             return this.View(viewModel);
         }
@@ -51,7 +51,7 @@
         [HttpGet]
         public async Task<IActionResult> CategoriesByName(string name)
         {
-            var categoriesByName = await this.categories.CategoriesByName<CategoryByNameViewModel>(name);
+            var categoriesByName = await this.categories.CategoriesByNameAsync<CategoryByNameViewModel>(name);
 
             return this.View(categoriesByName);
         }
@@ -67,11 +67,11 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var isAlreadyAdd = await this.postService.AlreadyAdded(model.PostId, user.Id);
+            var isAlreadyAdd = await this.postService.AlreadyAddedAsync(model.PostId, user.Id);
 
             if (!isAlreadyAdd)
             {
-                await this.postService.AddFavouritePost(model.PostId, user.Id);
+                await this.postService.AddFavouritePostAsync(model.PostId, user.Id);
             }
             else
             {

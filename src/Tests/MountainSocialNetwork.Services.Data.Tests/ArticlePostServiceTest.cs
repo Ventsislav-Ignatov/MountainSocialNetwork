@@ -17,7 +17,7 @@
     public class ArticlePostServiceTest
     {
         [Fact]
-        public void CreateArticleShouldWorkCorrectly()
+        public async Task CreateArticleShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -29,8 +29,8 @@
 
             var service = new ArticlePostsService(repositoryArticle, repositoryArticlePicture, repositoryUserFavouriteArticle);
 
-            service.CreateAsync("test", "test", "1", 1);
-            service.CreateAsync("testTwo", "testTwo", "1", 2);
+            await service.CreateAsync("test", "test", "1", 1);
+            await service.CreateAsync("testTwo", "testTwo", "1", 2);
 
             var result = repositoryArticle.All().Count();
 
@@ -38,12 +38,11 @@
         }
 
         [Fact]
-        public void CreateArticlePictureShouldWorkCorrectly()
+        public async Task CreateArticlePictureShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
             var dbContext = new ApplicationDbContext(options);
-
 
             var repositoryArticle = new EfDeletableEntityRepository<Article>(dbContext);
             var repositoryArticlePicture = new EfRepository<ArticlePicture>(dbContext);
@@ -51,9 +50,9 @@
 
             var service = new ArticlePostsService(repositoryArticle, repositoryArticlePicture, repositoryUserFavouriteArticle);
 
-            service.CreateArticlePicturesAsync(1, "1", "Test");
-            service.CreateArticlePicturesAsync(1, "1","TestTwo");
-            service.CreateArticlePicturesAsync(1, "1","TestThree");
+            await service.CreateArticlePicturesAsync(1, "1", "Test");
+            await service.CreateArticlePicturesAsync(1, "1","TestTwo");
+            await service.CreateArticlePicturesAsync(1, "1","TestThree");
             var result = repositoryArticlePicture.All().Count();
 
             Assert.Equal(3, result);
@@ -61,7 +60,7 @@
 
         [Fact]
 
-        public void AddFavouritePostShouldWorkCorrectly()
+        public async Task AddFavouritePostShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -74,8 +73,8 @@
 
             var service = new ArticlePostsService(repositoryArticle, repositoryArticlePicture, repositoryUserFavouriteArticle);
 
-            service.AddFavouritePost(1, "1");
-            service.AddFavouritePost(2, "1");
+            await service.AddFavouritePostAsync(1, "1");
+            await service.AddFavouritePostAsync(2, "1");
 
             var result = repositoryUserFavouriteArticle.All().Count();
 
@@ -83,7 +82,7 @@
         }
 
         [Fact]
-        public void MustReturnTrueWhenArticleIsAddedToFavourite()
+        public async Task MustReturnTrueWhenArticleIsAddedToFavouriteAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -95,15 +94,15 @@
 
             var service = new ArticlePostsService(repositoryArticle, repositoryArticlePicture, repositoryUserFavouriteArticle);
 
-            service.AddFavouritePost(1, "1");
+            await service.AddFavouritePostAsync(1, "1");
 
-            var result = service.AlreadyAdded(1, "1");
+            var result = service.AlreadyAddedAsync(1, "1");
 
             Assert.True(result.Result);
         }
 
         [Fact]
-        public void MustReturnFalseWhenArticleIsAddedToFavourite()
+        public async Task MustReturnFalseWhenArticleIsAddedToFavouriteAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -115,12 +114,13 @@
 
             var service = new ArticlePostsService(repositoryArticle, repositoryArticlePicture, repositoryUserFavouriteArticle);
 
-            var result = service.AlreadyAdded(1, "1");
+            var result = await service.AlreadyAddedAsync(1, "1");
 
-            Assert.False(result.Result);
+            Assert.False(result);
         }
+
         [Fact]
-        public async Task UpdateShouldWorkCorrectly()
+        public async Task UpdateShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -143,13 +143,13 @@
                 CategoryId = 1,
             };
 
-            var result = await service.Update(article);
+            var result = await service.UpdateAsync(article);
 
             Assert.Equal(article, result);
         }
 
         [Fact]
-        public async Task ReturnTrueIfUserIsOwnerOfArticle()
+        public async Task ReturnTrueIfUserIsOwnerOfArticleAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -163,13 +163,13 @@
 
             var articleId = await service.CreateAsync("test", "test", "1", 1);
 
-            var isTrue = await service.Exists(articleId, "1");
+            var isTrue = await service.ExistsAsync(articleId, "1");
 
             Assert.True(isTrue);
         }
 
         [Fact]
-        public async Task ReturnFalseIfUserIsOwnerOfArticle()
+        public async Task ReturnFalseIfUserIsOwnerOfArticleAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -183,7 +183,7 @@
 
             var articleId = await service.CreateAsync("test", "test", "1", 1);
 
-            var isTrue = await service.Exists(articleId, "2");
+            var isTrue = await service.ExistsAsync(articleId, "2");
 
             Assert.False(isTrue);
         }

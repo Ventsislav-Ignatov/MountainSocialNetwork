@@ -14,7 +14,7 @@
     public class AdministratorServiceTest
     {
         [Fact]
-        public async Task CreateCategoryCorrectly()
+        public async Task CreateCategoryCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -28,7 +28,7 @@
 
             var service = new AdministratorService(repositoryNewsFeedPost, repositoryArticle, repositoryNewsFeedComment, repositoryCategory, repositoryComment);
 
-            await service.CreateCategory("testCategory");
+            await service.CreateCategoryAsync("testCategory");
 
             var expectedCount = 1;
 
@@ -36,7 +36,7 @@
         }
 
         [Fact]
-        public async Task DeleteCategoryCorrectly()
+        public async Task DeleteCategoryCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -51,9 +51,9 @@
             var service = new AdministratorService(repositoryNewsFeedPost, repositoryArticle, repositoryNewsFeedComment, repositoryCategory, repositoryComment);
 
 
-            var result = await service.CreateCategory("testCategory");
+            var result = await service.CreateCategoryAsync("testCategory");
 
-            await service.DeleteCategory(result);
+            await service.DeleteCategoryAsync(result);
 
             var expectedCount = 0;
 
@@ -64,7 +64,7 @@
         }
 
         [Fact]
-        public async Task DeleteArticleCommentShoudlWorkCorrectly()
+        public async Task DeleteArticleCommentShoudlWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -90,13 +90,13 @@
 
             await repositoryComment.SaveChangesAsync();
 
-            await service.DeleteArticleComment(1);
+            await service.DeleteArticleCommentAsync(1);
 
             Assert.Equal(1, repositoryComment.AllWithDeleted().Count());
         }
 
         [Fact]
-        public async Task DeleteNewsFeedCommentShouldWorkCorrectly()
+        public async Task DeleteNewsFeedCommentShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -121,13 +121,13 @@
 
             await repositoryNewsFeedComment.SaveChangesAsync();
 
-            await service.DeleteNewsFeedComment(comment);
+            await service.DeleteNewsFeedCommentAsync(comment);
 
             Assert.Equal(1, repositoryNewsFeedComment.AllWithDeleted().Count());
         }
 
         [Fact]
-        public async Task DeleteNewsFeedPostShouldWorkCorrectly()
+        public async Task DeleteNewsFeedPostShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -152,13 +152,13 @@
 
             await repositoryNewsFeedPost.SaveChangesAsync();
 
-            await service.DeleteNewsFeedPost(post);
+            await service.DeleteNewsFeedPostAsync(post);
 
             Assert.Equal(1, repositoryNewsFeedPost.AllWithDeleted().Count());
         }
 
         [Fact]
-        public async Task UpdateNewsFeedPostShouldWorkCorrectly()
+        public async Task UpdateNewsFeedPostShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -190,7 +190,7 @@
                 UserId = "1",
             };
 
-            await service.UpdateNewsFeedPost(postUpdate);
+            await service.UpdateNewsFeedPostAsync(postUpdate);
 
             var postAfterUpdate = await repositoryNewsFeedPost.All().FirstOrDefaultAsync(a => a.Id == postUpdate.Id);
 
@@ -198,7 +198,7 @@
         }
 
         [Fact]
-        public async Task GetNewsFeedPostShouldReturnCorrectly()
+        public async Task GetNewsFeedPostShouldReturnCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -224,13 +224,13 @@
 
             await repositoryNewsFeedPost.SaveChangesAsync();
 
-            var result = await service.GetNewsFeedPost(post.Id);
+            var result = await service.GetNewsFeedPostAsync(post.Id);
 
             Assert.IsType<NewsFeedPost>(result);
         }
 
         [Fact]
-        public async Task DeleteArticleShouldReturnCorrectCount()
+        public async Task DeleteArticleShouldReturnCorrectCountAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -265,13 +265,13 @@
 
             await repositoryArticle.SaveChangesAsync();
 
-            await service.DeleteArticle(articleOne);
+            await service.DeleteArticleAsync(articleOne);
 
             Assert.Equal(1, repositoryArticle.All().Count());
         }
 
         [Fact]
-        public async Task GetArticleByIdShouldReturnCorrectTypeAndArticle()
+        public async Task GetArticleByIdShouldReturnCorrectTypeAndArticleAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -296,14 +296,14 @@
 
             await repositoryArticle.SaveChangesAsync();
 
-            var article = await service.GetArticle(articleOne.Id);
+            var article = await service.GetArticleAsync(articleOne.Id);
 
             Assert.IsType<Article>(article);
             Assert.Equal(articleOne, article);
         }
 
         [Fact]
-        public async Task UpdateArticleShouldWorkCorrectly()
+        public async Task UpdateArticleShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -337,7 +337,7 @@
                 UserId = "1",
             };
 
-            await service.UpdateArticle(postUpdate);
+            await service.UpdateArticleAsync(postUpdate);
 
             var postAfterUpdate = await repositoryArticle.All().FirstOrDefaultAsync(a => a.Id == postUpdate.Id);
 
@@ -346,7 +346,7 @@
         }
 
         [Fact]
-        public async Task GetNewsFeedCommentByIdShouldReturnCorrectly()
+        public async Task GetNewsFeedCommentByIdShouldReturnCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -370,14 +370,14 @@
 
             await repositoryNewsFeedComment.SaveChangesAsync();
 
-            var comment = await service.GetNewsFeedComment(newsFeedComment.Id);
+            var comment = await service.GetNewsFeedCommentAsync(newsFeedComment.Id);
 
             Assert.IsType<NewsFeedComment>(comment);
             Assert.Equal(newsFeedComment, comment);
         }
 
         [Fact]
-        public async Task UpdateCommentShouldUpdateCorrectly()
+        public async Task UpdateCommentShouldUpdateCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -408,8 +408,7 @@
                 UserId = "1",
             };
 
-            var resultAfterUpdate = await service.UpdateComment(newsFeedCommentUpdate);
-
+            var resultAfterUpdate = await service.UpdateCommentAsync(newsFeedCommentUpdate);
 
             Assert.IsType<NewsFeedComment>(resultAfterUpdate);
             Assert.Equal(newsFeedCommentUpdate.Content, resultAfterUpdate.Content);

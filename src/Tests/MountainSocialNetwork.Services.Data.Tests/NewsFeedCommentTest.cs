@@ -14,7 +14,7 @@
     public class NewsFeedCommentTest
     {
         [Fact]
-        public async Task CreateArticleShouldWorkCorrectly()
+        public async Task CreateArticleShouldWorkCorrectlyAsync()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -24,8 +24,8 @@
 
             var service = new NewsFeedCommentService(repositoryComment);
 
-            await service.Create(1, "1", "TestComment");
-            await service.Create(1, "1", "TestCommentTwo");
+            await service.CreateAsync(1, "1", "TestComment");
+            await service.CreateAsync(1, "1", "TestCommentTwo");
 
             var result = repositoryComment.All().Count();
 

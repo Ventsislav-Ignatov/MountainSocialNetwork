@@ -7,6 +7,6 @@
 
     public interface ISearchService
     {
-        Task<IEnumerable<T>> GetSearchedArticles<T>(string title);
+        Task<IEnumerable<T>> GetSearchedArticlesAsync<T>(string title);
     }
 }

@@ -44,7 +44,7 @@
 
             var userReceiver = await this.userManager.FindByNameAsync(userName);
 
-            var alredyFriend = await this.friendService.AlredyFriendOrSendFriendRequest(userSender.Id, userReceiver.Id);
+            var alredyFriend = await this.friendService.AlredyFriendOrSendFriendRequestAsync(userSender.Id, userReceiver.Id);
 
             if (alredyFriend)
             {
@@ -109,7 +109,7 @@
 
             var user = await this.userManager.FindByNameAsync(userName);
 
-            await this.friendService.DeleteFriendShip(loggedUser.Id, user.Id);
+            await this.friendService.DeleteFriendShipAsync(loggedUser.Id, user.Id);
 
             return this.RedirectToAction("PersonalNewsFeedByUser", "NewsFeed", new { userName = user.UserName });
         }

@@ -17,7 +17,7 @@
             this.commentsRepository = commentsRepository;
         }
 
-        public async Task Create(int newsFeedPostId, string userId, string content, int? parentId = null)
+        public async Task CreateAsync(int newsFeedPostId, string userId, string content, int? parentId = null)
         {
             var comment = new NewsFeedComment
             {
@@ -32,7 +32,7 @@
             await this.commentsRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteWhenPostIsDeleted(int postId)
+        public async Task DeleteWhenPostIsDeletedAsync(int postId)
         {
             var comments = await this.commentsRepository.AllAsNoTracking().Where(x => x.NewsFeedPostId == postId).ToListAsync();
 

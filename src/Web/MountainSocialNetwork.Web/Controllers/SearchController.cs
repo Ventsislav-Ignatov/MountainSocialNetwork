@@ -24,7 +24,7 @@
         {
             var viewModel = new HomeViewModel { };
 
-            var searchResult = await this.searchService.GetSearchedArticles<HomeBlogArticleViewModel>(model.Title);
+            var searchResult = await this.searchService.GetSearchedArticlesAsync<HomeBlogArticleViewModel>(model.Title);
 
             viewModel.SearchViewModel = searchResult;
             return this.View(viewModel);

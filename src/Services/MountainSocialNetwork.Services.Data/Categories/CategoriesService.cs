@@ -22,7 +22,7 @@
         }
 
         // Get all Categories and return to ViewHomePage
-        public async Task<IEnumerable<T>> GetAll<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAllAsync<T>(int? count = null)
         {
             IQueryable<Category> categories = this.categoryRepository.All().OrderBy(a => a.Name);
 
@@ -34,13 +34,13 @@
             return await categories.To<T>().ToListAsync();
         }
 
-        public async Task<T> CategoriesByName<T>(string name)
+        public async Task<T> CategoriesByNameAsync<T>(string name)
         {
             var category = await this.categoryRepository.All().Where(x => x.Name == name).To<T>().FirstOrDefaultAsync();
             return category;
         }
 
-        public async Task<bool> CategoryExits(int id)
+        public async Task<bool> CategoryExitsAsync(int id)
         {
             var category = await this.categoryRepository.All().FirstOrDefaultAsync(x => x.Id == id);
 

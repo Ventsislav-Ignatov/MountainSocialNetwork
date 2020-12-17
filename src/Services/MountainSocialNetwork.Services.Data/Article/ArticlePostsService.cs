@@ -55,18 +55,18 @@
             await this.articlePictureRepository.SaveChangesAsync();
         }
 
-        public async Task<T> GetById<T>(int id)
+        public async Task<T> GetByIdAsync<T>(int id)
         {
             var post = await this.articleRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
             return post;
         }
 
-        public async Task<IEnumerable<T>> GetAll<T>(string userId)
+        public async Task<IEnumerable<T>> GetAllAsync<T>(string userId)
         {
             return await this.articleRepository.All().Where(a => a.UserId == userId).OrderByDescending(x => x.CreatedOn).To<T>().ToListAsync();
         }
 
-        public async Task<Article> Update(Article article)
+        public async Task<Article> UpdateAsync(Article article)
         {
             var blogPosts = await this.articleRepository.All().FirstOrDefaultAsync(b => b.Id == article.Id);
 
@@ -78,12 +78,12 @@
             return article;
         }
 
-        public async Task<bool> Exists(int id, string authorId)
+        public async Task<bool> ExistsAsync(int id, string authorId)
         {
             return await this.articleRepository.All().AnyAsync(x => x.Id == id && x.UserId == authorId);
         }
 
-        public async Task AddFavouritePost(int articleId, string userId)
+        public async Task AddFavouritePostAsync(int articleId, string userId)
         {
             var post = new UserFavouriteArticle
             {
@@ -95,7 +95,7 @@
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task<bool> AlreadyAdded(int articleId, string userId)
+        public async Task<bool> AlreadyAddedAsync(int articleId, string userId)
         {
             var post = await this.repository.All().Where(a => a.ArticleId == articleId && a.UserId == userId).FirstOrDefaultAsync();
 
@@ -109,7 +109,7 @@
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllFavouritePost<T>(string userId)
+        public async Task<IEnumerable<T>> GetAllFavouritePostAsync<T>(string userId)
         {
             return await this.repository
                     .All()

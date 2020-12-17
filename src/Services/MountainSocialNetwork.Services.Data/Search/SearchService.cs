@@ -20,7 +20,7 @@
             this.articleRepository = articleRepository;
         }
 
-        public async Task<IEnumerable<T>> GetSearchedArticles<T>(string title)
+        public async Task<IEnumerable<T>> GetSearchedArticlesAsync<T>(string title)
         {
             var searchArticles = await this.articleRepository.All().Where(a => a.Title.Contains(title)).To<T>().ToListAsync();
 

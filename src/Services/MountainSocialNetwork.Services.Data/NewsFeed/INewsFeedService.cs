@@ -19,36 +19,36 @@
 
         IEnumerable<T> GetAllSocialPostsByUser<T>(string userId, int page, int itemsPerPage = 4);
 
-        Task<IEnumerable<PostCommentViewModel>> GetAllComments();
+        Task<IEnumerable<PostCommentViewModel>> GetAllCommentsAsync();
 
-        Task<bool> ExistsAndOwner(int id, string authorId);
+        Task<bool> ExistsAndOwnerAsync(int id, string authorId);
 
-        Task<NewsFeedPost> Update(NewsFeedPost newsFeedPost);
+        Task<NewsFeedPost> UpdateAsync(NewsFeedPost newsFeedPost);
 
-        Task Delete(NewsFeedPost newsFeedPost);
+        Task DeleteAsync(NewsFeedPost newsFeedPost);
 
-        Task<NewsFeedPost> GetNewsFeedPost(int id);
+        Task<NewsFeedPost> GetNewsFeedPostAsync(int id);
 
-        Task<T> GetById<T>(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
-        Task EditProfile(ApplicationUser user, string userId);
+        Task EditProfileAsync(ApplicationUser user, string userId);
 
-        Task CreateProfilePicture(string userId, string pictureUrl);
+        Task CreateProfilePictureAsync(string userId, string pictureUrl);
 
-        Task CreateCoverPicture(string userId, string pictureUrl);
+        Task CreateCoverPictureAsync(string userId, string pictureUrl);
 
-        Task<string> LastProfilePicture(string userId);
+        Task<string> LastProfilePictureAsync(string userId);
 
-        Task<string> LastCoverPicture(string userId);
+        Task<string> LastCoverPictureAsync(string userId);
 
         int GetPostsCount();
 
         int GetPostsCountByUser(string userId);
 
-        Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId);
+        Task<IEnumerable<T>> GetAllProfilePicturesAsync<T>(string userId);
 
-        Task<IEnumerable<T>> GetAllCoverPictures<T>(string userId);
+        Task<IEnumerable<T>> GetAllCoverPicturesAsync<T>(string userId);
 
-        Task<int> GetFriendCount(string userId);
+        Task<int> GetFriendCountAsync(string userId);
     }
 }

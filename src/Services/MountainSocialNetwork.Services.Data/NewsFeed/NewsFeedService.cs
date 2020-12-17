@@ -49,13 +49,13 @@
             return timeLinePost.Id;
         }
 
-        public async Task<T> GetById<T>(int id)
+        public async Task<T> GetByIdAsync<T>(int id)
         {
             var post = await this.newsFeedRepository.All().Where(a => a.Id == id).To<T>().FirstOrDefaultAsync();
             return post;
         }
 
-        public async Task<bool> ExistsAndOwner(int id, string authorId)
+        public async Task<bool> ExistsAndOwnerAsync(int id, string authorId)
         {
             return await this.newsFeedRepository.All().AnyAsync(x => x.Id == id && x.UserId == authorId);
         }
@@ -68,7 +68,7 @@
             return posts;
         }
 
-        public async Task<NewsFeedPost> Update(NewsFeedPost newsFeedPost)
+        public async Task<NewsFeedPost> UpdateAsync(NewsFeedPost newsFeedPost)
         {
             var newPosts = await this.newsFeedRepository.All().FirstOrDefaultAsync(a => a.Id == newsFeedPost.Id);
 
@@ -79,14 +79,14 @@
             return newsFeedPost;
         }
 
-        public async Task Delete(NewsFeedPost newsFeedPost)
+        public async Task DeleteAsync(NewsFeedPost newsFeedPost)
         {
             this.newsFeedRepository.Delete(newsFeedPost);
 
             await this.newsFeedRepository.SaveChangesAsync();
         }
 
-        public async Task<NewsFeedPost> GetNewsFeedPost(int id)
+        public async Task<NewsFeedPost> GetNewsFeedPostAsync(int id)
         {
             var post = await this.newsFeedRepository.All().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -126,9 +126,8 @@
             return allPost;
         }
 
-        public async Task EditProfile(ApplicationUser user, string userId)
+        public async Task EditProfileAsync(ApplicationUser user, string userId)
         {
-            var allUsers = await this.userRepository.All().ToListAsync();
             var currentUser = await this.userRepository.All().Where(x => x.Id == userId).FirstOrDefaultAsync();
 
             currentUser.FirstName = user.FirstName;
@@ -140,7 +139,7 @@
             await this.userRepository.SaveChangesAsync();
         }
 
-        public async Task CreateProfilePicture(string userId, string pictureUrl)
+        public async Task CreateProfilePictureAsync(string userId, string pictureUrl)
         {
             var userPicture = new UserProfilePicture
             {
@@ -152,7 +151,7 @@
             await this.pictureRepository.SaveChangesAsync();
         }
 
-        public async Task<string> LastProfilePicture(string userId)
+        public async Task<string> LastProfilePictureAsync(string userId)
         {
             var pictures = await this.pictureRepository.All()
                 .Where(x => x.ApplicationUserId == userId)
@@ -168,7 +167,7 @@
             }
         }
 
-        public async Task<string> LastCoverPicture(string userId)
+        public async Task<string> LastCoverPictureAsync(string userId)
         {
             var coverPicture = await this.coverPictureRepository.All().Where(x => x.ApplicationUserId == userId).OrderByDescending(a => a.CreatedOn).FirstOrDefaultAsync();
 
@@ -192,7 +191,7 @@
             return this.newsFeedRepository.All().Where(x => x.UserId == userId).Count();
         }
 
-        public async Task<IEnumerable<PostCommentViewModel>> GetAllComments()
+        public async Task<IEnumerable<PostCommentViewModel>> GetAllCommentsAsync()
         {
             var comments = await this.commentRepository.AllAsNoTracking()
                 .Select(a => new PostCommentViewModel
@@ -212,9 +211,9 @@
                 }).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
             return comments;
-        }   
+        }
 
-        public async Task CreateCoverPicture(string userId, string pictureUrl)
+        public async Task CreateCoverPictureAsync(string userId, string pictureUrl)
         {
 
             var userPicture = new UserCoverPicture
@@ -227,21 +226,21 @@
             await this.coverPictureRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllProfilePictures<T>(string userId)
+        public async Task<IEnumerable<T>> GetAllProfilePicturesAsync<T>(string userId)
         {
             var profilePictures = await this.pictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
 
             return profilePictures;
         }
 
-        public async Task<IEnumerable<T>> GetAllCoverPictures<T>(string userId)
+        public async Task<IEnumerable<T>> GetAllCoverPicturesAsync<T>(string userId)
         {
             var coverPictures = await this.coverPictureRepository.AllAsNoTracking().Where(x => x.ApplicationUserId == userId).To<T>().ToListAsync();
 
             return coverPictures;
         }
 
-        public async Task<int> GetFriendCount(string userId)
+        public async Task<int> GetFriendCountAsync(string userId)
         {
             var friendCount = await this.friendRepository.All().Where(x => x.ReceiverId == userId || x.SenderId == userId).CountAsync();
 

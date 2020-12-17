@@ -7,45 +7,45 @@
 
     public interface IAdministratorService
     {
-         Task<IEnumerable<T>> GetAllNewsFeedPost<T>();
+         Task<IEnumerable<T>> GetAllNewsFeedPostAsync<T>();
 
-         Task<IEnumerable<T>> GetAllArticlesPost<T>();
+         Task<IEnumerable<T>> GetAllArticlesPostAsync<T>();
 
-         Task<IEnumerable<T>> GetAllNewsFeedComment<T>();
+         Task<IEnumerable<T>> GetAllNewsFeedCommentAsync<T>();
 
-         Task<IEnumerable<T>> GetAllArticlesComment<T>();
+         Task<IEnumerable<T>> GetAllArticlesCommentAsync<T>();
 
-         Task<IEnumerable<T>> GetAllCategories<T>();
+         Task<IEnumerable<T>> GetAllCategoriesAsync<T>();
 
-         Task DeleteNewsFeedPost(NewsFeedPost newsFeedPost);
+         Task DeleteNewsFeedPostAsync(NewsFeedPost newsFeedPost);
 
-         Task DeleteArticle(Article article);
+         Task DeleteArticleAsync(Article article);
 
-         Task DeleteNewsFeedComment(NewsFeedComment comment);
+         Task DeleteNewsFeedCommentAsync(NewsFeedComment comment);
 
-         Task<Article> GetArticle(int id);
+         Task<Article> GetArticleAsync(int id);
 
-         Task<NewsFeedComment> GetNewsFeedComment(int id);
+         Task<NewsFeedComment> GetNewsFeedCommentAsync(int id);
 
-         Task<NewsFeedPost> UpdateNewsFeedPost(NewsFeedPost article);
+         Task<NewsFeedPost> UpdateNewsFeedPostAsync(NewsFeedPost article);
 
-         Task<Article> UpdateArticle(Article article);
+         Task<Article> UpdateArticleAsync(Article article);
 
-         Task<NewsFeedComment> UpdateComment(NewsFeedComment comment);
+         Task<NewsFeedComment> UpdateCommentAsync(NewsFeedComment comment);
 
-         Task<T> GetByIdNewsFeedPost<T>(int id);
+         Task<T> GetByIdNewsFeedPostAsync<T>(int id);
 
-         Task<T> GetByIdArticle<T>(int id);
+         Task<T> GetByIdArticleAsync<T>(int id);
 
-         Task<T> GetByIdComment<T>(int id);
+         Task<T> GetByIdCommentAsync<T>(int id);
 
-         Task<NewsFeedPost> GetNewsFeedPost(int id);
+         Task<NewsFeedPost> GetNewsFeedPostAsync(int id);
 
-         Task<int> CreateCategory(string name);
+         Task<int> CreateCategoryAsync(string name);
 
-         Task DeleteCategory(int id);
+         Task DeleteCategoryAsync(int id);
 
-         Task DeleteArticleComment(int id);
+         Task DeleteArticleCommentAsync(int id);
 
     }
 }
