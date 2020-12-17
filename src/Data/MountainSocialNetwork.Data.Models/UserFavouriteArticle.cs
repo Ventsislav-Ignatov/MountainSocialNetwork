@@ -9,10 +9,12 @@
 
     public class UserFavouriteArticle : IDeletableEntity
     {
+        [Required]
         public int ArticleId { get; set; }
 
         public virtual Article Article { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

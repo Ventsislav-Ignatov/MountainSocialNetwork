@@ -9,6 +9,7 @@
 
     public class Vote : BaseModel<int>
     {
+        [Required]
         public int NewsFeedPostId { get; set; }
 
         public virtual NewsFeedPost NewsFeedPost { get; set; }
@@ -18,6 +19,7 @@
 
         public virtual ApplicationUser User { get; set; }
 
+        [Required]
         public bool IsUpVote { get; set; }
     }
 }

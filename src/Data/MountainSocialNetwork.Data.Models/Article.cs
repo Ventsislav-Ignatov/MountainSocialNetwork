@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Text;
 
     using MountainSocialNetwork.Data.Common.Models;
@@ -15,14 +16,18 @@
             this.ArticlePictures = new HashSet<ArticlePicture>();
         }
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Content { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
 
+        [Required]
         public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

@@ -3,7 +3,7 @@ namespace MountainSocialNetwork.Data.Models
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
     using MountainSocialNetwork.Data.Common.Models;
 
@@ -35,12 +35,16 @@ namespace MountainSocialNetwork.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
 
+        [Required]
         public string LastName { get; set; }
 
+        [Required]
         public DateTime BirthDay { get; set; }
 
+        [Required]
         public string Town { get; set; }
 
         public GenderType GenderType { get; set; }
