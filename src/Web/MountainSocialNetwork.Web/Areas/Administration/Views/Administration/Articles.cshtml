@@ -1,6 +1,6 @@
-﻿@model MountainSocialNetwork.Web.ViewModels.Administration.ArticleCommentResponseModel
+﻿@model MountainSocialNetwork.Web.ViewModels.Administration.ArticleAdministrationResponseModel
 @{
-    this.ViewData["Title"] = "Article comments Administrator Page!";
+    this.ViewData["Title"] = "Articles Administrator Page!";
 }
 
 <table class="table table-bordered table-hover table-striped" id="DataTable">
@@ -10,19 +10,16 @@
                 Name
             </th>
             <th>
-                Content
-            </th>
-            <th>
-                ArticleId
-            </th>
-            <th>
-                Id
-            </th>
-            <th>
-                ParentId
+                Email
             </th>
             <th>
                 CreatedOn
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                ShortContent
             </th>
             <th>
                 Action
@@ -30,29 +27,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var post in Model.ArticleComments)
+        @foreach (var post in Model.Articles)
         {
         <tr>
             <td>
                 @post.UserFirstName  @post.UserLastName
             </td>
             <td>
-                @post.Content
-            </td>
-            <td>
-                @post.ArticleId
-            </td>
-            <td>
-                @post.Id
-            </td>
-            <td>
-                @post.ParentId
+                @post.UserUserName
             </td>
             <td>
                 <time datetime="@post.CreatedOn.ToString("O")"></time>
             </td>
-            <td>|
-                <a asp-action="DeleteArticleComment" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
+            <td>
+                @post.Title
+            </td>
+            <td>
+                @post.ShortContent
+            </td>
+            <td>
+                <a asp-action="EditArticle" asp-area="Administration" asp-controller="Administration" asp-route-id="@post.Id">Edit</a> |
+                <a asp-action="DeleteArticle" asp-area="Administration" asp-controller="Administration" asp-route-id="@post.Id">Delete</a>
             </td>
         </tr>
         }

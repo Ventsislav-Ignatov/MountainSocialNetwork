@@ -46,9 +46,9 @@
                     @post.ShortContent
                 </td>
                 <td>
-                    <a asp-action="EditNewsFeedPost" asp-route-id="@post.Id">Edit</a> |
+                    <a asp-area="Administration" asp-controller="Administration" asp-action="EditNewsFeedPost"  asp-route-id="@post.Id">Edit</a> |
                     <a @*asp-action="Details" asp-route-id="@item.Id"*@>Details</a> |
-                    <a asp-action="DeleteNewsFeedPost" asp-controller="Administrator" asp-route-id="@post.Id">Delete</a>
+                    <a asp-area="Administration" asp-controller="Administration" asp-action="DeleteNewsFeedPost" asp-route-id="@post.Id">Delete</a>
                 </td>
             </tr>
         }

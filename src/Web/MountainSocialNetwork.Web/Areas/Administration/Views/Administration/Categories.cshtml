@@ -5,7 +5,7 @@
 
 <table class="table table-bordered table-hover table-striped" id="DataTable">
 
-        <a class="btn btn-outline-success my-2 my-sm-0" asp-action="CreateCategory" asp-controller="Administrator">Create new category</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" asp-area="Administration" asp-controller="Administration" asp-action="CreateCategory" >Create new category</a>
     <br />
     <thead>
         <tr>
@@ -43,7 +43,7 @@
                 <time datetime="@category.CreatedOn.ToString("O")"></time>
             </td>
             <td>
-                <a asp-action="DeleteCategory" asp-controller="Administrator" asp-route-id="@category.Id">Delete</a>
+                <a asp-action="DeleteCategory" asp-area="Administration" asp-controller="Administration" asp-route-id="@category.Id">Delete</a>
             </td>
         </tr>
         }
