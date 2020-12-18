@@ -124,7 +124,6 @@
             this.newsFeedCommentRepository.Delete(comment);
 
             await this.newsFeedCommentRepository.SaveChangesAsync();
-
         }
 
         public async Task<NewsFeedComment> GetNewsFeedCommentAsync(int id)
