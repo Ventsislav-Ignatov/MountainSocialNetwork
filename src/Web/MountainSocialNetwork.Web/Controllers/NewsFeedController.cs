@@ -14,7 +14,6 @@
     using MountainSocialNetwork.Services.Data;
     using MountainSocialNetwork.Services.Data.Friend;
     using MountainSocialNetwork.Services.Data.NewsFeed;
-    using MountainSocialNetwork.Services.Data.TimeLine;
     using MountainSocialNetwork.Web.ViewModels.Gallery;
     using MountainSocialNetwork.Web.ViewModels.NewsFeed;
     using MountainSocialNetwork.Web.ViewModels.SocialTimeLine;

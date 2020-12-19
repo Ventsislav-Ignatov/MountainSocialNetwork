@@ -92,7 +92,6 @@
             await repositoryNewsFeedPost.AddAsync(postTwo);
             await repositoryNewsFeedPost.SaveChangesAsync();
 
-
             AutoMapperConfig.RegisterMappings(typeof(TimeLineAllPostsViewModelTest).GetTypeInfo().Assembly);
 
             var service = new AdministratorService(repositoryNewsFeedPost, repositoryArticle, repositoryNewsFeedComment, repositoryCategory, repositoryComment);

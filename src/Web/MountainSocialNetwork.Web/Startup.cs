@@ -22,7 +22,6 @@
     using MountainSocialNetwork.Services.Data.Friend;
     using MountainSocialNetwork.Services.Data.NewsFeed;
     using MountainSocialNetwork.Services.Data.Search;
-    using MountainSocialNetwork.Services.Data.TimeLine;
     using MountainSocialNetwork.Services.Data.Votes;
     using MountainSocialNetwork.Services.Mapping;
     using MountainSocialNetwork.Services.Messaging;

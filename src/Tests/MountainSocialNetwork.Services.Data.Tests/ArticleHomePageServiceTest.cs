@@ -122,7 +122,6 @@
 
             return articles;
         }
-
     }
 
     public class GetAllArticleByIdTestViewModel : IMapFrom<Article>

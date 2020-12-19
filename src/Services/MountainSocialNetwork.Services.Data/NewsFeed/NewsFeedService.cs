@@ -1,4 +1,4 @@
-﻿namespace MountainSocialNetwork.Services.Data.TimeLine
+﻿namespace MountainSocialNetwork.Services.Data.NewsFeed
 {
     using System;
     using System.Collections.Generic;

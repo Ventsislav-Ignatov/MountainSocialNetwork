@@ -76,6 +76,8 @@
 
             await this.friendRepository.AddAsync(newFriendShip);
 
+            await this.friendRepository.SaveChangesAsync();
+
             await this.friendRequestRepository.SaveChangesAsync();
         }
 
@@ -117,7 +119,6 @@
 
                 foreach (var currentFriend in this.receiverFriends)
                 {
-
                     this.senderFriends.Add(currentFriend);
                 }
             }
@@ -152,7 +153,6 @@
             {
                 return false;
             }
-
         }
 
         public async Task<int> RequestFriendCountAsync(string userId)
