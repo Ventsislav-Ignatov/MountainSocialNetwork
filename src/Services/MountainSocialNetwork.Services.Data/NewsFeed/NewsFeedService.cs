@@ -193,7 +193,7 @@
 
         public async Task<IEnumerable<PostCommentViewModel>> GetAllCommentsAsync()
         {
-            var comments = await this.commentRepository.AllAsNoTracking()
+            var comments = await this.commentRepository.All()
                 .Select(a => new PostCommentViewModel
                 {
                     Id = a.Id,
@@ -207,7 +207,7 @@
                     .Where(x => x.ApplicationUserId == a.UserId)
                     .OrderByDescending(o => o.CreatedOn)
                     .Select(s => s.PictureURL)
-                    .FirstOrDefault().ToString(),
+                    .FirstOrDefault(),
                 }).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
             return comments;
